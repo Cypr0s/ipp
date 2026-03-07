@@ -1,4 +1,13 @@
-.venv/
-vscode/
-sol2xml/
-*.yaml
+.venv
+venv
+.mypy_cache
+.ruff_cache
+__pycache__
+.idea
+.vscode
+uv.lock
+node_modules
+dist
+.eslintcache
+.idea
+.vscode

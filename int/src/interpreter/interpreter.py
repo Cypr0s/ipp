@@ -4,7 +4,7 @@ This module contains the main logic of the interpreter.
 IPP: You must definitely modify this file. Bend it to your will.
 
 Author: Ondřej Ondryáš <iondryas@fit.vut.cz>
-Author: Kristián Lupták <xluptak00@stud.fit.vut.cz> (nothing added yet)
+Author: Kristian Luptak
 """
 
 import logging
@@ -57,4 +57,4 @@ class Interpreter:
         Executes the currently loaded program, using the provided input stream as standard input.
         """
         logger.info("Executing program")
-        # TODO: Your logic goes here.
+        # ooof
