@@ -57,4 +57,4 @@ class Interpreter:
         Executes the currently loaded program, using the provided input stream as standard input.
         """
         logger.info("Executing program")
-        # ooof
+        # check
