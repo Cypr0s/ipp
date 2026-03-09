@@ -17,7 +17,7 @@ from pydantic import ValidationError
 
 from interpreter.error_codes import ErrorCode
 from interpreter.exceptions import InterpreterError
-from interpreter.input_model import Program
+from interpreter.input_model import ClassDef, Program
 
 logger = logging.getLogger(__name__)
 
@@ -52,9 +52,35 @@ class Interpreter:
                 error_code=ErrorCode.INT_STRUCTURE, message="Invalid SOL-XML structure"
             ) from e
 
+        # static analysis
+        classes: dict[str, ClassDef] = {}
+        for cls in self.current_program.classes:
+            if cls.name in classes:
+                raise InterpreterError(
+                    error_code=ErrorCode.SEM_ERROR,
+                    message="Redefinition of Class with duplicit name",
+                )
+            classes[cls.name] = cls
+
+        if "Main " not in classes:
+            raise InterpreterError(error_code=ErrorCode.SEM_MAIN, message="Main class Not defined")
+        main_cls = classes["Main"]
+
+        for _method in main_cls.methods:
+            pass
+
     def execute(self, input_io: TextIO) -> None:
         """
         Executes the currently loaded program, using the provided input stream as standard input.
         """
         logger.info("Executing program")
+
         # check
+
+
+class Object:
+    """Base runtime object for SOL26 values."""
+
+    def identical_to(self, other: Object) -> bool:
+        """Base runtime object for SOL26 values."""
+        return self is other
