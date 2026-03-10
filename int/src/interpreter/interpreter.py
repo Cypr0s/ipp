@@ -17,7 +17,7 @@ from pydantic import ValidationError
 
 from interpreter.error_codes import ErrorCode
 from interpreter.exceptions import InterpreterError
-from interpreter.input_model import ClassDef, Program
+from interpreter.input_model import Block, ClassDef, Program
 
 logger = logging.getLogger(__name__)
 
@@ -29,6 +29,8 @@ class Interpreter:
 
     def __init__(self) -> None:
         self.current_program: Program | None = None
+        self.classes: dict[str, SolClass] = {}
+        self.scope: Scope = None
 
     def load_program(self, source_file_path: Path) -> None:
         """
@@ -51,23 +53,7 @@ class Interpreter:
             raise InterpreterError(
                 error_code=ErrorCode.INT_STRUCTURE, message="Invalid SOL-XML structure"
             ) from e
-
-        # static analysis
-        classes: dict[str, ClassDef] = {}
-        for cls in self.current_program.classes:
-            if cls.name in classes:
-                raise InterpreterError(
-                    error_code=ErrorCode.SEM_ERROR,
-                    message="Redefinition of Class with duplicit name",
-                )
-            classes[cls.name] = cls
-
-        if "Main " not in classes:
-            raise InterpreterError(error_code=ErrorCode.SEM_MAIN, message="Main class Not defined")
-        main_cls = classes["Main"]
-
-        for _method in main_cls.methods:
-            pass
+        # static check for classes
 
     def execute(self, input_io: TextIO) -> None:
         """
@@ -75,12 +61,106 @@ class Interpreter:
         """
         logger.info("Executing program")
 
-        # check
+        # create dict of userclasses,
+        self.load_classes()
+        logger.info("Loaded user and buildin classes")
+        # add user functions and methods
+
+        if "Main" not in self.classes.keys():
+            raise InterpreterError(error_code=ErrorCode.SEM_MAIN, message="Main class missing")
+        main_obj = SolObject(self.classes["Main"])
+        ### TODO: create global scope here
+
+        self.call_method(main_obj, "run", [])
+
+    def load_classes(self):
+        "Loads both buildin and classes into global class dict for easy lookup"
+        # builtins
+        object_cls = SolClass("Object", None, {})
+        integer_cls = SolClass("Integer", object_cls, {})
+        string_cls = SolClass("String", object_cls, {})
+        boolean_cls = SolClass("Boolean", object_cls, {})
+
+        self.classes["Object"] = object_cls
+        self.classes["Integer"] = integer_cls
+        self.classes["String"] = string_cls
+        self.classes["Boolean"] = boolean_cls
+
+        # user classes
+        for cls in self.current_program.classes:
+            if cls.name not in self.classes.keys():
+                # recursively creates classes
+                self.create_class(self, cls.name)
+
+    def create_class(self, cls: ClassDef) -> None:
+        """Creates class and links to parent, if parent doesnt exist recursively creates it"""
+        if cls.name in self.classes:
+            return
+
+        # parent doesnt exist??
+        if cls.parent is None:
+            pass
+
+        # recursively create parent-s
+        if cls.parent not in self.classes:
+            for cls_parent in self.current_program.classes:
+                if cls.parent == cls_parent.name:
+                    self.create_class(self, cls_parent)
+
+        parent: SolClass = self.classes[cls.parent]
+        methods: dict[str, SolMethod] = {}
+        for method in cls.methods:
+            if method.selector in methods:
+                raise InterpreterError(
+                    error_code=ErrorCode.SEM_ERROR, message="Redefinition of Method in class"
+                )
+            methods[method.selector] = SolMethod(method.selector, False, method.block, None)
+        # create classs
+        self.classes[cls.name] = SolClass(cls.name, parent, methods)
+
+    def call_method(
+        self, reciever: SolObject, selector: str, arguments: list[idk] | None = []
+    ) -> None:
+        if not reciever.cls.check_for_method(selector):
+            if reciever.cls.name == "Main":
+                raise InterpreterError(
+                    error_code=ErrorCode.SEM_MAIN, message="Main class has no method named `run`"
+                )
+            raise InterpreterError(
+                error_code=ErrorCode.SEM_UNDEF, message="Main class has no method named `run`"
+            )
 
 
-class Object:
-    """Base runtime object for SOL26 values."""
+class SolClass:
+    def __init__(self, name: str, super_class: SolClass | None, methods: dict[str, SolMethod]):
+        self.name = name
+        self.parent = super_class
+        self.methods = methods
 
-    def identical_to(self, other: Object) -> bool:
-        """Base runtime object for SOL26 values."""
-        return self is other
+    def check_for_method(self, method_name: str) -> bool:
+        if self.name == "Object":
+            return method_name in self.methods
+        if method_name in self.methods:
+            return True
+        return self.parent.check_for_method(method_name)
+
+
+class SolObject:
+    def __init__(self, cls: SolClass):
+        self.cls = cls
+        self.attributes = []
+        self.value = None
+
+
+class SolMethod:
+    def __init__(self, selector: str, is_builtin: bool, block: Block | None = None, func=None):
+        self.selector = selector
+        self.is_builtin = is_builtin
+        self.block = block
+        self.function = func
+
+
+class Scope:
+    def __init__(self, parent_scope: Scope | None = None):
+        self.parent_scope = parent_scope
+        self.objects: dict[str, SolObject]

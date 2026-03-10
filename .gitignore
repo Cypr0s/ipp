@@ -12,3 +12,4 @@ dist
 .idea
 .vscode
 sol2xml
+builtins.py
