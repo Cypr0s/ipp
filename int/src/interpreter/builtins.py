@@ -1,0 +1,5 @@
+
+
+class ObjectBuiltin:
+    @staticmethod
+    def
