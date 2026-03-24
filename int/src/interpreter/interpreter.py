@@ -32,6 +32,7 @@ class Interpreter:
         self.current_program: Program | None = None
         self.classes: dict[str, SolClass] = {}
         self.scope: Scope = None
+        self.stream: TextIO = None
 
     def load_program(self, source_file_path: Path) -> None:
         """
@@ -54,7 +55,6 @@ class Interpreter:
             raise InterpreterError(
                 error_code=ErrorCode.INT_STRUCTURE, message="Invalid SOL-XML structure"
             ) from e
-        # static check for classes
 
     def execute(self, input_io: TextIO) -> None:
         """
@@ -68,28 +68,26 @@ class Interpreter:
         # add user functions and methods
 
         if "Main" not in self.classes:
-            raise InterpreterError(error_code=ErrorCode.SEM_MAIN, 
-                                   message="Main class missing"
-                                  )
-        
+            raise InterpreterError(error_code=ErrorCode.SEM_MAIN, message="Main class missing")
+
         # create global scope with null, true, false objects
         self.scope = Scope(None)
         true_obj = SolObject(self.classes["True"], True)
         false_obj = SolObject(self.classes["False"], False)
         nil_obj = SolObject(self.classes["Nil"], None)
 
-        self.scope.set_object("nil", nil_obj)        
+        self.scope.set_object("nil", nil_obj)
         self.scope.set_object("true", true_obj)
         self.scope.set_object("false", false_obj)
 
         logger.info("created global objects.")
-        #create main object
+        # create main object
         main_obj: SolObject = SolObject(self.classes["Main"], None)
         run_method: SolMethod = main_obj.cls.get_method("run")
 
         logger.info("created main object and found method run")
-
-        #call method run
+        self.stream = input_io
+        # call method run
         self.send_message(main_obj, run_method, [])
 
     def load_classes(self):
@@ -132,7 +130,7 @@ class Interpreter:
                 if cls.parent == cls_parent.name:
                     self.create_class(self, cls_parent)
 
-        #create methods dict
+        # create methods dict
         parent: SolClass = self.classes[cls.parent]
         methods: dict[str, SolMethod] = {}
         for method in cls.methods:
@@ -140,7 +138,9 @@ class Interpreter:
                 raise InterpreterError(
                     error_code=ErrorCode.SEM_ERROR, message="Redefinition of Method in class"
                 )
-            methods[method.selector] = SolMethod(method.selector, False, method.block, method.block.arity)
+            methods[method.selector] = SolMethod(
+                method.selector, False, method.block, method.block.arity
+            )
 
         # create classs
         self.classes[cls.name] = SolClass(cls.name, parent, methods)
@@ -148,18 +148,17 @@ class Interpreter:
     def send_message(
         self, receiver: SolObject, method: SolMethod, arguments: list[SolObject] | None = []
     ) -> SolObject:
-
-        #builtin method check arity and exec
+        # builtin method check arity and exec
         arg_count: int = len(arguments)
         if method.arity != arg_count:
             raise InterpreterError(
-                    error_code=ErrorCode.SEM_ARITY, 
-                    message=f"Arity of method `{method.selector}` `{method.arity}` is called with `{arg_count}` arguments"
-                )
+                error_code=ErrorCode.SEM_ARITY,
+                message=f"Arity of method `{method.selector}` `{method.arity}` is called with `{arg_count}` arguments",
+            )
         if method.is_builtin:
             method.function(receiver, arguments)
-        #otherwise its a block
-        #create new scope, call block with new scope
+        # otherwise its a block
+        # create new scope, call block with new scope
         new_scope = Scope(self.scope)
         parent_scope = self.scope
         self.scope = new_scope
@@ -168,7 +167,7 @@ class Interpreter:
 
         self.scope = parent_scope
 
-        return 
+        return
 
     # execute block
     def execute_block(self, block: Block) -> SolObject:
@@ -176,73 +175,71 @@ class Interpreter:
         for assign in block.assigns:
             target = assign.target
             value = self.eval_expr(assign.expr)
-            if target != '_':
+            if target != "_":
                 self.scope.set_object(target, value)
-            
+
             return_obj = value
         return return_obj
 
     # eval all expressions
     def eval_expr(self, expr: Expr) -> SolObject:
-        if(expr.send is not None):
+        if expr.send is not None:
             return self.handle_send(expr.send)
 
-        elif(expr.block is not None):
+        elif expr.block is not None:
             return SolObject("Block", expr.block)
 
-        elif(expr.literal is not None):
+        elif expr.literal is not None:
             return self.handle_literal(expr.literal)
 
-        elif(expr.var is not None):
+        elif expr.var is not None:
             return self.scope.get_object(expr.var)
 
-        raise InterpreterError(
-            error_code=ErrorCode.SEM_UNDEF, message="Invalid expression type"
-        )
+        raise InterpreterError(error_code=ErrorCode.SEM_UNDEF, message="Invalid expression type")
 
     def handle_send(self, send: Send) -> SolObject:
-        receiver_obj = self.eval_expr(send.receiver) # eval obj receiver
+        receiver_obj = self.eval_expr(send.receiver)  # eval obj receiver
 
-        selector_method = receiver_obj.cls.get_method(send.selector) #eval method
+        selector_method = receiver_obj.cls.get_method(send.selector)  # eval method
 
         send_args: list[SolObject] = []
         for arg in send.args:
             send_args.append(self.eval_expr(arg))
 
-        #actually send msg
+        # actually send msg
         return self.send_message(receiver_obj, selector_method, send_args)
 
-    #handle literals
+    # handle literals
     def handle_literal(self, literal: Literal) -> SolObject:
-        if(literal.class_id == "String"):
+        if literal.class_id == "String":
             return SolObject(self.classes["String"], literal.value)
 
-        elif(literal.class_id == "Integer"):
+        elif literal.class_id == "Integer":
             try:
                 val: int = int(literal.value)
             except ValueError as e:
                 raise InterpreterError(
-                    error_code=ErrorCode.SEM_UNDEF, #idk
-                    message="Main class has no method named `run`"
+                    error_code=ErrorCode.INT_OTHER,  # idk
+                    message=f"ERR:Trying to create integer object from `{literal.value}`",
                 )
             return SolObject(self.classes["Integer"], val)
 
-        elif(literal.class_id == "Block"):
+        elif literal.class_id == "Block":
             return SolObject(self.classes["Block"], literal.value)
 
-        elif(literal.class_id == "Nil"):
+        elif literal.class_id == "Nil":
             return self.scope.get_object("nil")
 
-        elif(literal.class_id == "True"):
+        elif literal.class_id == "True":
             return self.scope.get_object("true")
 
-        elif(literal.class_id == "False"):
+        elif literal.class_id == "False":
             return self.scope.get_object("false")
-        
+
         if literal.class_id in self.classes:
             return SolObject(self.classes[literal.class_id], literal.value)
 
         raise InterpreterError(
             error_code=ErrorCode.SEM_UNDEF,
-            message=f"Calling undefined literal class `{literal.class_id}`"
+            message=f"Calling undefined literal class `{literal.class_id}`",
         )
