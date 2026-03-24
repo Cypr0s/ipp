@@ -18,7 +18,6 @@ from pydantic import ValidationError
 from interpreter.error_codes import ErrorCode
 from interpreter.exceptions import InterpreterError
 from interpreter.input_model import Block, ClassDef, Program, Expr, Literal, Send
-from interpreter.runtime_model import *
 
 logger = logging.getLogger(__name__)
 
@@ -83,37 +82,22 @@ class Interpreter:
         logger.info("created global objects.")
         # create main object
         main_obj: SolObject = SolObject(self.classes["Main"], None)
-        run_method: SolMethod = main_obj.cls.get_method("run")
 
         logger.info("created main object and found method run")
         self.stream = input_io
         # call method run
-        self.send_message(main_obj, run_method, [])
+        self.send_message(main_obj, "run", [])
 
     def load_classes(self):
         "Loads both buildin and classes into global class dict for easy lookup"
         # builtins
-        object_cls = SolClass("Object", None, {})
-        integer_cls = SolClass("Integer", object_cls, {})
-        string_cls = SolClass("String", object_cls, {})
-        true_cls = SolClass("True", object_cls, {})
-        false_cls = SolClass("Frue", object_cls, {})
-        nil_cls = SolClass("Nil", object_cls, {})
-        block_cls = SolClass("Block", object_cls, {})
-
-        self.classes["Object"] = object_cls
-        self.classes["Integer"] = integer_cls
-        self.classes["String"] = string_cls
-        self.classes["True"] = true_cls
-        self.classes["False"] = false_cls
-        self.classes["Nil"] = nil_cls
-        self.classes["Block"] = block_cls
+        self.create_builtins()
 
         # user classes
         for cls in self.current_program.classes:
             if cls.name not in self.classes:
                 # recursively creates classes
-                self.create_class(cls.name)
+                self.create_class(cls)
 
     def create_class(self, cls: ClassDef) -> None:
         """Creates class and links to parent, if parent doesnt exist recursively creates it"""
@@ -145,49 +129,206 @@ class Interpreter:
         # create classs
         self.classes[cls.name] = SolClass(cls.name, parent, methods)
 
+    def create_builtins(self) -> None:
+        #create buildin classes 
+        object_cls = SolClass("Object", None, {})
+        integer_cls = SolClass("Integer", object_cls, {})
+        string_cls = SolClass("String", object_cls, {})
+        true_cls = SolClass("True", object_cls, {})
+        false_cls = SolClass("False", object_cls, {})
+        nil_cls = SolClass("Nil", object_cls, {})
+        block_cls = SolClass("Block", object_cls, {})
+
+        #link methods
+
+        # object methods
+
+        object_from = SolMethod("from:", True, ObjectBuiltin._from, 1)
+        object_new = SolMethod("new", True, ObjectBuiltin.new, 0)
+        object_identical_to = SolMethod("identicalTo:", True, ObjectBuiltin.identical_to, 1)
+        object_equal_to = SolMethod("equalTo:", True, ObjectBuiltin.equal_to, 1)
+        object_as_string = SolMethod("asString", True, ObjectBuiltin.as_string, 0)
+        object_is_number = SolMethod("isNumber", True, ObjectBuiltin.is_number, 0)
+        object_is_string = SolMethod("isString", True, ObjectBuiltin.is_string, 0)
+        object_is_block =  SolMethod("isBlock", True, ObjectBuiltin.is_block, 0)
+        object_is_nil =   SolMethod("isNil", True, ObjectBuiltin.is_nil, 0)
+        object_is_boolean =   SolMethod("isBoolean", True, ObjectBuiltin.is_boolean, 0)
+        
+        object_cls.class_methods["from:"] = object_from
+        object_cls.class_methods["new"] = object_new
+        object_cls.methods["identicalTo:"] = object_identical_to
+        object_cls.methods["equalTo:"] = object_equal_to
+        object_cls.methods["asString"] = object_as_string
+        object_cls.methods["isNumber"] = object_is_number
+        object_cls.methods["isString"] = object_is_string
+        object_cls.methods["isBlock"] = object_is_block
+        object_cls.methods["isNil"] = object_is_nil
+        object_cls.methods["isBoolean"] = object_is_boolean
+
+        # nil methods
+
+        nil_as_string = SolMethod("asString", True, NilBuiltin.as_string, 0)
+        nil_is_nil = SolMethod("isNil", True, NilBuiltin.is_nil, 0)
+
+        nil_cls.methods["asString"] = nil_as_string
+        nil_cls.methods["isNil"] = nil_is_nil
+
+        # integer methods
+
+        integer_equal_to = SolMethod("equalTo:", True, IntergerBuiltin.equal_to, 1)
+        integer_greater_than = SolMethod("greaterThan:", True, IntergerBuiltin.greater_that, 1)
+        integer_plus = SolMethod("plus:", True, IntergerBuiltin.plus, 1)
+        integer_minus = SolMethod("minus:", True, IntergerBuiltin.minus, 1)
+        integer_multiply_by = SolMethod("multiplyBy:", True, IntergerBuiltin.multiply_by, 1)
+        integer_div_by = SolMethod("divBy:", True, IntergerBuiltin.div_by, 1)
+        integer_as_string = SolMethod("asString", True, IntergerBuiltin.as_string, 0)
+        integer_as_integer = SolMethod("asInteger", True, IntergerBuiltin.as_integer, 0)
+        integer_times_repeat = SolMethod("timesRepeat:", True, IntergerBuiltin.times_repeat, 1)
+        integer_is_number = SolMethod("isNumber", True, IntergerBuiltin.is_number, 0)
+
+        integer_cls.methods["equalTo:"] = integer_equal_to
+        integer_cls.methods["greaterThan:"] = integer_greater_than
+        integer_cls.methods["plus:"] = integer_plus
+        integer_cls.methods["minus:"] = integer_minus
+        integer_cls.methods["multiplyBy:"] = integer_multiply_by
+        integer_cls.methods["divBy:"] = integer_div_by
+        integer_cls.methods["asString"] = integer_as_string
+        integer_cls.methods["asInteger"] = integer_as_integer
+        integer_cls.methods["timesRepeat:"] = integer_times_repeat
+        integer_cls.methods["isNumber"] = integer_is_number
+
+        # string methods
+
+        string_read = SolMethod("read", True, StringBuiltin.read, 0)
+        string_print = SolMethod("print", True, StringBuiltin._print, 0)
+        string_equal_to = SolMethod("equalTo:", True, StringBuiltin.equal_to, 1)
+        string_as_string = SolMethod("asString", True, StringBuiltin.as_string, 0)
+        string_as_integer = SolMethod("asInteger", True, StringBuiltin.as_integer, 0)
+        string_concat = SolMethod("concatenateWith:", True, StringBuiltin.concatenate_with, 1)
+        string_substring = SolMethod("startsWith:endsBefore:", True, StringBuiltin.starts_with_ends_before, 2)
+        string_length = SolMethod("length", True, StringBuiltin.length, 0)
+
+        string_cls.class_methods["read"] = string_read
+        string_cls.methods["print"] = string_print
+        string_cls.methods["equalTo:"] = string_equal_to
+        string_cls.methods["asString"] = string_as_string
+        string_cls.methods["asInteger"] = string_as_integer
+        string_cls.methods["concatenateWith:"] = string_concat
+        string_cls.methods["startsWith:endsBefore:"] = string_substring
+        string_cls.methods["length"] = string_length
+
+        # block
+
+        block_while_true = SolMethod("whileTrue:", True, BlockBuiltin.while_true, 1)
+        block_cls.methods["whileTrue:"] = block_while_true
+
+        # true
+
+        true_as_string = SolMethod("asString", True, TrueBuiltin.as_string, 0)
+        true_not = SolMethod("not", True, TrueBuiltin._not, 0)
+        true_and = SolMethod("and:", True, TrueBuiltin._and, 1)
+        true_or = SolMethod("or:", True, TrueBuiltin._or, 1)
+        true_if = SolMethod("ifTrue:ifFalse:", True, TrueBuiltin.if_true_if_false, 2)
+        true_is_bool = SolMethod("isBoolean", True, TrueBuiltin.is_boolean, 0)
+
+        true_cls.methods["asString"] = true_as_string
+        true_cls.methods["not"] = true_not
+        true_cls.methods["and:"] = true_and
+        true_cls.methods["or:"] = true_or
+        true_cls.methods["ifTrue:ifFalse:"] = true_if
+        true_cls.methods["isBoolean"] = true_is_bool
+
+        #false 
+
+        false_as_string = SolMethod("asString", True, FalseBuiltin.as_string, 0)
+        false_not = SolMethod("not", True, FalseBuiltin._not, 0)
+        false_and = SolMethod("and:", True, FalseBuiltin._and, 1)
+        false_or = SolMethod("or:", True, FalseBuiltin._or, 1)
+        false_if = SolMethod("ifTrue:ifFalse:", True, FalseBuiltin.if_true_if_false, 2)
+        false_is_bool = SolMethod("isBoolean", True, FalseBuiltin.is_boolean, 0)
+
+        false_cls.methods["asString"] = false_as_string
+        false_cls.methods["not"] = false_not
+        false_cls.methods["and:"] = false_and
+        false_cls.methods["or:"] = false_or
+        false_cls.methods["ifTrue:ifFalse:"] = false_if
+        false_cls.methods["isBoolean"] = false_is_bool
+
+
+
+        #link classes
+        self.classes["Object"] = object_cls
+        self.classes["Integer"] = integer_cls
+        self.classes["String"] = string_cls
+        self.classes["True"] = true_cls
+        self.classes["False"] = false_cls
+        self.classes["Nil"] = nil_cls
+        self.classes["Block"] = block_cls
+
     def send_message(
-        self, receiver: SolObject, method: SolMethod, arguments: list[SolObject] | None = []
+        self, receiver: SolObject | SolClass, selector: str, arguments: list[SolObject] | None = []
     ) -> SolObject:
         # builtin method check arity and exec
+        logger.info(f"sending message:{receiver.cls.name} {selector}, {arguments}")
+        if(isinstance(receiver, SolClass)):
+            method: SolMethod = receiver.get_class_method(selector)
+        else:
+            method: SolMethod = receiver.get_instance_method(selector)
+
+
         arg_count: int = len(arguments)
         if method.arity != arg_count:
             raise InterpreterError(
                 error_code=ErrorCode.SEM_ARITY,
                 message=f"Arity of method `{method.selector}` `{method.arity}` is called with `{arg_count}` arguments",
             )
+
         if method.is_builtin:
-            method.function(receiver, arguments)
-        # otherwise its a block
-        # create new scope, call block with new scope
+            return method.function(self, receiver, arguments)
+    
+        # otherwise its a method block
+
         new_scope = Scope(self.scope)
         parent_scope = self.scope
         self.scope = new_scope
 
-        self.execute_block(method.block)
+        self.execute_block(method.function)
 
         self.scope = parent_scope
-
         return
 
     # execute block
     def execute_block(self, block: Block) -> SolObject:
-        return_obj: SolObject
+        return_obj: SolObject = self.scope.get_object("nil")
+        logger.info(f"Executing block")
         for assign in block.assigns:
             target = assign.target
+            logger.info(f"Executing assign, target: {target}")
             value = self.eval_expr(assign.expr)
-            if target != "_":
+            if target.name != "_":
                 self.scope.set_object(target, value)
 
             return_obj = value
+
         return return_obj
 
     # eval all expressions
     def eval_expr(self, expr: Expr) -> SolObject:
+        
         if expr.send is not None:
             return self.handle_send(expr.send)
 
         elif expr.block is not None:
-            return SolObject("Block", expr.block)
+            cnt = expr.block.arity
+            if cnt == 0:
+                selector = "value"
+            else:
+                selector = "value:" * cnt
+
+            method = SolMethod(selector, False, expr.block, cnt)
+            block_obj = SolObject("Block", Block)
+            block_obj.instance_method[selector] = method
+            return block_obj
 
         elif expr.literal is not None:
             return self.handle_literal(expr.literal)
@@ -198,19 +339,18 @@ class Interpreter:
         raise InterpreterError(error_code=ErrorCode.SEM_UNDEF, message="Invalid expression type")
 
     def handle_send(self, send: Send) -> SolObject:
-        receiver_obj = self.eval_expr(send.receiver)  # eval obj receiver
-
-        selector_method = receiver_obj.cls.get_method(send.selector)  # eval method
+        # eval obj receiver
+        receiver_obj: SolObject | SolClass = self.eval_expr(send.receiver)
 
         send_args: list[SolObject] = []
         for arg in send.args:
             send_args.append(self.eval_expr(arg))
 
         # actually send msg
-        return self.send_message(receiver_obj, selector_method, send_args)
+        return self.send_message(receiver_obj, send.selector, send_args)
 
     # handle literals
-    def handle_literal(self, literal: Literal) -> SolObject:
+    def handle_literal(self, literal: Literal) -> SolObject | SolClass:
         if literal.class_id == "String":
             return SolObject(self.classes["String"], literal.value)
 
@@ -225,7 +365,15 @@ class Interpreter:
             return SolObject(self.classes["Integer"], val)
 
         elif literal.class_id == "Block":
-            return SolObject(self.classes["Block"], literal.value)
+            cnt = literal.value
+            if cnt == 0:
+                selector = "value"
+            else:
+                selector = "value:" * cnt
+
+            method = SolMethod(selector, False, literal.value, cnt)
+            block_obj = SolObject("Block", Block)
+            block_obj.instance_method[selector] = method
 
         elif literal.class_id == "Nil":
             return self.scope.get_object("nil")
@@ -236,10 +384,413 @@ class Interpreter:
         elif literal.class_id == "False":
             return self.scope.get_object("false")
 
-        if literal.class_id in self.classes:
-            return SolObject(self.classes[literal.class_id], literal.value)
+        elif literal.class_id == "Class":
+            if literal.value in self.classes:
+                return self.classes[literal.value]
+
+            raise InterpreterError(
+                error_code=ErrorCode.SEM_UNDEF,
+                message=f"Calling undefined literal class `{literal.class_id}`",
+            )
+
+class ObjectBuiltin:
+    #class methods
+    @staticmethod
+    def new(interpreter: Interpreter, receiver: SolClass, args: list[SolObject]) -> SolObject:
+        if receiver.name == "Integer":
+            return SolObject(interpreter.classes["Integer"], 0)
+
+        elif receiver.name == "String":
+            return SolObject(interpreter.classes["String"], "")
+
+        elif receiver.name == "Nil":
+            return interpreter.scope.get_object("nil")
+
+        elif receiver.name == "Block":
+            empty_block = Block(params=[], assigns=[])
+            empty_method = SolMethod("value", False, empty_block, 0)
+            block_obj = SolObject(interpreter.classes["Block"], empty_block)
+            block_obj.set_method(empty_method)
+
+            return SolObject(interpreter.classes["Block"], empty_block)
+
+        return SolObject(interpreter.classes["Object"], None)
+    
+    @staticmethod
+    def _from(interpreter: Interpreter, receiver: SolClass, args: list[SolObject]) -> SolObject:
+        if len(args) == 0:
+            return ObjectBuiltin.new(interpreter, receiver, args)
+
+        if receiver.name == "Integer":
+            try: 
+                val = int(args[0].value)
+            except ValueError:
+                raise InterpreterError(
+                    error_code=ErrorCode.INT_OTHER,  # idk
+                    message=f"ERR:Trying to create Integer object from `{args[0].value}`",
+                )
+            return SolObject(interpreter.classes["Integer"], val)
+
+        elif receiver.name == "String":
+            val = str(args[0].value)
+            return SolObject(interpreter.classes["String"], val)
+
+        elif receiver.name == "Nil":
+            return interpreter.scope.get_object("nil")
+        
+        elif receiver.name == "True":
+            return interpreter.scope.get_object("true")
+        
+        elif receiver.name == "False":
+            return interpreter.scope.get_object("false")
+
+        return SolObject(interpreter.classes["Object"], None)
+    
+
+    # object methods
+    @staticmethod
+    def identical_to(
+        interpreter: Interpreter, receiver: SolObject, args: list[SolObject]
+    ) -> SolObject:
+        if receiver is args[0]:
+            return interpreter.scope.get_object("true")
+        return interpreter.scope.get_object("false")
+
+    @staticmethod
+    def equal_to(
+        interpreter: Interpreter, receiver: SolObject, args: list[SolObject]
+    ) -> SolObject:
+        #todo
+        pass
+
+    @staticmethod
+    def as_string(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        return SolObject(interpreter.classes["String"], "")
+
+    @staticmethod
+    def is_number(
+        interpreter: Interpreter, receiver: SolObject, args: list[SolObject]
+    ) -> SolObject:
+        return interpreter.scope.get_object("false")
+
+    @staticmethod
+    def is_string(
+        interpreter: Interpreter, receiver: SolObject, args: list[SolObject]
+    ) -> SolObject:
+        return interpreter.scope.get_object("false")
+
+    @staticmethod
+    def is_block(
+        interpreter: Interpreter, receiver: SolObject, args: list[SolObject]
+    ) -> SolObject:
+        return interpreter.scope.get_object("false")
+
+    @staticmethod
+    def is_nil(
+        interpreter: Interpreter, receiver: SolObject, args: list[SolObject]
+    ) -> SolObject:
+        return interpreter.scope.get_object("false")
+
+    @staticmethod
+    def is_boolean(
+        interpreter: Interpreter, receiver: SolObject, args: list[SolObject]
+    ) -> SolObject:
+        return interpreter.scope.get_object("false")
+
+
+class NilBuiltin:
+    @staticmethod
+    def as_string(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        return SolObject(interpreter.classes["String"], "nil")
+
+    @staticmethod
+    def is_nil(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        return interpreter.scope.get_object("true")
+
+class IntergerBuiltin:
+    @staticmethod
+    def equal_to(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        if receiver.value == args[0].value:
+            return interpreter.scope.get_object("true")
+        return interpreter.scope.get_object("false")
+    
+    @staticmethod
+    def greater_that(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        if receiver.value > args[0].value:
+            return interpreter.scope.get_object("true")
+        return interpreter.scope.get_object("false")
+    
+    @staticmethod
+    def plus(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        val = receiver.value + args[0].value
+        return SolObject(interpreter.classes["Integer"], val)
+    
+    @staticmethod
+    def plus(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        val = receiver.value + args[0].value
+        return SolObject(interpreter.classes["Integer"], val)
+    
+    @staticmethod
+    def minus(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        val = receiver.value - args[0].value
+        return SolObject(interpreter.classes["Integer"], val)
+    
+    @staticmethod
+    def multiply_by(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        val = receiver.value * args[0].value
+        return SolObject(interpreter.classes["Integer"], val)
+    
+    @staticmethod
+    def div_by(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        try:
+            val = receiver.value / args[0].value
+        except ZeroDivisionError:
+             raise InterpreterError(
+                error_code=ErrorCode.INT_OTHER,  # idk
+                message=f"Zero division error",
+            )
+
+        return SolObject(interpreter.classes["Integer"], val)
+    
+    @staticmethod
+    def as_string(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        return SolObject(interpreter.classes["String"], str(receiver.value))
+    
+    @staticmethod
+    def as_integer(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        return receiver
+    
+    @staticmethod
+    def times_repeat(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        block:SolObject = args[0]
+        value_method: SolMethod = block.get_instance_method("value:")
+        return_obj: SolObject = interpreter.scope.get_object("nil")
+        if(receiver.value > 0):
+            for i in range(1, receiver.value + 1):
+                argument_obj = SolObject(interpreter.classes["Integer"], i)
+                return_obj = interpreter.send_message(block, value_method, [argument_obj])
+        return return_obj
+    
+    @staticmethod
+    def is_number(
+        interpreter: Interpreter, receiver: SolObject, args: list[SolObject]
+    ) -> SolObject:
+        return interpreter.scope.get_object("true")
+    
+
+class StringBuiltin:
+    # String class method
+    @staticmethod
+    def read(interpreter: Interpreter, receiver: SolClass, args: list[SolObject]) -> SolObject:
+        line = interpreter.stream.readline()
+        line = line.rsplit('\n')
+        return SolObject(interpreter.classes["String"], line)
+    
+    #object methods
+    @staticmethod
+    def _print(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        print(receiver.value)
+        return receiver
+    
+    @staticmethod
+    def equal_to(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        if receiver.value == args[0].value:
+            return interpreter.scope.get_object("true")
+        return interpreter.scope.get_object("false")
+    
+    @staticmethod
+    def as_string(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        return receiver
+    
+    @staticmethod
+    def as_integer(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        try: 
+            val = int(receiver.value)
+            return SolObject(interpreter.classes["Integer"], val)
+        except ValueError:
+            return interpreter.scope.get_object("nil")
+    
+    @staticmethod
+    def concatenate_with(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        is_string: bool = args[0].cls.check_parent("String")
+        return_obj: SolObject = interpreter.scope.get_object("nil")
+        if(is_string):
+            return_obj = SolObject(interpreter.classes["String"], receiver.value + args[0].value)
+
+        return return_obj
+    
+    @staticmethod
+    def starts_with_ends_before(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        if args[0].cls.name != "Integer" or args[1].cls.name != "Integer":
+            return interpreter.scope.get_object("nil")
+
+        if args[0].value <= 0 or args[1].value <= 0:
+            return interpreter.scope.get_object("nil")
+        
+        if args[1].value - args[0].value <= 0:
+            return SolObject(interpreter.classes["String"], "")
+        
+        return SolObject(interpreter.classes["String"], receiver.value[args[0].value - 1 : args[1].value - 1])
+
+    @staticmethod
+    def length(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        return SolObject(interpreter.classes["Integer"], len(receiver.value))
+
+    @staticmethod
+    def isString(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        return interpreter.scope.get_object("true")
+    
+
+class BlockBuiltin:
+    @staticmethod
+    def while_true(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        while True:
+            pass
+
+class TrueBuiltin:
+    @staticmethod
+    def as_string(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        return SolObject(interpreter.classes["String"], "true")
+
+    @staticmethod
+    def _not(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        return interpreter.scope.get_object("false")
+
+    @staticmethod
+    def _and(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        return interpreter.send_message(args[0], "value", [])
+
+    @staticmethod
+    def _or(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        return interpreter.scope.get_object("true")
+
+    @staticmethod
+    def if_true_if_false(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        return interpreter.send_message(args[0], "value", [])
+
+    @staticmethod
+    def is_boolean(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        return interpreter.scope.get_object("true")
+
+
+class FalseBuiltin:
+    @staticmethod
+    def as_string(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        return SolObject(interpreter.classes["String"], "false")
+
+    @staticmethod
+    def _not(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        return interpreter.scope.get_object("true")
+
+    @staticmethod
+    def _and(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        return interpreter.scope.get_object("false")
+
+    @staticmethod
+    def _or(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        return interpreter.send_message(args[0], "value", [])
+    
+    @staticmethod
+    def if_true_if_false(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        return interpreter.send_message(args[1], "value", [])
+
+    @staticmethod
+    def is_boolean(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+        return interpreter.scope.get_object("true")
+
+from interpreter.exceptions import InterpreterError
+from interpreter.error_codes import ErrorCode
+from interpreter.input_model import Block
+
+
+class SolClass:
+    """
+    Class represents runtime classes of SOL26
+    """
+
+    def __init__(
+        self, name: str, super_class: SolClass | None, methods: dict[str, SolMethod]
+    ) -> None:
+        self.name: str = name
+        self.parent: SolClass = super_class
+        self.methods: dict[str, SolMethod] = methods
+        self.class_methods: dict[str, SolMethod] = {}
+
+    def get_method(self, selector: str) -> SolMethod | None:
+        if selector in self.methods:
+            return self.methods[selector]
+
+        if self.parent is not None:
+            return self.parent.get_method(selector)
+
+        if selector == "run":
+            raise InterpreterError(
+                error_code=ErrorCode.SEM_MAIN, message="Main class has no method named `run`"
+            )
+        raise InterpreterError(
+            error_code=ErrorCode.SEM_UNDEF,
+            message=f"Class `{self.name}` has no method `{selector}`",
+        )
+
+    def get_class_method(self, selector: str) -> SolMethod | None:
+        if selector in self.class_methods:
+            return self.class_methods[selector]
+
+        if self.parent is not None:
+            return self.parent.get_class_method(selector)
 
         raise InterpreterError(
             error_code=ErrorCode.SEM_UNDEF,
-            message=f"Calling undefined literal class `{literal.class_id}`",
+            message=f"Class `{self.name}` has no class method `{selector}`",
         )
+
+class SolObject:
+    def __init__(self, cls: SolClass, value: int | str | True | False | Block | None) -> None:
+        self.cls: SolClass = cls
+        self.value: int | str | True | False | None = value
+        self.instance_attributes: dict[str, SolObject] = {} #uder defined
+        self.instance_method: dict[str, SolMethod] = {} # block value method
+
+    def set_attribue(self, name, value):
+        pass
+
+    
+    def get_instance_method(self, method: str) -> SolMethod:
+        if method in self.instance_method:
+            return self.instance_method[method]
+        return self.cls.get_method(method)
+
+    
+
+class SolMethod:
+    def __init__(
+        self, selector: str, is_builtin: bool, func: "callable | Block", arity: int
+    ) -> None:
+        self.selector: str = selector
+        self.is_builtin: bool = is_builtin
+        self.function: "callable | Block" = func
+        self.arity: int = arity
+
+
+class Scope:
+    """
+    Class for creating scopes and finding variables in them, handling everything related to scope
+    """
+
+    def __init__(self, parent_scope: Scope | None = None) -> None:
+        self.parent_scope = parent_scope
+        self.objects: dict[str, SolObject] = {}
+
+    def get_object(self, object_name: str) -> SolObject | None:
+        if object_name in self.objects:
+            return self.objects[object_name]
+
+        if self.parent_scope != None:
+            return self.parent_scope.get_object(object_name)
+
+        raise InterpreterError(
+            error_code=ErrorCode.SEM_UNDEF, message=f"No object with `{object_name}` exists"
+        )
+
+    def set_object(self, object_name: str, object: SolObject) -> None:
+        self.objects[object_name] = object
