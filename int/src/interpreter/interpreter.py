@@ -1,3 +1,4 @@
+#TODO self,super, prio --> instance attrs, finish builtins(from, WhileTrue), <-- prio scopes checking -> testing
 """
 This module contains the main logic of the interpreter.
 
@@ -17,7 +18,7 @@ from pydantic import ValidationError
 
 from interpreter.error_codes import ErrorCode
 from interpreter.exceptions import InterpreterError
-from interpreter.input_model import Block, ClassDef, Program, Expr, Literal, Send
+from interpreter.input_model import Block, ClassDef, Program, Expr, Literal, Send, Assign
 
 logger = logging.getLogger(__name__)
 
@@ -106,7 +107,9 @@ class Interpreter:
 
         # parent doesnt exist??
         if cls.parent is None:
-            pass
+            raise InterpreterError(
+                    error_code=ErrorCode.SEM_ERROR, message="Parent class"
+                )
 
         # recursively create parent-s
         if cls.parent not in self.classes:
@@ -255,7 +258,6 @@ class Interpreter:
         false_cls.methods["isBoolean"] = false_is_bool
 
 
-
         #link classes
         self.classes["Object"] = object_cls
         self.classes["Integer"] = integer_cls
@@ -287,26 +289,44 @@ class Interpreter:
             return method.function(self, receiver, arguments)
     
         # otherwise its a method block
-
+        # create scope
         new_scope = Scope(self.scope)
         parent_scope = self.scope
         self.scope = new_scope
-
-        self.execute_block(method.function)
+        
+        #set parameters into scope
+        parameters: list[str]
+        for i in range (0, arg_count):
+            if method.function.parameters[i] not in parameters:
+                parameters[i] = method.function.parameters[i]
+                self.scope.set_object(parameters[i], arguments[i])
+            raise InterpreterError(
+                error_code=ErrorCode.SEM_ERROR,
+                message=f"Multiple definitons of the same parameter inside single block",
+            )
+        return_value: SolObject = self.execute_block(method.function, parameters)
 
         self.scope = parent_scope
-        return
+        return return_value
 
     # execute block
-    def execute_block(self, block: Block) -> SolObject:
+    def execute_block(self, assigns: list[Assign], parameters: list[str]) -> SolObject:
         return_obj: SolObject = self.scope.get_object("nil")
         logger.info(f"Executing block")
-        for assign in block.assigns:
+
+        for assign in assigns:
             target = assign.target
             logger.info(f"Executing assign, target: {target}")
             value = self.eval_expr(assign.expr)
+            
             if target.name != "_":
-                self.scope.set_object(target, value)
+                if target.name in parameters:
+                    raise InterpreterError(
+                        error_code=ErrorCode.SEM_COLLISION,
+                        message=f"Trying to assing into foreign parameter in block",
+                    )
+
+                self.scope.set_object(target.name, value)
 
             return_obj = value
 
@@ -728,7 +748,7 @@ class SolClass:
                 error_code=ErrorCode.SEM_MAIN, message="Main class has no method named `run`"
             )
         raise InterpreterError(
-            error_code=ErrorCode.SEM_UNDEF,
+            error_code=ErrorCode.INT_DNU,
             message=f"Class `{self.name}` has no method `{selector}`",
         )
 
@@ -740,7 +760,7 @@ class SolClass:
             return self.parent.get_class_method(selector)
 
         raise InterpreterError(
-            error_code=ErrorCode.SEM_UNDEF,
+            error_code=ErrorCode.INT_DNU,
             message=f"Class `{self.name}` has no class method `{selector}`",
         )
 
