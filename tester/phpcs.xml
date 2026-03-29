@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<ruleset name="IPP-PHP">
+    <description>The minimal coding standard for IPP-PHP.</description>
+
+    <file>src</file>
+
+    <arg name="basepath" value="."/>
+    <arg name="colors"/>
+    <arg name="parallel" value="8"/>
+    <arg value="p"/>
+
+    <arg name="ignore-annotations"/>
+
+    <rule ref="Generic.Commenting.Todo">
+        <type>error</type>
+    </rule>
+    <rule ref="Squiz.Classes.ClassFileName"/>
+    <rule ref="PSR1">
+        <type>error</type>
+    </rule>
+    <rule ref="PSR12">
+        <type>error</type>
+    </rule>
+</ruleset>

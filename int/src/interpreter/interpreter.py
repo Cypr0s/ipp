@@ -1,4 +1,4 @@
-#TODO super scopes checking -> testing
+#TODO testing
 """
 This module contains the main logic of the interpreter.
 
@@ -56,6 +56,82 @@ class Interpreter:
                 error_code=ErrorCode.INT_STRUCTURE, message="Invalid SOL-XML structure"
             ) from e
 
+        self.static_analysis()
+    
+    def static_analysis(self) -> None:
+        """
+        Static semantic analysis for error codes 31, 34, 35
+        """
+        #main and run check - err code 31
+        main: bool = False
+        for cls in self.current_program.classes:
+            if cls.name == "Main":
+                main = True
+                run: bool = False
+                for method in cls.methods:
+                    if method.selector == "run":
+                        run = True
+                if not run:
+                    # error code 31
+                    raise InterpreterError(
+                        error_code=ErrorCode.SEM_MAIN, message="Main class has no method named `run`"
+                    )
+        if not main:
+            # error code 31
+            raise InterpreterError(
+                error_code=ErrorCode.SEM_MAIN, message="Main class missing"
+            )
+
+        # check classes
+        classes: list[str] = []
+        for cls in self.current_program.classes:
+            # check for class redefinition
+            if cls.name in classes:
+                # error code 35
+                raise InterpreterError(
+                    error_code=ErrorCode.SEM_ERROR, message=f"Redefinition of class"
+                )
+            
+            methods: list[str] = []
+            for method in cls.methods:
+                if method.selector in methods:
+                    # error code 35
+                    raise InterpreterError(
+                        error_code=ErrorCode.SEM_ERROR, message=f"Redefinition of method"
+                    )
+                # error code 33
+                dd_count: int = method.selector.count(":")
+                if dd_count != method.block.arity:
+                    raise InterpreterError(
+                        error_code=ErrorCode.SEM_ARITY,
+                        message=f"Block arity doesnt match selector",
+                    )
+
+                # check for redefinition of parameter
+                params: list[str] = []
+                for param in method.block.parameters:
+                    if param.name in params:
+                        # error code 35
+                        raise InterpreterError(
+                            error_code=ErrorCode.SEM_ERROR,
+                            message=f"same parameters in block",
+                        )
+                    params.append(param.name)
+
+                # check for invalid assign targets
+                for assign in method.block.assigns:
+                    if assign.target.name in params:
+                        # error code 34
+                        raise InterpreterError(
+                            error_code=ErrorCode.SEM_COLLISION,
+                            message=f"Trying to assign into parameter",
+                        )
+
+
+                methods.append(method.selector)
+
+            classes.append(cls.name)
+    
     def execute(self, input_io: TextIO) -> None:
         """
         Executes the currently loaded program, using the provided input stream as standard input.
@@ -87,7 +163,15 @@ class Interpreter:
         logger.info("created main object and found method run")
         self.stream = input_io
         # call method run
-        self.send_message(main_obj, "run", [])
+        self.send_message(main_obj, "run", [], "default_reference")
+
+    @staticmethod
+    def check_arity(target: SolMethod, arg_count: int)-> None:
+        if(target.arity != arg_count):
+            raise InterpreterError(
+                error_code=ErrorCode.SEM_ARITY,
+                message=f"Invalid arity in method call",
+            )
 
     def load_classes(self):
         "Loads both buildin and classes into global class dict for easy lookup"
@@ -105,12 +189,6 @@ class Interpreter:
         if cls.name in self.classes:
             return
 
-        # parent doesnt exist??
-        if cls.parent is None:
-            raise InterpreterError(
-                    error_code=ErrorCode.SEM_ERROR, message="Parent class"
-                )
-
         # recursively create parent-s
         if cls.parent not in self.classes:
             for cls_parent in self.current_program.classes:
@@ -121,10 +199,6 @@ class Interpreter:
         parent: SolClass = self.classes[cls.parent]
         methods: dict[str, SolMethod] = {}
         for method in cls.methods:
-            if method.selector in methods:
-                raise InterpreterError(
-                    error_code=ErrorCode.SEM_ERROR, message="Redefinition of Method in class"
-                )
             methods[method.selector] = SolMethod(
                 method.selector, False, method.block, method.block.arity
             )
@@ -178,16 +252,16 @@ class Interpreter:
 
         # integer methods
 
-        integer_equal_to = SolMethod("equalTo:", True, IntergerBuiltin.equal_to, 1)
-        integer_greater_than = SolMethod("greaterThan:", True, IntergerBuiltin.greater_that, 1)
-        integer_plus = SolMethod("plus:", True, IntergerBuiltin.plus, 1)
-        integer_minus = SolMethod("minus:", True, IntergerBuiltin.minus, 1)
-        integer_multiply_by = SolMethod("multiplyBy:", True, IntergerBuiltin.multiply_by, 1)
-        integer_div_by = SolMethod("divBy:", True, IntergerBuiltin.div_by, 1)
-        integer_as_string = SolMethod("asString", True, IntergerBuiltin.as_string, 0)
-        integer_as_integer = SolMethod("asInteger", True, IntergerBuiltin.as_integer, 0)
-        integer_times_repeat = SolMethod("timesRepeat:", True, IntergerBuiltin.times_repeat, 1)
-        integer_is_number = SolMethod("isNumber", True, IntergerBuiltin.is_number, 0)
+        integer_equal_to = SolMethod("equalTo:", True, IntegerBuiltin.equal_to, 1)
+        integer_greater_than = SolMethod("greaterThan:", True, IntegerBuiltin.greater_than, 1)
+        integer_plus = SolMethod("plus:", True, IntegerBuiltin.plus, 1)
+        integer_minus = SolMethod("minus:", True, IntegerBuiltin.minus, 1)
+        integer_multiply_by = SolMethod("multiplyBy:", True, IntegerBuiltin.multiply_by, 1)
+        integer_div_by = SolMethod("divBy:", True, IntegerBuiltin.div_by, 1)
+        integer_as_string = SolMethod("asString", True, IntegerBuiltin.as_string, 0)
+        integer_as_integer = SolMethod("asInteger", True, IntegerBuiltin.as_integer, 0)
+        integer_times_repeat = SolMethod("timesRepeat:", True, IntegerBuiltin.times_repeat, 1)
+        integer_is_number = SolMethod("isNumber", True, IntegerBuiltin.is_number, 0)
 
         integer_cls.methods["equalTo:"] = integer_equal_to
         integer_cls.methods["greaterThan:"] = integer_greater_than
@@ -210,6 +284,7 @@ class Interpreter:
         string_concat = SolMethod("concatenateWith:", True, StringBuiltin.concatenate_with, 1)
         string_substring = SolMethod("startsWith:endsBefore:", True, StringBuiltin.starts_with_ends_before, 2)
         string_length = SolMethod("length", True, StringBuiltin.length, 0)
+        string_is_string = SolMethod("isString", True, StringBuiltin.is_string, 0)
 
         string_cls.class_methods["read"] = string_read
         string_cls.methods["print"] = string_print
@@ -219,11 +294,15 @@ class Interpreter:
         string_cls.methods["concatenateWith:"] = string_concat
         string_cls.methods["startsWith:endsBefore:"] = string_substring
         string_cls.methods["length"] = string_length
+        string_cls.methods["isString"] = string_is_string
 
         # block
 
         block_while_true = SolMethod("whileTrue:", True, BlockBuiltin.while_true, 1)
+        block_is_block = SolMethod("isBlock", True, BlockBuiltin.is_block, 0)
+    
         block_cls.methods["whileTrue:"] = block_while_true
+        block_cls.methods["isBlock"] = block_is_block
 
         # true
 
@@ -268,106 +347,90 @@ class Interpreter:
         self.classes["Block"] = block_cls
 
     def send_message(
-        self, receiver: SolObject | SolClass, selector: str, arguments: list[SolObject] | None = []
+        self, receiver: SolObject | SolClass, selector: str, arguments: list[SolObject] | None = [], send_type: str = "default_reference"
     ) -> SolObject:
         # builtin method check arity and exec
         arg_count: int = len(arguments)
-        logger.info(f"sending message:{receiver.cls.name} {selector}, {arguments}")
-        
-        # handle class method
+
+        #class method
         if(isinstance(receiver, SolClass)):
+            logger.info(f"sending message:{receiver.name} {selector}, {arguments}")
             method: SolMethod = receiver.get_class_method(selector)
             return method.function(self, receiver, arguments)
-        
-        # handle block invokations (value, value:, value:value: ,...)
-        method: SolMethod = receiver.instance_method[selector]
+            
+        #block invocation
+        method: SolMethod = receiver.instance_method.get(selector)
         if method is not None:
-            # create parameters
-            if method.arity != arg_count:
-                raise InterpreterError(
-                        error_code=ErrorCode.SEM_ARITY,
-                        message=f"Invalid arity in block execution",
-                )
-            new_scope = Scope(self.scope)
-            parent_scope = self.scope
-            self.scope = new_scope
-        
-            #set parameters into scope
-            parameters: list[str] = []
-            for i in range (0, arg_count):
-                if method.function.parameters[i] not in parameters:
-                    raise InterpreterError(
-                        error_code=ErrorCode.SEM_ERROR,
-                        message=f"Multiple definitons of the same parameter inside single block",
-                    )
-                
-                parameters.append(method.function.parameters[i])
-                self.scope.set_object(parameters[i], arguments[i])
+            self.check_arity(method, arg_count)
+            return self.method_call(receiver, method, arguments)
 
-        
-            #exec block
-            return_value: SolObject = self.execute_block(method.function, parameters)
-
-            self.scope = parent_scope
-            return return_value
-
-        # handle self / super
-        if self.scope.get_object("self") == receiver:
-            # setter
-            if arg_count == 1:
-                instance_attr_name: str = selector[:-1]
-                method = receiver.cls.get_method(instance_attr_name)
-                # method is None check instance attrs
-                if method is None:
-                    # rewrite if exists, add if doesnt exist, return self
-                    receiver.instance_attributes[instance_attr_name] = arguments[0]
-                    return receiver
-
-                else:
-                    raise InterpreterError(
-                        error_code=ErrorCode.INT_INST_ATTR,
-                    message=f"Trying to create instance attr with the same name as method",
-                    )
-            # getter or method call
-            elif arg_count == 0:
-                # get method if exists
+        # 0 args
+        if arg_count == 0:
+            # self and basic reference
+            if send_type == "default_reference" or send_type == "self":
                 method: SolMethod = receiver.cls.get_method(selector)
-                # call method
-                if method is not None:
-                    if method.arity == arg_count:
-                        return self.method_call(receiver, method, arguments)
-                    raise InterpreterError(
-                        error_code=ErrorCode.SEM_ARITY,
-                        message=f"Invalid arity in method call",
-                    )
-
-                # try getting instance attr
+            # super
+            else:
+                method: SolMethod = receiver.cls.parent.get_method(selector)
+            
+            if method is None:
                 if selector not in receiver.instance_attributes:
                     raise InterpreterError(
                         error_code=ErrorCode.INT_DNU,
-                    message=f"Trying to access undefined instance attr",
+                        message=f"Class `{receiver.cls.name}` has no method `{selector}`",
                     )
                 return receiver.instance_attributes[selector]
 
+            self.check_arity(method, arg_count)
 
-        #handle method
-       
-        method: SolMethod = receiver.cls.get_method(selector)
-        if method is None:
-            # receiver doesnt understand message
-            raise InterpreterError(
-                error_code=ErrorCode.INT_DNU,
-                message=f"Class `{receiver.cls.name}` has no method `{selector}`",
-            )
+            logger.info(f"sending message:{receiver.cls.name} {selector}, {arguments}")
+            return self.method_call(receiver, method, arguments)
+        # 1 arg
+        elif arg_count == 1:
+            if send_type == "default_reference" or send_type == "self":
+                method: SolMethod = receiver.cls.get_method(selector)
+            else:
+                method: SolMethod = receiver.cls.parent.get_method(selector)
 
-        if method.arity != arg_count:
-            # arity error
-            raise InterpreterError(
-                error_code=ErrorCode.SEM_ARITY,
-                message=f"Invalid arity in method call",
-            )
+            if method is None:
+                instance_attr_name: str = selector[:-1]
+                if send_type == "default_reference" or send_type == "self":
+                    method: SolMethod = receiver.cls.get_method(instance_attr_name)
+                else:
+                    method: SolMethod = receiver.cls.parent.get_method(instance_attr_name)
 
-        return self.method_call(receiver, method, arguments)
+                if method is None:
+                    receiver.instance_attributes[instance_attr_name] = arguments[0]
+                    return receiver
+
+                raise InterpreterError(
+                    error_code=ErrorCode.INT_INST_ATTR,
+                    message=f"Trying to create instance attr with the same name as method",
+                )
+            # method found exec it
+            self.check_arity(method, arg_count)
+
+            logger.info(f"sending message:{receiver.cls.name} {selector}, {arguments}")
+            return self.method_call(receiver, method, arguments)
+        # 2 or more args
+        else:
+            # self and basic reference
+            if send_type == "default_reference" or send_type == "self":
+                method: SolMethod = receiver.cls.get_method(selector)
+            # super
+            else:
+                method: SolMethod = receiver.cls.parent.get_method(selector)
+
+            if method is None:
+                raise InterpreterError(
+                    error_code=ErrorCode.INT_DNU,
+                    message=f"Class `{receiver.cls.name}` has no method `{selector}`",
+                )
+
+            self.check_arity(method, arg_count)
+
+            logger.info(f"sending message:{receiver.cls.name} {selector}, {arguments}")
+            return self.method_call(receiver, method, arguments)
        
     def method_call(self, receiver: SolObject, method: SolMethod, arguments: list[SolObject]) -> SolObject:
         #builtin method
@@ -375,7 +438,11 @@ class Interpreter:
             return method.function(self, receiver, arguments)
 
         # create scope
-        new_scope: Scope = Scope(self.scope)
+        if receiver.closure_scope is not None:
+            new_scope: Scope = Scope(receiver.closure_scope)
+        else:
+            new_scope: Scope = Scope(self.scope)
+
         parent_scope: Scope = self.scope
         self.scope = new_scope
         
@@ -383,12 +450,7 @@ class Interpreter:
         arg_count: int = len(arguments)
         parameters: list[str] =[]
         for i in range (0, arg_count):
-            if method.function.parameters[i] in parameters:
-                raise InterpreterError(
-                    error_code=ErrorCode.SEM_ERROR,
-                    message=f"Multiple definitons of the same parameter inside single block",
-                )
-            parameters.append(method.function.parameters[i])
+            parameters.append(method.function.parameters[i].name)
             self.scope.set_object(parameters[i], arguments[i])
 
         # add self into scope
@@ -415,11 +477,6 @@ class Interpreter:
             value = self.eval_expr(assign.expr)
             
             if target.name != "_":
-                if target.name in parameters:
-                    raise InterpreterError(
-                        error_code=ErrorCode.SEM_COLLISION,
-                        message=f"Trying to assing into foreign parameter in block",
-                    )
 
                 self.scope.set_object(target.name, value)
 
@@ -442,7 +499,8 @@ class Interpreter:
 
             method = SolMethod(selector, False, expr.block, cnt)
             block_obj = SolObject(self.classes["Block"], Block)
-            block_obj.instance_method[selector] = method
+            block_obj.closure_scope = self.scope # save closure scope
+            block_obj.instance_method[selector] = method # save method
             return block_obj
 
         elif expr.literal is not None:
@@ -473,6 +531,7 @@ class Interpreter:
         else:
             obj = self.scope.get_object(var.name)
             if obj is None:
+                # check for error 32
                 raise InterpreterError(
                     error_code=ErrorCode.SEM_UNDEF, message=f"No object with `{var.name}` exists"
                 )
@@ -483,12 +542,20 @@ class Interpreter:
         # eval obj receiver
         receiver_obj: SolObject | SolClass = self.eval_expr(send.receiver)
 
+        send_type: str = "default_reference"
+
+
+        if send.receiver.var is not None and send.receiver.var.name == "super":
+            send_type = "super"
+        elif send.receiver.var is not None and send.receiver.var.name == "self":
+            send_type = "self"
+
         send_args: list[SolObject] = []
         for arg in send.args:
             send_args.append(self.eval_expr(arg))
 
         # actually send msg
-        return self.send_message(receiver_obj, send.selector, send_args)
+        return self.send_message(receiver_obj, send.selector, send_args, send_type)
 
     # handle literals
     def handle_literal(self, literal: Literal) -> SolObject | SolClass:
@@ -526,10 +593,11 @@ class Interpreter:
         elif literal.class_id == "False":
             return self.scope.get_object("false")
 
-        elif literal.class_id == "Class":
+        elif literal.class_id == "class":
             if literal.value in self.classes:
                 return self.classes[literal.value]
 
+            # error code 32
             raise InterpreterError(
                 error_code=ErrorCode.SEM_UNDEF,
                 message=f"Calling undefined literal class `{literal.class_id}`",
@@ -670,7 +738,7 @@ class NilBuiltin:
     def is_nil(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
         return interpreter.scope.get_object("true")
 
-class IntergerBuiltin:
+class IntegerBuiltin:
     @staticmethod
     def equal_to(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
         target: SolObject = args[0]
@@ -682,7 +750,7 @@ class IntergerBuiltin:
         return interpreter.scope.get_object("false")
     
     @staticmethod
-    def greater_that(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+    def greater_than(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
         
         target: SolObject = args[0]
 
@@ -749,7 +817,7 @@ class IntergerBuiltin:
             )
 
         try:
-            val = receiver.intern_value / target.intern_value
+            val = receiver.intern_value // target.intern_value
         except ZeroDivisionError:
             raise InterpreterError(
                 error_code=ErrorCode.INT_INVALID_ARG,
@@ -774,7 +842,7 @@ class IntergerBuiltin:
         if(receiver.intern_value > 0):
             for i in range(1, receiver.intern_value + 1):
                 argument_obj = SolObject(interpreter.classes["Integer"], i)
-                return_obj = interpreter.send_message(block, "value:", [argument_obj])
+                return_obj = interpreter.send_message(block, "value:", [argument_obj], "default_reference")
 
         return return_obj
     
@@ -796,7 +864,7 @@ class StringBuiltin:
     #object methods
     @staticmethod
     def _print(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
-        print(receiver.intern_value)
+        print(receiver.intern_value, end="")
         return receiver
     
     @staticmethod
@@ -858,7 +926,7 @@ class StringBuiltin:
         return SolObject(interpreter.classes["Integer"], len(receiver.intern_value))
 
     @staticmethod
-    def isString(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
+    def is_string(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
         return interpreter.scope.get_object("true")
     
 
@@ -875,11 +943,15 @@ class BlockBuiltin:
             )
         return_val: SolObject = interpreter.scope.get_object("nil")
 
-        while interpreter.send_message(receiver,"value",[]) is interpreter.scope.get_object("true"):
+        while interpreter.send_message(receiver,"value",[], "default_reference") is interpreter.scope.get_object("true"):
             #eval condition
-            return_val = interpreter.send_message(block, "value", [])
+            return_val = interpreter.send_message(block, "value", [], "default_reference")
         
         return return_val    
+
+    @staticmethod
+    def is_block(interpreter, receiver, args):
+        return interpreter.scope.get_object("true")
 
 class TrueBuiltin:
     @staticmethod
@@ -899,7 +971,7 @@ class TrueBuiltin:
                 error_code=ErrorCode.INT_INVALID_ARG,
                 message=f"`and: `{block.cls.name}` is not class/subclass of Block",
             )
-        return interpreter.send_message(block, "value", [])
+        return interpreter.send_message(block, "value", [], "default_reference")
 
     @staticmethod
     def _or(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
@@ -914,7 +986,7 @@ class TrueBuiltin:
                 error_code=ErrorCode.INT_INVALID_ARG,
                 message=f"`ifTrue:ifFalse: `{block.cls.name}` is not class/subclass of Block",
             )
-        return interpreter.send_message(block, "value", [])
+        return interpreter.send_message(block, "value", [], "default_reference")
 
     @staticmethod
     def is_boolean(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
@@ -943,7 +1015,7 @@ class FalseBuiltin:
                 error_code=ErrorCode.INT_INVALID_ARG,
                 message=f"`or: `{block.cls.name}` is not class/subclass of Block",
             )
-        return interpreter.send_message(block, "value", [])
+        return interpreter.send_message(block, "value", [], "default_reference")
     
     @staticmethod
     def if_true_if_false(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
@@ -954,7 +1026,7 @@ class FalseBuiltin:
                 error_code=ErrorCode.INT_INVALID_ARG,
                 message=f"`ifTrue:ifFalse: `{block.cls.name}` is not class/subclass of Block",
             )
-        return interpreter.send_message(block, "value", [])
+        return interpreter.send_message(block, "value", [], "default_reference")
 
     @staticmethod
     def is_boolean(interpreter: Interpreter, receiver: SolObject, args: list[SolObject]) -> SolObject:
@@ -1023,6 +1095,7 @@ class SolObject:
         self.intern_value: int | str | None = intern_value
         self.instance_attributes: dict[str, SolObject] = {} #uder defined
         self.instance_method: dict[str, SolMethod] = {} # block value method
+        self.closure_scope: Scope | None = None # block closure scope
 
 
     
