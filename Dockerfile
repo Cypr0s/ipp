@@ -61,6 +61,7 @@ RUN apt update && apt install -y php8.5
 # move tester files into image
 COPY ./tester/ /tester/src
 
-RUN php composer.phar install
+#intall php dependencies 
+RUN php composer.phar install --no-dev
 
 ENTRYPOINT [ "php", "/tester/src/tester.php" ]
