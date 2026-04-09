@@ -1,0 +1,12 @@
++++ BUILTINS
+*** startsWith:endsBefore: vraci prazdny retezec kdyz rozdil <= 0
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        r := 'hello' startsWith: 3 endsBefore: 3.
+        _ := r print.
+    ]
+}

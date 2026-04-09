@@ -1,6 +1,9 @@
 ### podman
+# Dockerfile
+# IPP project 2026
+# Author: Kristian Luptak
 
-#------------------check------------------
+#------------------check--------------------
 
 FROM python:3.14-slim as check
 
@@ -12,53 +15,36 @@ RUN apt-get update && apt-get install -y lsb-release ca-certificates curl && \
     > /etc/apt/sources.list.d/php.sources && \
     apt-get update && apt-get install -y php8.5 php8.5-xml
 
-# move dev requirements into image
+# move python dev requirements into image
 COPY ./int/pyproject.toml /tools/
 COPY ./int/requirements-dev.txt /tools/
 
-WORKDIR /tools
-
-# instlal python dev dependencies
+# install python dev dependencies
 RUN pip install --upgrade pip
-RUN pip install ".[dev]"
-RUN pip install -r requirements-dev.txt
+RUN pip install "/tools/[dev]"
+RUN pip install -r /tools/requirements-dev.txt
 
-WORKDIR /
-
-#commands in bash
+# commands are run `from` bash
 ENTRYPOINT ["/bin/bash"]
 
-#--------------build---------------------
+# ------------------runtime--------------------
 
-FROM python:3.14-slim AS build
+FROM python:3.14-slim AS runtime
 
 # copy SRC files
 COPY ./int/src/ /int/src/
 
-#copy interpreter reqiurements
+# copy interpreter requirements
 COPY ./int/pyproject.toml /tools/
 
-#install dependencies
-WORKDIR /tools/
+# install dependencies
 RUN pip install --upgrade pip
-RUN pip install ".[dev]"
-WORKDIR /
-
-#--------------runtime--------------------
-
-FROM python:3.14-slim AS runtime
-# copy src
-COPY --from=build /int/ /int/
-
-#copy libs
-COPY --from=build /usr/local/lib/ /usr/local/lib/
+RUN pip install "/tools/[dev]"
 
 #run interpreter entry point
 ENTRYPOINT ["python3", "/int/src/solint.py" ]
 
-
-
-#-----------------test---------------------
+#------------------tester--------------------
 
 FROM runtime AS test
 
@@ -73,18 +59,23 @@ RUN apt-get update && apt-get install -y lsb-release ca-certificates curl && \
     > /etc/apt/sources.list.d/php.sources && \
     apt-get update && apt-get install -y php8.5 php8.5-xml
 
-# move pip dependencies
+# move python pip dependencies
 COPY ./tester/sol2xml/requirements.txt /tools/
 
 #install python pip dependencies
+# needed for xml
+RUN apt-get update && apt-get install -y libxml2-dev libxslt1-dev gcc zlib1g-dev
+# pip install
 RUN pip install --upgrade pip
 RUN pip install -r ./tools/requirements.txt 
 
-#copy parser into image
-COPY ./tester/sol2xml/validate.py /tester/sol2xml/
+# copy parser into image
+COPY ./tester/sol2xml/sol_to_xml.py /tester/sol2xml/
 COPY ./tester/sol2xml/parser_output_schema.xsd /tester/sol2xml/
 
-# move tester files into image
-COPY ./tester/src/ /tester/src/
+# copy tester files into image
+COPY ./tester/src /tester/src/
+COPY ./tester/composer.json /tester/
+COPY ./tester/vendor /tester/vendor/
 
 ENTRYPOINT [ "php", "/tester/src/tester.php" ]

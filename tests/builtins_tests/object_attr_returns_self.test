@@ -1,0 +1,13 @@
++++ BUILTINS
+*** Nastavovaci zprava instancniho atributu vraci self
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        o := Object new.
+        r := o val: 99.
+        _ := ((r identicalTo: o) asString) print.
+    ]
+}

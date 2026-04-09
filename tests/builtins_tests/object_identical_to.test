@@ -1,0 +1,15 @@
++++ BUILTINS
+*** identicalTo: vraci true pro stejny objekt, false pro jiny
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        a := Object new.
+        b := a.
+        c := Object new.
+        _ := ((a identicalTo: b) asString) print.
+        _ := ((a identicalTo: c) asString) print.
+    ]
+}

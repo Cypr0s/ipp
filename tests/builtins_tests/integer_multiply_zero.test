@@ -1,0 +1,12 @@
++++ BUILTINS
+*** Nasobeni nulou da nulu
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        r := 99 multiplyBy: 0.
+        _ := (r asString) print.
+    ]
+}

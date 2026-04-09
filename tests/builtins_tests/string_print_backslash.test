@@ -1,0 +1,11 @@
++++ BUILTINS
+*** Tisk retezce s \\ vypise jedno zpetne lomitko
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        _ := 'back\\slash' print.
+    ]
+}

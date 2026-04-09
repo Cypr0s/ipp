@@ -12,3 +12,5 @@ dist
 .idea
 .vscode
 sol2xml
+vendor/
+composer.phar

@@ -1,0 +1,14 @@
++++ BUILTINS
+*** equalTo: na Object bez interniho atributu se chova jako identicalTo
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        a := Object new.
+        b := Object new.
+        _ := ((a equalTo: a) asString) print.
+        _ := ((a equalTo: b) asString) print.
+    ]
+}

@@ -1,0 +1,13 @@
++++ BUILTINS
+*** String new vytvori instanci s prazdnym retezcem
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        s := String new.
+        _ := s print.
+        _ := ((s length) asString) print.
+    ]
+}

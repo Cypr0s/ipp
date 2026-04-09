@@ -1,0 +1,12 @@
++++ BUILTINS
+*** startsWith:endsBefore: s neplatnymi argumenty vraci nil
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        r := 'hello' startsWith: 'x' endsBefore: 3.
+        _ := (r asString) print.
+    ]
+}

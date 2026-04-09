@@ -1,0 +1,13 @@
++++ BUILTINS
+*** Nacteni cisla ze vstupu, vypocet a vypis vysledku
+!C! 0
+!I! 0
+>>> 3
+
+class Main : Object {
+    run [|
+        n := (String read) asInteger.
+        r := n multiplyBy: n.
+        _ := (r asString) print.
+    ]
+}

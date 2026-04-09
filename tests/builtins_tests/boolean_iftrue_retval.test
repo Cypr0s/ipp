@@ -1,0 +1,14 @@
++++ BUILTINS
+*** ifTrue:ifFalse: vraci navratovou hodnotu provedene vetve
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+    run [|
+        r := true ifTrue: [| _ := 100. ] ifFalse: [| _ := 200. ].
+        _ := (r asString) print.
+        s := false ifTrue: [| _ := 100. ] ifFalse: [| _ := 200. ].
+        _ := (s asString) print.
+    ]
+}

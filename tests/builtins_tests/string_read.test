@@ -1,0 +1,12 @@
++++ BUILTINS
+*** Nacteni retezce ze standardniho vstupu a jeho vypis
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+    run [|
+        s := String read.
+        _ := s print.
+    ]
+}

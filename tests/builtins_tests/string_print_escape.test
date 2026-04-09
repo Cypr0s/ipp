@@ -1,0 +1,11 @@
++++ BUILTINS
+*** Tisk retezce s escape sekvencemi \n a \\
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        _ := 'line1\nline2' print.
+    ]
+}

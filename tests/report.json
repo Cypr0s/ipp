@@ -1,0 +1,1920 @@
+{
+    "discovered_test_cases": [
+        {
+            "name": "block_is_block",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/block_is_block.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/block_is_block.out",
+            "test_type": 2,
+            "description": "isBlock vraci true pro Block, false pro ostatni",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "block_new",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/block_new.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/block_new.out",
+            "test_type": 2,
+            "description": "Block new vytvori prazdny bezparametricky blok",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "boolean_and",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/boolean_and.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/boolean_and.out",
+            "test_type": 2,
+            "description": "and: zkracene vyhodnocovani",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "boolean_and_evaluates",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/boolean_and_evaluates.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/boolean_and_evaluates.out",
+            "test_type": 2,
+            "description": "true and: vyhodnoti blok a vrati jeho vysledek",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "boolean_and_non_block",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/boolean_and_non_block.test",
+            "stdin_file": null,
+            "expected_stdout_file": null,
+            "test_type": 2,
+            "description": "true and: s argumentem ktery neni blok zpusobi chybu 51",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                51
+            ]
+        },
+        {
+            "name": "boolean_and_short_circuit",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/boolean_and_short_circuit.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/boolean_and_short_circuit.out",
+            "test_type": 2,
+            "description": "false and: nepousta blok - zkracene vyhodnocovani",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "boolean_as_string",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/boolean_as_string.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/boolean_as_string.out",
+            "test_type": 2,
+            "description": "asString vraci 'true' nebo 'false'",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "boolean_iftrue_retval",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/boolean_iftrue_retval.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/boolean_iftrue_retval.out",
+            "test_type": 2,
+            "description": "ifTrue:ifFalse: vraci navratovou hodnotu provedene vetve",
+            "category": "BUILTINS",
+            "points": 2,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "boolean_is_boolean",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/boolean_is_boolean.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/boolean_is_boolean.out",
+            "test_type": 2,
+            "description": "isBoolean vraci true pro true a false",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "boolean_not",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/boolean_not.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/boolean_not.out",
+            "test_type": 2,
+            "description": "Negace pravdivostnich hodnot",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "boolean_not_chained",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/boolean_not_chained.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/boolean_not_chained.out",
+            "test_type": 2,
+            "description": "Dvojita negace vraci puvodni hodnotu",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "boolean_or",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/boolean_or.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/boolean_or.out",
+            "test_type": 2,
+            "description": "or: zkracene vyhodnocovani",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "boolean_or_evaluates",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/boolean_or_evaluates.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/boolean_or_evaluates.out",
+            "test_type": 2,
+            "description": "false or: vyhodnoti blok a vrati jeho vysledek",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "boolean_or_short_circuit",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/boolean_or_short_circuit.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/boolean_or_short_circuit.out",
+            "test_type": 2,
+            "description": "true or: nepousta blok - zkracene vyhodnocovani",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "integer_as_integer",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/integer_as_integer.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/integer_as_integer.out",
+            "test_type": 2,
+            "description": "asInteger na Integer vraci sebe sama",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "integer_as_string",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/integer_as_string.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/integer_as_string.out",
+            "test_type": 2,
+            "description": "asString prevadi cislo na retezec vcetne zaporu",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "integer_divby",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/integer_divby.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/integer_divby.out",
+            "test_type": 2,
+            "description": "Celociselne deleni",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "integer_divby_negative",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/integer_divby_negative.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/integer_divby_negative.out",
+            "test_type": 2,
+            "description": "Celociselne deleni zapornych cisel (kompatibilni s PHP intdiv)",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "integer_divby_zero",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/integer_divby_zero.test",
+            "stdin_file": null,
+            "expected_stdout_file": null,
+            "test_type": 2,
+            "description": "Deleni nulou zpusobi chybu 53",
+            "category": "BUILTINS",
+            "points": 2,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                53
+            ]
+        },
+        {
+            "name": "integer_equal_to",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/integer_equal_to.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/integer_equal_to.out",
+            "test_type": 2,
+            "description": "equalTo: porovnava cisla",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "integer_equal_to_string",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/integer_equal_to_string.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/integer_equal_to_string.out",
+            "test_type": 2,
+            "description": "equalTo: Integer vs String vraci false",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "integer_from",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/integer_from.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/integer_from.out",
+            "test_type": 2,
+            "description": "Integer from: zkopiruje hodnotu ze zdrojove instance",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "integer_from_chain",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/integer_from_chain.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/integer_from_chain.out",
+            "test_type": 2,
+            "description": "Integer from: a operace na kopii neovlivni original",
+            "category": "BUILTINS",
+            "points": 2,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "integer_from_wrong_type",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/integer_from_wrong_type.test",
+            "stdin_file": null,
+            "expected_stdout_file": null,
+            "test_type": 2,
+            "description": "Integer from: s nekompatibilnim argumentem zpusobi chybu 53",
+            "category": "BUILTINS",
+            "points": 2,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                53
+            ]
+        },
+        {
+            "name": "integer_greater_than_equal",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/integer_greater_than_equal.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/integer_greater_than_equal.out",
+            "test_type": 2,
+            "description": "greaterThan: vraci false pro stejne hodnoty",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "integer_greater_than_false",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/integer_greater_than_false.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/integer_greater_than_false.out",
+            "test_type": 2,
+            "description": "greaterThan: vraci false kdyz prijemce je mensi",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "integer_greater_than_true",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/integer_greater_than_true.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/integer_greater_than_true.out",
+            "test_type": 2,
+            "description": "greaterThan: vraci true kdyz prijemce je vetsi",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "integer_minus",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/integer_minus.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/integer_minus.out",
+            "test_type": 2,
+            "description": "Odcitani celych cisel",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "integer_minus_negative_result",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/integer_minus_negative_result.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/integer_minus_negative_result.out",
+            "test_type": 2,
+            "description": "Odcitani s negativnim vysledkem",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "integer_multiply",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/integer_multiply.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/integer_multiply.out",
+            "test_type": 2,
+            "description": "Nasobeni celych cisel",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "integer_multiply_negatives",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/integer_multiply_negatives.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/integer_multiply_negatives.out",
+            "test_type": 2,
+            "description": "Nasobeni dvou zapornych cisel",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "integer_multiply_zero",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/integer_multiply_zero.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/integer_multiply_zero.out",
+            "test_type": 2,
+            "description": "Nasobeni nulou da nulu",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "integer_negative",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/integer_negative.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/integer_negative.out",
+            "test_type": 2,
+            "description": "Zaporne celociselne literaly",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "integer_new_default",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/integer_new_default.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/integer_new_default.out",
+            "test_type": 2,
+            "description": "Integer new vytvori instance s vychozi hodnotou 0",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "integer_plus",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/integer_plus.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/integer_plus.out",
+            "test_type": 2,
+            "description": "Scitani celych cisel",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "integer_plus_negative",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/integer_plus_negative.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/integer_plus_negative.out",
+            "test_type": 2,
+            "description": "Scitani s negativnim cislem",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "integer_times_repeat",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/integer_times_repeat.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/integer_times_repeat.out",
+            "test_type": 2,
+            "description": "timesRepeat: provede blok n-krat s cislem iterace",
+            "category": "BUILTINS",
+            "points": 2,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "integer_times_repeat_negative",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/integer_times_repeat_negative.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/integer_times_repeat_negative.out",
+            "test_type": 2,
+            "description": "timesRepeat: s negativnim n neprovede blok, vraci nil",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "integer_times_repeat_retval",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/integer_times_repeat_retval.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/integer_times_repeat_retval.out",
+            "test_type": 2,
+            "description": "timesRepeat: vraci navratovou hodnotu posledniho provedeni bloku",
+            "category": "BUILTINS",
+            "points": 2,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "integer_times_repeat_zero",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/integer_times_repeat_zero.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/integer_times_repeat_zero.out",
+            "test_type": 2,
+            "description": "timesRepeat: s n=0 neprovede blok, vraci nil",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "integer_unknown_msg",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/integer_unknown_msg.test",
+            "stdin_file": null,
+            "expected_stdout_file": null,
+            "test_type": 2,
+            "description": "Zaslani neznameho selektoru na Integer zpusobi chybu 51",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                51
+            ]
+        },
+        {
+            "name": "nil_as_string",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/nil_as_string.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/nil_as_string.out",
+            "test_type": 2,
+            "description": "Nil asString vraci retezec 'nil'",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "nil_from_singleton",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/nil_from_singleton.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/nil_from_singleton.out",
+            "test_type": 2,
+            "description": "Nil from: vraci stejnou instanci jako nil",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "nil_is_nil",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/nil_is_nil.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/nil_is_nil.out",
+            "test_type": 2,
+            "description": "isNil vraci true pro nil a false pro ostatni",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "nil_is_not_boolean",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/nil_is_not_boolean.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/nil_is_not_boolean.out",
+            "test_type": 2,
+            "description": "isBoolean na nil vraci false",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "nil_is_not_number",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/nil_is_not_number.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/nil_is_not_number.out",
+            "test_type": 2,
+            "description": "isNumber na nil vraci false",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "nil_singleton",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/nil_singleton.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/nil_singleton.out",
+            "test_type": 2,
+            "description": "Nil je jedin\u00e1\u010dek - Nil new vraci totez nil",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "nil_unknown_msg",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/nil_unknown_msg.test",
+            "stdin_file": null,
+            "expected_stdout_file": null,
+            "test_type": 2,
+            "description": "Zaslani neznameho selektoru na nil zpusobi chybu 51",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                51
+            ]
+        },
+        {
+            "name": "object_as_string_default",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/object_as_string_default.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/object_as_string_default.out",
+            "test_type": 2,
+            "description": "asString na Object vraci prazdny retezec",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "object_attr_returns_self",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/object_attr_returns_self.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/object_attr_returns_self.out",
+            "test_type": 2,
+            "description": "Nastavovaci zprava instancniho atributu vraci self",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "object_equal_to",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/object_equal_to.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/object_equal_to.out",
+            "test_type": 2,
+            "description": "equalTo: na Object bez interniho atributu se chova jako identicalTo",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "object_identical_to",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/object_identical_to.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/object_identical_to.out",
+            "test_type": 2,
+            "description": "identicalTo: vraci true pro stejny objekt, false pro jiny",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "object_instance_attr",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/object_instance_attr.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/object_instance_attr.out",
+            "test_type": 2,
+            "description": "Nastaveni a cteni instancniho atributu na objektu",
+            "category": "BUILTINS",
+            "points": 2,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "object_is_block",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/object_is_block.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/object_is_block.out",
+            "test_type": 2,
+            "description": "isBlock na Object vraci false",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "object_is_nil",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/object_is_nil.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/object_is_nil.out",
+            "test_type": 2,
+            "description": "isNil na beznem objektu vraci false",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "object_is_number",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/object_is_number.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/object_is_number.out",
+            "test_type": 2,
+            "description": "isNumber vraci true pro Integer, false pro ostatni",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "object_is_string",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/object_is_string.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/object_is_string.out",
+            "test_type": 2,
+            "description": "isString vraci true pro String, false pro ostatni",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "string_as_integer_invalid",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/string_as_integer_invalid.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/string_as_integer_invalid.out",
+            "test_type": 2,
+            "description": "Prevod neplatneho retezce na cislo vraci nil",
+            "category": "BUILTINS",
+            "points": 2,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "string_as_integer_negative",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/string_as_integer_negative.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/string_as_integer_negative.out",
+            "test_type": 2,
+            "description": "Prevod retezce se zaporne cislo na Integer",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "string_as_integer_valid",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/string_as_integer_valid.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/string_as_integer_valid.out",
+            "test_type": 2,
+            "description": "Prevod retezce na cislo, nasledny vypis",
+            "category": "BUILTINS",
+            "points": 2,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "string_concatenate",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/string_concatenate.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/string_concatenate.out",
+            "test_type": 2,
+            "description": "Konkatenace dvou retezcu",
+            "category": "BUILTINS",
+            "points": 2,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "string_concatenate_chain",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/string_concatenate_chain.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/string_concatenate_chain.out",
+            "test_type": 2,
+            "description": "Retezeni vice konkatenaci",
+            "category": "BUILTINS",
+            "points": 2,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "string_concatenate_nil",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/string_concatenate_nil.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/string_concatenate_nil.out",
+            "test_type": 2,
+            "description": "Konkatenace s neretezcem vraci nil",
+            "category": "BUILTINS",
+            "points": 2,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "string_equal_to_false",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/string_equal_to_false.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/string_equal_to_false.out",
+            "test_type": 2,
+            "description": "Porovnani dvou ruznych retezcu vraci false",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "string_equal_to_true",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/string_equal_to_true.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/string_equal_to_true.out",
+            "test_type": 2,
+            "description": "Porovnani dvou shodnych retezcu vraci true",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "string_from",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/string_from.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/string_from.out",
+            "test_type": 2,
+            "description": "String from: zkopiruje retezec ze zdrojove instance",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "string_length",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/string_length.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/string_length.out",
+            "test_type": 2,
+            "description": "Delka retezce",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "string_length_empty",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/string_length_empty.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/string_length_empty.out",
+            "test_type": 2,
+            "description": "Delka prazdneho retezce je 0",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "string_length_escape",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/string_length_escape.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/string_length_escape.out",
+            "test_type": 2,
+            "description": "Escape sekvence se pocita jako jeden znak pri mereni delky",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "string_new_default",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/string_new_default.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/string_new_default.out",
+            "test_type": 2,
+            "description": "String new vytvori instanci s prazdnym retezcem",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "string_print",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/string_print.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/string_print.out",
+            "test_type": 2,
+            "description": "Zaslani zpravy print na retezec - vypise retezec bez formatovani",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "string_print_backslash",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/string_print_backslash.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/string_print_backslash.out",
+            "test_type": 2,
+            "description": "Tisk retezce s \\\\ vypise jedno zpetne lomitko",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "string_print_empty",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/string_print_empty.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/string_print_empty.out",
+            "test_type": 2,
+            "description": "Tisk prazdneho retezce",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "string_print_escape",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/string_print_escape.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/string_print_escape.out",
+            "test_type": 2,
+            "description": "Tisk retezce s escape sekvencemi \\n a \\\\",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "string_print_newline",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/string_print_newline.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/string_print_newline.out",
+            "test_type": 2,
+            "description": "Tisk retezce s \\n vypise novy radek",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "string_print_quote",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/string_print_quote.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/string_print_quote.out",
+            "test_type": 2,
+            "description": "Tisk retezce s escapovanou jednoduchou uvozovkou",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "string_print_returns_self",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/string_print_returns_self.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/string_print_returns_self.out",
+            "test_type": 2,
+            "description": "Metoda print vraci self - retezeni print",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "string_read",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/string_read.test",
+            "stdin_file": "\/opt\/tests\/builtins_tests\/string_read.in",
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/string_read.out",
+            "test_type": 2,
+            "description": "Nacteni retezce ze standardniho vstupu a jeho vypis",
+            "category": "BUILTINS",
+            "points": 2,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "string_read_compute",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/string_read_compute.test",
+            "stdin_file": "\/opt\/tests\/builtins_tests\/string_read_compute.in",
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/string_read_compute.out",
+            "test_type": 2,
+            "description": "Nacteni cisla ze vstupu, vypocet a vypis vysledku",
+            "category": "BUILTINS",
+            "points": 3,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "string_read_multiple",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/string_read_multiple.test",
+            "stdin_file": "\/opt\/tests\/builtins_tests\/string_read_multiple.in",
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/string_read_multiple.out",
+            "test_type": 2,
+            "description": "Nacteni vice radku ze vstupu",
+            "category": "BUILTINS",
+            "points": 2,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "string_substring",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/string_substring.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/string_substring.out",
+            "test_type": 2,
+            "description": "Vyber podretezce pomoci startsWith:endsBefore:",
+            "category": "BUILTINS",
+            "points": 2,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "string_substring_beyond",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/string_substring_beyond.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/string_substring_beyond.out",
+            "test_type": 2,
+            "description": "startsWith:endsBefore: s endsBefore vetsi nez delka vraci konec retezce",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "string_substring_empty",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/string_substring_empty.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/string_substring_empty.out",
+            "test_type": 2,
+            "description": "startsWith:endsBefore: vraci prazdny retezec kdyz rozdil <= 0",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "string_substring_nil_args",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/string_substring_nil_args.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/builtins_tests\/string_substring_nil_args.out",
+            "test_type": 2,
+            "description": "startsWith:endsBefore: s neplatnymi argumenty vraci nil",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "string_unknown_msg",
+            "test_source_path": "\/opt\/tests\/builtins_tests\/string_unknown_msg.test",
+            "stdin_file": null,
+            "expected_stdout_file": null,
+            "test_type": 2,
+            "description": "Zaslani neznameho selektoru na String zpusobi chybu 51",
+            "category": "BUILTINS",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                51
+            ]
+        },
+        {
+            "name": "spec0",
+            "test_source_path": "\/opt\/tests\/spec\/spec0.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/spec\/spec0.out",
+            "test_type": 2,
+            "description": "self_react.sol2",
+            "category": "ZADANI",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "spec1",
+            "test_source_path": "\/opt\/tests\/spec\/spec1.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/spec\/spec1.out",
+            "test_type": 2,
+            "description": "Block context class, self",
+            "category": "ZADANI",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "spec2",
+            "test_source_path": "\/opt\/tests\/spec\/spec2.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/spec\/spec2.out",
+            "test_type": 2,
+            "description": "ahojfoobarbar",
+            "category": "ZADANI",
+            "points": 2,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "spec3",
+            "test_source_path": "\/opt\/tests\/spec\/spec3.test",
+            "stdin_file": null,
+            "expected_stdout_file": null,
+            "test_type": 2,
+            "description": "super error 54",
+            "category": "ZADANI",
+            "points": 1,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                54
+            ]
+        },
+        {
+            "name": "spec4",
+            "test_source_path": "\/opt\/tests\/spec\/spec4.test",
+            "stdin_file": "\/opt\/tests\/spec\/spec4.in",
+            "expected_stdout_file": "\/opt\/tests\/spec\/spec4.out",
+            "test_type": 1,
+            "description": "faktorial.sol2",
+            "category": "ZADANI",
+            "points": 2,
+            "expected_parser_exit_codes": null,
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "spec5",
+            "test_source_path": "\/opt\/tests\/spec\/spec5.test",
+            "stdin_file": "\/opt\/tests\/spec\/spec5.in",
+            "expected_stdout_file": "\/opt\/tests\/spec\/spec5.out",
+            "test_type": 2,
+            "description": "faktorial.sol2",
+            "category": "ZADANI",
+            "points": 2,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "spec6",
+            "test_source_path": "\/opt\/tests\/spec\/spec6.test",
+            "stdin_file": null,
+            "expected_stdout_file": "\/opt\/tests\/spec\/spec6.out",
+            "test_type": 2,
+            "description": "example.sol2",
+            "category": "ZADANI",
+            "points": 2,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        },
+        {
+            "name": "spec7",
+            "test_source_path": "\/opt\/tests\/spec\/spec7.test",
+            "stdin_file": "\/opt\/tests\/spec\/spec7.in",
+            "expected_stdout_file": "\/opt\/tests\/spec\/spec7.out",
+            "test_type": 2,
+            "description": "closure.sol2",
+            "category": "ZADANI",
+            "points": 2,
+            "expected_parser_exit_codes": [
+                0
+            ],
+            "expected_interpreter_exit_codes": [
+                0
+            ]
+        }
+    ],
+    "unexecuted": {
+        "block_is_block": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "block_new": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "boolean_and": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "boolean_and_evaluates": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "boolean_and_non_block": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "boolean_and_short_circuit": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "boolean_as_string": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "boolean_iftrue_retval": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "boolean_is_boolean": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "boolean_not": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "boolean_not_chained": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "boolean_or": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "boolean_or_evaluates": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "boolean_or_short_circuit": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "integer_as_integer": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "integer_as_string": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "integer_divby": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "integer_divby_negative": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "integer_divby_zero": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "integer_equal_to": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "integer_equal_to_string": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "integer_from": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "integer_from_chain": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "integer_from_wrong_type": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "integer_greater_than_equal": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "integer_greater_than_false": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "integer_greater_than_true": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "integer_minus": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "integer_minus_negative_result": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "integer_multiply": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "integer_multiply_negatives": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "integer_multiply_zero": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "integer_negative": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "integer_new_default": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "integer_plus": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "integer_plus_negative": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "integer_times_repeat": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "integer_times_repeat_negative": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "integer_times_repeat_retval": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "integer_times_repeat_zero": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "integer_unknown_msg": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "nil_as_string": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "nil_from_singleton": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "nil_is_nil": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "nil_is_not_boolean": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "nil_is_not_number": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "nil_singleton": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "nil_unknown_msg": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "object_as_string_default": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "object_attr_returns_self": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "object_equal_to": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "object_identical_to": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "object_instance_attr": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "object_is_block": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "object_is_nil": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "object_is_number": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "object_is_string": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "string_as_integer_invalid": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "string_as_integer_negative": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "string_as_integer_valid": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "string_concatenate": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "string_concatenate_chain": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "string_concatenate_nil": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "string_equal_to_false": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "string_equal_to_true": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "string_from": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "string_length": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "string_length_empty": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "string_length_escape": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "string_new_default": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "string_print": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "string_print_backslash": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "string_print_empty": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "string_print_escape": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "string_print_newline": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "string_print_quote": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "string_print_returns_self": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "string_read": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "string_read_compute": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "string_read_multiple": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "string_substring": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "string_substring_beyond": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "string_substring_empty": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "string_substring_nil_args": {
+            "code": 0,
+            "message": "Test file was not included"
+        },
+        "string_unknown_msg": {
+            "code": 0,
+            "message": "Test file was not included"
+        }
+    },
+    "results": {
+        "ZADANI": {
+            "total_points": 13,
+            "passed_points": 11,
+            "test_results": {
+                "spec0": {
+                    "result": "passed",
+                    "parser_exit_code": 0,
+                    "interpreter_exit_code": 0,
+                    "parser_stdout": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<program language=\"SOL26\" description=\"a = instance 14\">\n  <class name=\"Main\" parent=\"Object\">\n    <method selector=\"run\">\n      <block arity=\"0\">\n        <assign order=\"1\">\n          <var name=\"a\"\/>\n          <expr>\n            <send selector=\"foo:\">\n              <expr>\n                <var name=\"self\"\/>\n              <\/expr>\n              <arg order=\"1\">\n                <expr>\n                  <literal class=\"Integer\" value=\"4\"\/>\n                <\/expr>\n              <\/arg>\n            <\/send>\n          <\/expr>\n        <\/assign>\n        <assign order=\"2\">\n          <var name=\"b\"\/>\n          <expr>\n            <block arity=\"1\">\n              <parameter order=\"1\" name=\"x\"\/>\n              <assign order=\"1\">\n                <var name=\"_\"\/>\n                <expr>\n                  <literal class=\"Integer\" value=\"42\"\/>\n                <\/expr>\n              <\/assign>\n            <\/block>\n          <\/expr>\n        <\/assign>\n        <assign order=\"3\">\n          <var name=\"c\"\/>\n          <expr>\n            <send selector=\"value:\">\n              <expr>\n                <var name=\"b\"\/>\n              <\/expr>\n              <arg order=\"1\">\n                <expr>\n                  <literal class=\"Integer\" value=\"16\"\/>\n                <\/expr>\n              <\/arg>\n            <\/send>\n          <\/expr>\n        <\/assign>\n        <assign order=\"4\">\n          <var name=\"d\"\/>\n          <expr>\n            <send selector=\"print\">\n              <expr>\n                <literal class=\"String\" value=\"ahoj\"\/>\n              <\/expr>\n            <\/send>\n          <\/expr>\n        <\/assign>\n        <assign order=\"5\">\n          <var name=\"_\"\/>\n          <expr>\n            <send selector=\"print\">\n              <expr>\n                <send selector=\"asString\">\n                  <expr>\n                    <var name=\"c\"\/>\n                  <\/expr>\n                <\/send>\n              <\/expr>\n            <\/send>\n          <\/expr>\n        <\/assign>\n      <\/block>\n    <\/method>\n    <method selector=\"foo:\">\n      <block arity=\"1\">\n        <parameter order=\"1\" name=\"x\"\/>\n        <assign order=\"1\">\n          <var name=\"u\"\/>\n          <expr>\n            <send selector=\"plus:\">\n              <expr>\n                <var name=\"x\"\/>\n              <\/expr>\n              <arg order=\"1\">\n                <expr>\n                  <literal class=\"Integer\" value=\"10\"\/>\n                <\/expr>\n              <\/arg>\n            <\/send>\n          <\/expr>\n        <\/assign>\n      <\/block>\n    <\/method>\n  <\/class>\n<\/program>\n",
+                    "parser_stderr": "",
+                    "interpreter_stdout": "ahoj42",
+                    "interpreter_stderr": "",
+                    "diff_output": ""
+                },
+                "spec1": {
+                    "result": "passed",
+                    "parser_exit_code": 0,
+                    "interpreter_exit_code": 0,
+                    "parser_stdout": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<program language=\"SOL26\" description=\"Instance bloku si zapamatuje, \u017ee self odkazuje na tuto instanci Main. Blok&#10;        nav\u00edc tuto referenci na konci vrac\u00ed.\">\n  <class name=\"Main\" parent=\"Object\">\n    <method selector=\"run\">\n      <block arity=\"0\">\n        <assign order=\"1\">\n          <var name=\"a\"\/>\n          <expr>\n            <send selector=\"new\">\n              <expr>\n                <literal class=\"class\" value=\"A\"\/>\n              <\/expr>\n            <\/send>\n          <\/expr>\n        <\/assign>\n        <assign order=\"2\">\n          <var name=\"b\"\/>\n          <expr>\n            <block arity=\"1\">\n              <parameter order=\"1\" name=\"arg\"\/>\n              <assign order=\"1\">\n                <var name=\"y\"\/>\n                <expr>\n                  <send selector=\"attr:\">\n                    <expr>\n                      <var name=\"self\"\/>\n                    <\/expr>\n                    <arg order=\"1\">\n                      <expr>\n                        <var name=\"arg\"\/>\n                      <\/expr>\n                    <\/arg>\n                  <\/send>\n                <\/expr>\n              <\/assign>\n              <assign order=\"2\">\n                <var name=\"z\"\/>\n                <expr>\n                  <var name=\"self\"\/>\n                <\/expr>\n              <\/assign>\n            <\/block>\n          <\/expr>\n        <\/assign>\n        <assign order=\"3\">\n          <var name=\"c\"\/>\n          <expr>\n            <send selector=\"foo:\">\n              <expr>\n                <var name=\"a\"\/>\n              <\/expr>\n              <arg order=\"1\">\n                <expr>\n                  <var name=\"b\"\/>\n                <\/expr>\n              <\/arg>\n            <\/send>\n          <\/expr>\n        <\/assign>\n        <assign order=\"4\">\n          <var name=\"_\"\/>\n          <expr>\n            <send selector=\"print\">\n              <expr>\n                <send selector=\"attr\">\n                  <expr>\n                    <var name=\"self\"\/>\n                  <\/expr>\n                <\/send>\n              <\/expr>\n            <\/send>\n          <\/expr>\n        <\/assign>\n      <\/block>\n    <\/method>\n  <\/class>\n  <class name=\"A\" parent=\"Object\">\n    <method selector=\"foo:\">\n      <block arity=\"1\">\n        <parameter order=\"1\" name=\"x\"\/>\n        <assign order=\"1\">\n          <var name=\"u\"\/>\n          <expr>\n            <send selector=\"value:\">\n              <expr>\n                <var name=\"x\"\/>\n              <\/expr>\n              <arg order=\"1\">\n                <expr>\n                  <literal class=\"String\" value=\"foo\"\/>\n                <\/expr>\n              <\/arg>\n            <\/send>\n          <\/expr>\n        <\/assign>\n      <\/block>\n    <\/method>\n  <\/class>\n<\/program>\n",
+                    "parser_stderr": "",
+                    "interpreter_stdout": "foo",
+                    "interpreter_stderr": "",
+                    "diff_output": ""
+                },
+                "spec2": {
+                    "result": "diff_fail",
+                    "parser_exit_code": 0,
+                    "interpreter_exit_code": 0,
+                    "parser_stdout": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<program language=\"SOL26\" description=\"B d\u011bd\u00ed z A, redefinuje metodu m\">\n  <class name=\"A\" parent=\"Object\">\n    <method selector=\"m:\">\n      <block arity=\"1\">\n        <parameter order=\"1\" name=\"x\"\/>\n        <assign order=\"1\">\n          <var name=\"_\"\/>\n          <expr>\n            <send selector=\"print\">\n              <expr>\n                <var name=\"x\"\/>\n              <\/expr>\n            <\/send>\n          <\/expr>\n        <\/assign>\n      <\/block>\n    <\/method>\n    <method selector=\"r\">\n      <block arity=\"0\">\n        <assign order=\"1\">\n          <var name=\"_\"\/>\n          <expr>\n            <send selector=\"print\">\n              <expr>\n                <var name=\"self\"\/>\n              <\/expr>\n            <\/send>\n          <\/expr>\n        <\/assign>\n      <\/block>\n    <\/method>\n  <\/class>\n  <class name=\"B\" parent=\"A\">\n    <method selector=\"m:\">\n      <block arity=\"1\">\n        <parameter order=\"1\" name=\"x\"\/>\n        <assign order=\"1\">\n          <var name=\"_\"\/>\n          <expr>\n            <send selector=\"m:\">\n              <expr>\n                <var name=\"super\"\/>\n              <\/expr>\n              <arg order=\"1\">\n                <expr>\n                  <literal class=\"String\" value=\"ahoj\"\/>\n                <\/expr>\n              <\/arg>\n            <\/send>\n          <\/expr>\n        <\/assign>\n        <assign order=\"2\">\n          <var name=\"_\"\/>\n          <expr>\n            <send selector=\"print\">\n              <expr>\n                <var name=\"x\"\/>\n              <\/expr>\n            <\/send>\n          <\/expr>\n        <\/assign>\n      <\/block>\n    <\/method>\n  <\/class>\n  <class name=\"C\" parent=\"B\">\n    <method selector=\"u\">\n      <block arity=\"0\">\n        <assign order=\"1\">\n          <var name=\"_\"\/>\n          <expr>\n            <send selector=\"m:\">\n              <expr>\n                <var name=\"self\"\/>\n              <\/expr>\n              <arg order=\"1\">\n                <expr>\n                  <var name=\"super\"\/>\n                <\/expr>\n              <\/arg>\n            <\/send>\n          <\/expr>\n        <\/assign>\n      <\/block>\n    <\/method>\n    <method selector=\"print\">\n      <block arity=\"0\">\n        <assign order=\"1\">\n          <var name=\"_\"\/>\n          <expr>\n            <send selector=\"print\">\n              <expr>\n                <literal class=\"String\" value=\"bar\"\/>\n              <\/expr>\n            <\/send>\n          <\/expr>\n        <\/assign>\n      <\/block>\n    <\/method>\n  <\/class>\n  <class name=\"Main\" parent=\"Object\">\n    <method selector=\"run\">\n      <block arity=\"0\">\n        <assign order=\"1\">\n          <var name=\"c\"\/>\n          <expr>\n            <send selector=\"new\">\n              <expr>\n                <literal class=\"class\" value=\"C\"\/>\n              <\/expr>\n            <\/send>\n          <\/expr>\n        <\/assign>\n        <assign order=\"2\">\n          <var name=\"_\"\/>\n          <expr>\n            <send selector=\"m:\">\n              <expr>\n                <var name=\"c\"\/>\n              <\/expr>\n              <arg order=\"1\">\n                <expr>\n                  <literal class=\"String\" value=\"foo\"\/>\n                <\/expr>\n              <\/arg>\n            <\/send>\n          <\/expr>\n        <\/assign>\n        <assign order=\"3\">\n          <var name=\"_\"\/>\n          <expr>\n            <send selector=\"u\">\n              <expr>\n                <var name=\"c\"\/>\n              <\/expr>\n            <\/send>\n          <\/expr>\n        <\/assign>\n        <assign order=\"4\">\n          <var name=\"_\"\/>\n          <expr>\n            <send selector=\"r\">\n              <expr>\n                <var name=\"c\"\/>\n              <\/expr>\n            <\/send>\n          <\/expr>\n        <\/assign>\n      <\/block>\n    <\/method>\n  <\/class>\n<\/program>\n",
+                    "parser_stderr": "",
+                    "interpreter_stdout": "ahojahojahojahojbar",
+                    "interpreter_stderr": "",
+                    "diff_output": "1c1\n< ahojahojahojahojbar\n\\ No newline at end of file\n---\n> ahojfooahojbarbar\n\\ No newline at end of file"
+                },
+                "spec3": {
+                    "result": "passed",
+                    "parser_exit_code": 0,
+                    "interpreter_exit_code": 54,
+                    "parser_stdout": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<program language=\"SOL26\" description=\"definuje a inicializuje instan\u010dn\u00ed atribut 'value'\">\n  <class name=\"Main\" parent=\"Object\">\n    <method selector=\"run\">\n      <block arity=\"0\">\n        <assign order=\"1\">\n          <var name=\"r\"\/>\n          <expr>\n            <send selector=\"value:\">\n              <expr>\n                <var name=\"self\"\/>\n              <\/expr>\n              <arg order=\"1\">\n                <expr>\n                  <literal class=\"Integer\" value=\"10\"\/>\n                <\/expr>\n              <\/arg>\n            <\/send>\n          <\/expr>\n        <\/assign>\n        <assign order=\"2\">\n          <var name=\"e\"\/>\n          <expr>\n            <send selector=\"next:\">\n              <expr>\n                <var name=\"self\"\/>\n              <\/expr>\n              <arg order=\"1\">\n                <expr>\n                  <send selector=\"value\">\n                    <expr>\n                      <var name=\"self\"\/>\n                    <\/expr>\n                  <\/send>\n                <\/expr>\n              <\/arg>\n            <\/send>\n          <\/expr>\n        <\/assign>\n        <assign order=\"3\">\n          <var name=\"t\"\/>\n          <expr>\n            <send selector=\"value:\">\n              <expr>\n                <var name=\"self\"\/>\n              <\/expr>\n              <arg order=\"1\">\n                <expr>\n                  <literal class=\"Nil\" value=\"nil\"\/>\n                <\/expr>\n              <\/arg>\n            <\/send>\n          <\/expr>\n        <\/assign>\n        <assign order=\"4\">\n          <var name=\"_\"\/>\n          <expr>\n            <send selector=\"foo:\">\n              <expr>\n                <var name=\"self\"\/>\n              <\/expr>\n              <arg order=\"1\">\n                <expr>\n                  <literal class=\"Integer\" value=\"10\"\/>\n                <\/expr>\n              <\/arg>\n            <\/send>\n          <\/expr>\n        <\/assign>\n        <assign order=\"5\">\n          <var name=\"i\"\/>\n          <expr>\n            <literal class=\"Integer\" value=\"12\"\/>\n          <\/expr>\n        <\/assign>\n        <assign order=\"6\">\n          <var name=\"_\"\/>\n          <expr>\n            <send selector=\"someAttr:\">\n              <expr>\n                <var name=\"i\"\/>\n              <\/expr>\n              <arg order=\"1\">\n                <expr>\n                  <literal class=\"String\" value=\"hello\"\/>\n                <\/expr>\n              <\/arg>\n            <\/send>\n          <\/expr>\n        <\/assign>\n      <\/block>\n    <\/method>\n    <method selector=\"foo\">\n      <block arity=\"0\"\/>\n    <\/method>\n  <\/class>\n<\/program>\n",
+                    "parser_stderr": "",
+                    "interpreter_stdout": "",
+                    "interpreter_stderr": "Error 54: Trying to create instance attr with the same name as method\n",
+                    "diff_output": null
+                },
+                "spec4": {
+                    "result": "passed",
+                    "parser_exit_code": null,
+                    "interpreter_exit_code": 0,
+                    "parser_stdout": null,
+                    "parser_stderr": null,
+                    "interpreter_stdout": "5040",
+                    "interpreter_stderr": "",
+                    "diff_output": ""
+                },
+                "spec5": {
+                    "result": "passed",
+                    "parser_exit_code": 0,
+                    "interpreter_exit_code": 0,
+                    "parser_stdout": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<program language=\"SOL26\" description=\"pou\u017eit\u00ed from: pro podt\u0159\u00eddu t\u0159\u00eddy Integer\">\n  <class name=\"Factorial\" parent=\"Integer\">\n    <method selector=\"factorial\">\n      <block arity=\"0\">\n        <assign order=\"1\">\n          <var name=\"r\"\/>\n          <expr>\n            <send selector=\"ifTrue:ifFalse:\">\n              <expr>\n                <send selector=\"equalTo:\">\n                  <expr>\n                    <var name=\"self\"\/>\n                  <\/expr>\n                  <arg order=\"1\">\n                    <expr>\n                      <literal class=\"Integer\" value=\"0\"\/>\n                    <\/expr>\n                  <\/arg>\n                <\/send>\n              <\/expr>\n              <arg order=\"1\">\n                <expr>\n                  <block arity=\"0\">\n                    <assign order=\"1\">\n                      <var name=\"r\"\/>\n                      <expr>\n                        <send selector=\"from:\">\n                          <expr>\n                            <literal class=\"class\" value=\"Factorial\"\/>\n                          <\/expr>\n                          <arg order=\"1\">\n                            <expr>\n                              <literal class=\"Integer\" value=\"1\"\/>\n                            <\/expr>\n                          <\/arg>\n                        <\/send>\n                      <\/expr>\n                    <\/assign>\n                  <\/block>\n                <\/expr>\n              <\/arg>\n              <arg order=\"2\">\n                <expr>\n                  <block arity=\"0\">\n                    <assign order=\"1\">\n                      <var name=\"r\"\/>\n                      <expr>\n                        <send selector=\"multiplyBy:\">\n                          <expr>\n                            <var name=\"self\"\/>\n                          <\/expr>\n                          <arg order=\"1\">\n                            <expr>\n                              <send selector=\"factorial\">\n                                <expr>\n                                  <send selector=\"from:\">\n                                    <expr>\n                                      <literal class=\"class\" value=\"Factorial\"\/>\n                                    <\/expr>\n                                    <arg order=\"1\">\n                                      <expr>\n                                        <send selector=\"plus:\">\n                                          <expr>\n                                            <var name=\"self\"\/>\n                                          <\/expr>\n                                          <arg order=\"1\">\n                                            <expr>\n                                              <literal class=\"Integer\" value=\"-1\"\/>\n                                            <\/expr>\n                                          <\/arg>\n                                        <\/send>\n                                      <\/expr>\n                                    <\/arg>\n                                  <\/send>\n                                <\/expr>\n                              <\/send>\n                            <\/expr>\n                          <\/arg>\n                        <\/send>\n                      <\/expr>\n                    <\/assign>\n                  <\/block>\n                <\/expr>\n              <\/arg>\n            <\/send>\n          <\/expr>\n        <\/assign>\n      <\/block>\n    <\/method>\n  <\/class>\n  <class name=\"Main\" parent=\"Object\">\n    <method selector=\"run\">\n      <block arity=\"0\">\n        <assign order=\"1\">\n          <var name=\"x\"\/>\n          <expr>\n            <send selector=\"from:\">\n              <expr>\n                <literal class=\"class\" value=\"Factorial\"\/>\n              <\/expr>\n              <arg order=\"1\">\n                <expr>\n                  <send selector=\"asInteger\">\n                    <expr>\n                      <send selector=\"read\">\n                        <expr>\n                          <literal class=\"class\" value=\"String\"\/>\n                        <\/expr>\n                      <\/send>\n                    <\/expr>\n                  <\/send>\n                <\/expr>\n              <\/arg>\n            <\/send>\n          <\/expr>\n        <\/assign>\n        <assign order=\"2\">\n          <var name=\"x\"\/>\n          <expr>\n            <send selector=\"print\">\n              <expr>\n                <send selector=\"asString\">\n                  <expr>\n                    <send selector=\"factorial\">\n                      <expr>\n                        <var name=\"x\"\/>\n                      <\/expr>\n                    <\/send>\n                  <\/expr>\n                <\/send>\n              <\/expr>\n            <\/send>\n          <\/expr>\n        <\/assign>\n      <\/block>\n    <\/method>\n  <\/class>\n<\/program>\n",
+                    "parser_stderr": "",
+                    "interpreter_stdout": "120",
+                    "interpreter_stderr": "",
+                    "diff_output": ""
+                },
+                "spec6": {
+                    "result": "passed",
+                    "parser_exit_code": 0,
+                    "interpreter_exit_code": 0,
+                    "parser_stdout": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<program language=\"SOL26\" description=\"&lt;- definice metody - bezparametrick\u00fd selektor run\">\n  <class name=\"Main\" parent=\"Object\">\n    <method selector=\"run\">\n      <block arity=\"0\">\n        <assign order=\"1\">\n          <var name=\"x\"\/>\n          <expr>\n            <send selector=\"compute:and:and:\">\n              <expr>\n                <var name=\"self\"\/>\n              <\/expr>\n              <arg order=\"1\">\n                <expr>\n                  <literal class=\"Integer\" value=\"3\"\/>\n                <\/expr>\n              <\/arg>\n              <arg order=\"2\">\n                <expr>\n                  <literal class=\"Integer\" value=\"2\"\/>\n                <\/expr>\n              <\/arg>\n              <arg order=\"3\">\n                <expr>\n                  <literal class=\"Integer\" value=\"5\"\/>\n                <\/expr>\n              <\/arg>\n            <\/send>\n          <\/expr>\n        <\/assign>\n        <assign order=\"2\">\n          <var name=\"x\"\/>\n          <expr>\n            <send selector=\"plusOne:\">\n              <expr>\n                <var name=\"self\"\/>\n              <\/expr>\n              <arg order=\"1\">\n                <expr>\n                  <send selector=\"vysl\">\n                    <expr>\n                      <var name=\"self\"\/>\n                    <\/expr>\n                  <\/send>\n                <\/expr>\n              <\/arg>\n            <\/send>\n          <\/expr>\n        <\/assign>\n        <assign order=\"3\">\n          <var name=\"y\"\/>\n          <expr>\n            <send selector=\"asString\">\n              <expr>\n                <var name=\"x\"\/>\n              <\/expr>\n            <\/send>\n          <\/expr>\n        <\/assign>\n        <assign order=\"4\">\n          <var name=\"_\"\/>\n          <expr>\n            <send selector=\"print\">\n              <expr>\n                <var name=\"y\"\/>\n              <\/expr>\n            <\/send>\n          <\/expr>\n        <\/assign>\n      <\/block>\n    <\/method>\n    <method selector=\"plusOne:\">\n      <block arity=\"1\">\n        <parameter order=\"1\" name=\"x\"\/>\n        <assign order=\"1\">\n          <var name=\"r\"\/>\n          <expr>\n            <send selector=\"plus:\">\n              <expr>\n                <var name=\"x\"\/>\n              <\/expr>\n              <arg order=\"1\">\n                <expr>\n                  <literal class=\"Integer\" value=\"1\"\/>\n                <\/expr>\n              <\/arg>\n            <\/send>\n          <\/expr>\n        <\/assign>\n      <\/block>\n    <\/method>\n    <method selector=\"compute:and:and:\">\n      <block arity=\"3\">\n        <parameter order=\"1\" name=\"x\"\/>\n        <parameter order=\"2\" name=\"y\"\/>\n        <parameter order=\"3\" name=\"z\"\/>\n        <assign order=\"1\">\n          <var name=\"a\"\/>\n          <expr>\n            <send selector=\"plus:\">\n              <expr>\n                <var name=\"x\"\/>\n              <\/expr>\n              <arg order=\"1\">\n                <expr>\n                  <var name=\"y\"\/>\n                <\/expr>\n              <\/arg>\n            <\/send>\n          <\/expr>\n        <\/assign>\n        <assign order=\"2\">\n          <var name=\"_\"\/>\n          <expr>\n            <send selector=\"vysl:\">\n              <expr>\n                <var name=\"self\"\/>\n              <\/expr>\n              <arg order=\"1\">\n                <expr>\n                  <var name=\"a\"\/>\n                <\/expr>\n              <\/arg>\n            <\/send>\n          <\/expr>\n        <\/assign>\n        <assign order=\"3\">\n          <var name=\"_\"\/>\n          <expr>\n            <send selector=\"ifTrue:ifFalse:\">\n              <expr>\n                <send selector=\"greaterThan:\">\n                  <expr>\n                    <send selector=\"vysl\">\n                      <expr>\n                        <var name=\"self\"\/>\n                      <\/expr>\n                    <\/send>\n                  <\/expr>\n                  <arg order=\"1\">\n                    <expr>\n                      <literal class=\"Integer\" value=\"0\"\/>\n                    <\/expr>\n                  <\/arg>\n                <\/send>\n              <\/expr>\n              <arg order=\"1\">\n                <expr>\n                  <block arity=\"0\">\n                    <assign order=\"1\">\n                      <var name=\"u\"\/>\n                      <expr>\n                        <send selector=\"vysl:\">\n                          <expr>\n                            <var name=\"self\"\/>\n                          <\/expr>\n                          <arg order=\"1\">\n                            <expr>\n                              <literal class=\"Integer\" value=\"1\"\/>\n                            <\/expr>\n                          <\/arg>\n                        <\/send>\n                      <\/expr>\n                    <\/assign>\n                  <\/block>\n                <\/expr>\n              <\/arg>\n              <arg order=\"2\">\n                <expr>\n                  <block arity=\"0\"\/>\n                <\/expr>\n              <\/arg>\n            <\/send>\n          <\/expr>\n        <\/assign>\n      <\/block>\n    <\/method>\n  <\/class>\n<\/program>\n",
+                    "parser_stderr": "",
+                    "interpreter_stdout": "2",
+                    "interpreter_stderr": "",
+                    "diff_output": ""
+                },
+                "spec7": {
+                    "result": "passed",
+                    "parser_exit_code": 0,
+                    "interpreter_exit_code": 0,
+                    "parser_stdout": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<program language=\"SOL26\" description=\"Na\u010dte \u0159\u00e1dek a vytvo\u0159\u00ed objekt pro \u010d\u00edslo 1.\">\n  <class name=\"Main\" parent=\"Object\">\n    <method selector=\"giveObjectWithBlock\">\n      <block arity=\"0\">\n        <assign order=\"1\">\n          <var name=\"x\"\/>\n          <expr>\n            <send selector=\"asInteger\">\n              <expr>\n                <send selector=\"read\">\n                  <expr>\n                    <literal class=\"class\" value=\"String\"\/>\n                  <\/expr>\n                <\/send>\n              <\/expr>\n            <\/send>\n          <\/expr>\n        <\/assign>\n        <assign order=\"2\">\n          <var name=\"b\"\/>\n          <expr>\n            <block arity=\"0\">\n              <assign order=\"1\">\n                <var name=\"y\"\/>\n                <expr>\n                  <send selector=\"plus:\">\n                    <expr>\n                      <send selector=\"asInteger\">\n                        <expr>\n                          <send selector=\"read\">\n                            <expr>\n                              <literal class=\"class\" value=\"String\"\/>\n                            <\/expr>\n                          <\/send>\n                        <\/expr>\n                      <\/send>\n                    <\/expr>\n                    <arg order=\"1\">\n                      <expr>\n                        <var name=\"x\"\/>\n                      <\/expr>\n                    <\/arg>\n                  <\/send>\n                <\/expr>\n              <\/assign>\n            <\/block>\n          <\/expr>\n        <\/assign>\n        <assign order=\"3\">\n          <var name=\"x\"\/>\n          <expr>\n            <literal class=\"Integer\" value=\"7\"\/>\n          <\/expr>\n        <\/assign>\n        <assign order=\"4\">\n          <var name=\"z\"\/>\n          <expr>\n            <send selector=\"block:\">\n              <expr>\n                <send selector=\"new\">\n                  <expr>\n                    <literal class=\"class\" value=\"Object\"\/>\n                  <\/expr>\n                <\/send>\n              <\/expr>\n              <arg order=\"1\">\n                <expr>\n                  <var name=\"b\"\/>\n                <\/expr>\n              <\/arg>\n            <\/send>\n          <\/expr>\n        <\/assign>\n        <assign order=\"5\">\n          <var name=\"x\"\/>\n          <expr>\n            <literal class=\"Integer\" value=\"9\"\/>\n          <\/expr>\n        <\/assign>\n        <assign order=\"6\">\n          <var name=\"_\"\/>\n          <expr>\n            <var name=\"z\"\/>\n          <\/expr>\n        <\/assign>\n      <\/block>\n    <\/method>\n    <method selector=\"run\">\n      <block arity=\"0\">\n        <assign order=\"1\">\n          <var name=\"o\"\/>\n          <expr>\n            <send selector=\"giveObjectWithBlock\">\n              <expr>\n                <var name=\"self\"\/>\n              <\/expr>\n            <\/send>\n          <\/expr>\n        <\/assign>\n        <assign order=\"2\">\n          <var name=\"_\"\/>\n          <expr>\n            <send selector=\"read\">\n              <expr>\n                <literal class=\"class\" value=\"String\"\/>\n              <\/expr>\n            <\/send>\n          <\/expr>\n        <\/assign>\n        <assign order=\"3\">\n          <var name=\"r1\"\/>\n          <expr>\n            <send selector=\"value\">\n              <expr>\n                <send selector=\"block\">\n                  <expr>\n                    <var name=\"o\"\/>\n                  <\/expr>\n                <\/send>\n              <\/expr>\n            <\/send>\n          <\/expr>\n        <\/assign>\n        <assign order=\"4\">\n          <var name=\"_\"\/>\n          <expr>\n            <send selector=\"print\">\n              <expr>\n                <send selector=\"asString\">\n                  <expr>\n                    <var name=\"r1\"\/>\n                  <\/expr>\n                <\/send>\n              <\/expr>\n            <\/send>\n          <\/expr>\n        <\/assign>\n        <assign order=\"5\">\n          <var name=\"_\"\/>\n          <expr>\n            <send selector=\"print\">\n              <expr>\n                <send selector=\"asString\">\n                  <expr>\n                    <literal class=\"String\" value=\"&#10;\"\/>\n                  <\/expr>\n                <\/send>\n              <\/expr>\n            <\/send>\n          <\/expr>\n        <\/assign>\n        <assign order=\"6\">\n          <var name=\"r2\"\/>\n          <expr>\n            <send selector=\"value\">\n              <expr>\n                <send selector=\"block\">\n                  <expr>\n                    <var name=\"o\"\/>\n                  <\/expr>\n                <\/send>\n              <\/expr>\n            <\/send>\n          <\/expr>\n        <\/assign>\n        <assign order=\"7\">\n          <var name=\"_\"\/>\n          <expr>\n            <send selector=\"print\">\n              <expr>\n                <send selector=\"asString\">\n                  <expr>\n                    <var name=\"r2\"\/>\n                  <\/expr>\n                <\/send>\n              <\/expr>\n            <\/send>\n          <\/expr>\n        <\/assign>\n        <assign order=\"8\">\n          <var name=\"_\"\/>\n          <expr>\n            <send selector=\"print\">\n              <expr>\n                <send selector=\"asString\">\n                  <expr>\n                    <literal class=\"String\" value=\"&#10;\"\/>\n                  <\/expr>\n                <\/send>\n              <\/expr>\n            <\/send>\n          <\/expr>\n        <\/assign>\n      <\/block>\n    <\/method>\n  <\/class>\n<\/program>\n",
+                    "parser_stderr": "",
+                    "interpreter_stdout": "12\n13\n",
+                    "interpreter_stderr": "",
+                    "diff_output": ""
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,14 @@
++++ BUILTINS
+*** Nacteni vice radku ze vstupu
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+    run [|
+        a := String read.
+        b := String read.
+        _ := a print.
+        _ := b print.
+    ]
+}

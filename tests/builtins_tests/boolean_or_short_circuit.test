@@ -1,0 +1,13 @@
++++ BUILTINS
+*** true or: nepousta blok - zkracene vyhodnocovani
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        called := false.
+        _ := true or: [| called := true. ].
+        _ := (called asString) print.
+    ]
+}

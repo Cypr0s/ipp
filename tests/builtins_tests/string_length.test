@@ -1,0 +1,12 @@
++++ BUILTINS
+*** Delka retezce
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        n := 'hello' length.
+        _ := (n asString) print.
+    ]
+}

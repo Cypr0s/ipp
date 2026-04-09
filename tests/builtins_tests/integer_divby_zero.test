@@ -1,0 +1,12 @@
++++ BUILTINS
+*** Deleni nulou zpusobi chybu 53
+!C! 0
+!I! 53
+>>> 2
+
+class Main : Object {
+    run [|
+        r := 5 divBy: 0.
+        _ := (r asString) print.
+    ]
+}

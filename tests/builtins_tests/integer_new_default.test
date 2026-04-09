@@ -1,0 +1,12 @@
++++ BUILTINS
+*** Integer new vytvori instance s vychozi hodnotou 0
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        n := Integer new.
+        _ := (n asString) print.
+    ]
+}

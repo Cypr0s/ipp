@@ -1,0 +1,12 @@
++++ BUILTINS
+*** true and: vyhodnoti blok a vrati jeho vysledek
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        r := true and: [| _ := false. ].
+        _ := (r asString) print.
+    ]
+}

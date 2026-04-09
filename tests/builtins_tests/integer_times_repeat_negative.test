@@ -1,0 +1,12 @@
++++ BUILTINS
+*** timesRepeat: s negativnim n neprovede blok, vraci nil
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        r := -3 timesRepeat: [ :i | _ := 'X' print. ].
+        _ := (r asString) print.
+    ]
+}

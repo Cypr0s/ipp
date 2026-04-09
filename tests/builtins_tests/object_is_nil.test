@@ -1,0 +1,12 @@
++++ BUILTINS
+*** isNil na beznem objektu vraci false
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        o := Object new.
+        _ := ((o isNil) asString) print.
+    ]
+}

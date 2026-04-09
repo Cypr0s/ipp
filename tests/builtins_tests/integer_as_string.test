@@ -1,0 +1,13 @@
++++ BUILTINS
+*** asString prevadi cislo na retezec vcetne zaporu
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        _ := (42 asString) print.
+        _ := (-7 asString) print.
+        _ := (0 asString) print.
+    ]
+}

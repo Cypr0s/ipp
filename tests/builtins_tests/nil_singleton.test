@@ -1,0 +1,12 @@
++++ BUILTINS
+*** Nil je jedináček - Nil new vraci totez nil
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        a := Nil new.
+        _ := ((a identicalTo: nil) asString) print.
+    ]
+}

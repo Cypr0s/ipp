@@ -1,0 +1,12 @@
++++ BUILTINS
+*** isBlock na Object vraci false
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        o := Object new.
+        _ := ((o isBlock) asString) print.
+    ]
+}

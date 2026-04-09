@@ -238,9 +238,9 @@ class Interpreter:
         false_obj = SolObject(self.classes["False"], None)
         nil_obj = SolObject(self.classes["Nil"], None)
 
-        self.scope.create_object("nil", nil_obj)
-        self.scope.create_object("true", true_obj)
-        self.scope.create_object("false", false_obj)
+        self.scope.set_object("nil", nil_obj)
+        self.scope.set_object("true", true_obj)
+        self.scope.set_object("false", false_obj)
 
         logger.info("created global objects.")
         # create main object
@@ -249,6 +249,7 @@ class Interpreter:
         logger.info("created main object and found method run")
         self.stream = input_io
         # call method run
+        logger.info("Calling method run on main obj")
         self.send_message(main_obj, "run", [], "default_reference", self.classes["Main"])
 
     def load_classes(self) -> None:
@@ -488,7 +489,7 @@ class Interpreter:
                 )
 
             self.check_arity(method, arg_count)
-            logger.info(f"sending message:{receiver.name} {selector}, {arguments}")
+            logger.info(f"sending message:{receiver.name} selector:{selector}")
             ret_val: SolObject = method.function(self, receiver, arguments)
             return ret_val
 
@@ -553,7 +554,7 @@ class Interpreter:
             )
 
         self.check_arity(method, arg_count)
-        logger.info(f"sending message:{receiver.cls.name} {selector}, {arguments}")
+        logger.info(f"sending message:{receiver.cls.name} selector:{selector}")
         return self.method_call(receiver, method, arguments, method.cls)
 
     def method_call(
@@ -566,7 +567,7 @@ class Interpreter:
         """
         Call method, create new scope, set parameters, bind self and super into scope
         """
-
+        logger.info(f"method_call: method={method.selector} method.cls={method.cls.name} class_ctx={class_ctx.name}")
         if arguments is None:
             arguments = []
 
@@ -599,14 +600,16 @@ class Interpreter:
         # set parameters into scope
         arg_count: int = len(arguments)
         for i in range(arg_count):
-            self.scope.create_object(method.function.parameters[i].name, arguments[i])
+            self.scope.set_parameter(method.function.parameters[i].name, arguments[i])
 
-        # add self into scope
-        self.scope.create_object("self", receiver)
+        if not receiver.cls.is_subclass("Block"):
+        # add self and super into scope
+            self.scope.set_object("self", receiver)
+            self.scope.set_object("super", receiver)
 
-        # add super into scope
-        self.scope.create_object("super", receiver)
+
         # exec block
+        logger.info(f"executing block, method:{method.selector} class_ctx:{class_ctx.name}")
         return_value = self.execute_block(method.function.assigns, class_ctx)
 
         self.scope = parent_scope
@@ -618,7 +621,6 @@ class Interpreter:
         Execute a block of assignments, returning the value of the last expression in the block
         """
         return_obj: SolObject = self.scope.get_object("nil")
-        logger.info("Executing block")
 
         for assign in assigns:
             target = assign.target
@@ -631,7 +633,7 @@ class Interpreter:
                 )
 
             if target.name != "_":
-                self.scope.create_object(target.name, value)
+                self.scope.set_object(target.name, value)
 
             return_obj = value
 
@@ -809,7 +811,7 @@ class ObjectBuiltin:
 
         # copy intern attr
         receiver_intern_attr_cls: SolClass | None = receiver.get_intern_attr_cls()
-
+        logger.info(f"from: receiver={receiver.name}, arg type={from_object.cls.name}, intern={from_object.intern_value}")
         if receiver_intern_attr_cls is not None:
             from_attr_cls: SolClass | None = from_object.cls.get_intern_attr_cls()
 
@@ -1043,7 +1045,7 @@ class IntegerBuiltin:
             )
 
         try:
-            val = receiver.intern_value // target.intern_value
+            val = int(receiver.intern_value / target.intern_value)
         except ZeroDivisionError as e:
             raise InterpreterError(
                 error_code=ErrorCode.INT_INVALID_ARG,
@@ -1506,7 +1508,7 @@ class Scope:
             error_code=ErrorCode.SEM_UNDEF, message=f"No object with `{object_name}` exists"
         )
 
-    def set_object(self, object_name: str, obj: SolObject) -> bool:
+    def lookup_and_set_object(self, object_name: str, obj: SolObject) -> bool:
         """
         Try to set an object in scope recursively, if it doesn't exist return false
         """
@@ -1515,14 +1517,20 @@ class Scope:
             return True
 
         if self.parent_scope is not None:
-            return self.parent_scope.set_object(object_name, obj)
+            return self.parent_scope.lookup_and_set_object(object_name, obj)
 
         return False
 
-    def create_object(self, object_name: str, obj: SolObject) -> None:
+    def set_object(self, object_name: str, obj: SolObject) -> None:
         """
         Set an object in scope, if it doesn't exist create it, if it exists update it
         """
-        created: bool = self.set_object(object_name, obj)
+        created: bool = self.lookup_and_set_object(object_name, obj)
         if not created:
             self.objects[object_name] = obj
+    
+    def set_parameter(self, object_name: str, obj: SolObject) -> None:
+        """
+        Sets parameter into current scope
+        """
+        self.objects[object_name] = obj

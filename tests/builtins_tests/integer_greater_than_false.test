@@ -1,0 +1,12 @@
++++ BUILTINS
+*** greaterThan: vraci false kdyz prijemce je mensi
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        r := 2 greaterThan: 7.
+        _ := (r asString) print.
+    ]
+}

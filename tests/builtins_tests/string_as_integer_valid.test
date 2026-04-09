@@ -1,0 +1,12 @@
++++ BUILTINS
+*** Prevod retezce na cislo, nasledny vypis
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+    run [|
+        n := '42' asInteger.
+        _ := (n asString) print.
+    ]
+}

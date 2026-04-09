@@ -1,0 +1,11 @@
++++ BUILTINS
+*** Integer from: s nekompatibilnim argumentem zpusobi chybu 53
+!C! 0
+!I! 53
+>>> 2
+
+class Main : Object {
+    run [|
+        _ := Integer from: 'notanint'.
+    ]
+}

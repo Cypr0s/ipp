@@ -1,0 +1,13 @@
++++ BUILTINS
+*** isBoolean vraci true pro true a false
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        _ := ((true isBoolean) asString) print.
+        _ := ((false isBoolean) asString) print.
+        _ := ((42 isBoolean) asString) print.
+    ]
+}

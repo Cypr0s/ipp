@@ -1,0 +1,13 @@
++++ BUILTINS
+*** Nastaveni a cteni instancniho atributu na objektu
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+    run [|
+        o := Object new.
+        _ := o name: 'test'.
+        _ := (o name) print.
+    ]
+}

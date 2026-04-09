@@ -1,0 +1,13 @@
++++ BUILTINS
+*** Zaporne celociselne literaly
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        a := -5.
+        b := a plus: 3.
+        _ := (b asString) print.
+    ]
+}

@@ -1,0 +1,11 @@
++++ BUILTINS
+*** isBoolean na nil vraci false
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        _ := ((nil isBoolean) asString) print.
+    ]
+}

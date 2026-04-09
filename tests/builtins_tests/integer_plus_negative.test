@@ -1,0 +1,12 @@
++++ BUILTINS
+*** Scitani s negativnim cislem
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        r := 10 plus: -3.
+        _ := (r asString) print.
+    ]
+}

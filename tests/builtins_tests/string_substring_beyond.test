@@ -1,0 +1,12 @@
++++ BUILTINS
+*** startsWith:endsBefore: s endsBefore vetsi nez delka vraci konec retezce
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        r := 'hello' startsWith: 3 endsBefore: 99.
+        _ := r print.
+    ]
+}

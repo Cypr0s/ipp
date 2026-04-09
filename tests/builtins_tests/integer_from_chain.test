@@ -1,0 +1,15 @@
++++ BUILTINS
+*** Integer from: a operace na kopii neovlivni original
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+    run [|
+        a := 10.
+        b := Integer from: a.
+        c := b plus: 5.
+        _ := (a asString) print.
+        _ := (c asString) print.
+    ]
+}

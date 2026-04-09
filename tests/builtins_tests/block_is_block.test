@@ -1,0 +1,13 @@
++++ BUILTINS
+*** isBlock vraci true pro Block, false pro ostatni
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        b := [| _ := 1. ].
+        _ := ((b isBlock) asString) print.
+        _ := ((42 isBlock) asString) print.
+    ]
+}

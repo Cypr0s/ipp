@@ -1,0 +1,13 @@
++++ BUILTINS
+*** isNil vraci true pro nil a false pro ostatni
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        _ := ((nil isNil) asString) print.
+        _ := ((42 isNil) asString) print.
+        _ := (('str' isNil) asString) print.
+    ]
+}

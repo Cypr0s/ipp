@@ -1,0 +1,12 @@
++++ BUILTINS
+*** timesRepeat: vraci navratovou hodnotu posledniho provedeni bloku
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+    run [|
+        r := 3 timesRepeat: [ :i | _ := i multiplyBy: 10. ].
+        _ := (r asString) print.
+    ]
+}

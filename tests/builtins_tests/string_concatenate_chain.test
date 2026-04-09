@@ -1,0 +1,13 @@
++++ BUILTINS
+*** Retezeni vice konkatenaci
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+    run [|
+        a := 'Hello' concatenateWith: ', '.
+        b := a concatenateWith: 'world!'.
+        _ := b print.
+    ]
+}

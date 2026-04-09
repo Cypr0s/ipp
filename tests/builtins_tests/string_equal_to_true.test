@@ -1,0 +1,12 @@
++++ BUILTINS
+*** Porovnani dvou shodnych retezcu vraci true
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        r := 'abc' equalTo: 'abc'.
+        _ := (r asString) print.
+    ]
+}

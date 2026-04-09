@@ -1,0 +1,12 @@
++++ BUILTINS
+*** Nasobeni dvou zapornych cisel
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        r := -3 multiplyBy: -4.
+        _ := (r asString) print.
+    ]
+}

@@ -1,0 +1,14 @@
++++ BUILTINS
+*** and: zkracene vyhodnocovani
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        a := true and: [| _ := true. ].
+        b := false and: [| _ := true. ].
+        _ := (a asString) print.
+        _ := (b asString) print.
+    ]
+}

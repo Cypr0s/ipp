@@ -1,0 +1,12 @@
++++ BUILTINS
+*** Odcitani s negativnim vysledkem
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        r := 3 minus: 10.
+        _ := (r asString) print.
+    ]
+}

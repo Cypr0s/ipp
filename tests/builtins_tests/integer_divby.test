@@ -1,0 +1,12 @@
++++ BUILTINS
+*** Celociselne deleni
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        r := 17 divBy: 5.
+        _ := (r asString) print.
+    ]
+}

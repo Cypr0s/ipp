@@ -1,0 +1,12 @@
++++ BUILTINS
+*** equalTo: Integer vs String vraci false
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        r := 42 equalTo: '42'.
+        _ := (r asString) print.
+    ]
+}

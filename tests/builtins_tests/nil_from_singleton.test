@@ -1,0 +1,12 @@
++++ BUILTINS
+*** Nil from: vraci stejnou instanci jako nil
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        a := Nil from: nil.
+        _ := ((a identicalTo: nil) asString) print.
+    ]
+}

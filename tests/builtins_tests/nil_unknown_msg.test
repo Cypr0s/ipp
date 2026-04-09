@@ -1,0 +1,11 @@
++++ BUILTINS
+*** Zaslani neznameho selektoru na nil zpusobi chybu 51
+!C! 0
+!I! 51
+>>> 1
+
+class Main : Object {
+    run [|
+        _ := nil unknownMessage.
+    ]
+}

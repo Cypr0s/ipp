@@ -1,0 +1,12 @@
++++ BUILTINS
+*** Prevod retezce se zaporne cislo na Integer
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        n := '-12' asInteger.
+        _ := (n asString) print.
+    ]
+}

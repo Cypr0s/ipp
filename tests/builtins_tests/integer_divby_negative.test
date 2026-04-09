@@ -1,0 +1,12 @@
++++ BUILTINS
+*** Celociselne deleni zapornych cisel (kompatibilni s PHP intdiv)
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        r := -7 divBy: 2.
+        _ := (r asString) print.
+    ]
+}

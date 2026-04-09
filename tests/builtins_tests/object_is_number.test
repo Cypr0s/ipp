@@ -1,0 +1,13 @@
++++ BUILTINS
+*** isNumber vraci true pro Integer, false pro ostatni
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        _ := ((42 isNumber) asString) print.
+        _ := (('x' isNumber) asString) print.
+        _ := ((nil isNumber) asString) print.
+    ]
+}

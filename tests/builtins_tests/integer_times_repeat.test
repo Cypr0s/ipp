@@ -1,0 +1,11 @@
++++ BUILTINS
+*** timesRepeat: provede blok n-krat s cislem iterace
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+    run [|
+        _ := 4 timesRepeat: [ :i | _ := (i asString) print. ].
+    ]
+}

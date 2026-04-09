@@ -1,0 +1,13 @@
++++ BUILTINS
+*** isString vraci true pro String, false pro ostatni
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+    run [|
+        _ := (('hello' isString) asString) print.
+        _ := ((42 isString) asString) print.
+        _ := ((nil isString) asString) print.
+    ]
+}
