@@ -1,0 +1,60 @@
+\documentclass[a4paper, 11pt]{article}
+
+\usepackage[top=3cm, left=2cm, text={17cm, 24cm}]{geometry}
+
+\usepackage[hidelinks]{hyperref}
+
+\usepackage[slovak]{babel}
+
+
+\begin{document}
+    \begin{titlepage}
+        \begin{center}
+            {\Huge Vysoké učení technické v Brně} \\ 
+            {\huge Fakulta informačních technologií}  \\
+            
+            \vspace{\stretch{0.382}}
+            {\Huge Interpreter SOL26}\\ 
+            {\large Dokumentácia Implementácie}
+
+            \vspace{\stretch{0.618}}
+        \end{center}
+
+        {\Large \today \hfill Kristián Lupták}
+    \end{titlepage}
+
+    \tableofcontents
+    \newpage
+    
+
+    \section{Úvod}
+        Tento dokument popisuje implementáciu Interpreteru. 
+        Vysvetľuje ako je~program rozdelený do~častí pričom informuje ako je~každá časť navrhnutá, aké objektovo orientované princípy používa a~ako spolupracuje s~inými časťami.
+        Dokument je obohatený UML diagramom celého objektového návrhu. \\
+
+        \noindent
+        V~dokumente sa~taktiež nachádzajú doplňujúce informácie o~vývoji projektu(napr. používanie AI) a~taktiež ako by sa~teoreticky dal Interpret rozšíriť.
+        \medskip
+    \section{Popis návrhu Interpreteru}
+        Interpreter je logicky rozdelený na viacero častí pričom každá nasleduje až po dokončení predchodzej.
+
+        \subsection{Sémantická analýza}
+        Ako prvá sa najprv uskutoční \textbf{kompletná} statická sémantická analýza, ktorá skontroluje vstupný program a pri odhalení chyby vracia korešpondujúji chybový kód. 
+        Tento princíp umožňuje odchytiť niektoré chyby už na začiatku spustenia Interpreteru pred výkonávaním samotného programu.
+        Pri vyhotovovaní následných už statické chyby \textbf{niesú} vôbec kontrolované. \\
+
+        \subsection{Príprava prostredia na Interpretáciu}
+        Následne sa sa vytvoria objekty typu \textbf{SolClass}(viď \ref{}) pre vstavané Triedy, a vytvoria sa ich metódy typu \texttt{SolMethod}, ktoré špecificky obsahujú odkaz na implementáciu metódy. 
+        Po vytvoren9 vstavaných tried sa rekurzívne vytvoria Triedy definované používateľom pričom ich metódy sú taktiež typu \texttt{SolMethod}, ktoré ale neobsahujú odkaz na funkciu implementácie ale vkladá sa do nich blok (postupnosť priradení) metódy.
+        Ďalej sa vytvoria singleton objekty \texttt{true, false, nil} a globálne rozhranie, do ktorého sú tieto objekty vložené. Nakoniec sa vytvorí objekt typu \texttt{Main}, ktorému je poslaná správa \texttt{run}.
+        
+        \subsection{Vyhodnocovanie Programu}
+        Program sa vykonáva na princípe zasielaní správ, kde správa obsahuje základné argumenty ako \texttt{príjemca}, \texttt{selektor} a \texttt{argumenty}, ale je obohatený aj typom správy a triednym kontextom.
+        Typ správy závisí od toho ako bol vyhodnotený objekt príjemcu, to znamená, že či bol objekt zavolaný cez \texttt{self}, \text{super} alebo premennou.
+        Triedny kontext je trieda, ktorá definuje danú metódu, v prípade bloku je to trieda, kde bol blok \texttt{definovaný}.
+        Pri invokovaní metódy skrytej za selektorom sa rozlišuje či je daná metóda vstavaná, čo spôsobí invokáciu definovanej metódy, alebo je metóda definovaná uživateľom, čo spôsobí invokáciu bloku uloženého v metóde. 
+        Pri invokácii bloku program postupne prechádza jednotlivé priradenia a vyhodnocovanie ich výrazov následne spúšta.
+        Jednotlivé výrazy sú následne výhodnocované na základe ich typu pričom Interpret spúšťa ich korespondné vyhodnocovacie funkcie.
+
+        \medskip
+\end{document}
