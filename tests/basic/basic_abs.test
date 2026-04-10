@@ -1,0 +1,23 @@
+*** Compute absolute value
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+  run [|
+    _ := ((self abs: -7) asString) print.
+    _ := ((self abs: 5) asString) print.
+    _ := ((self abs: 0) asString) print.
+  ]
+
+  abs: [ :n |
+    result := (n greaterThan: 0)
+      ifTrue:  [| _ := n. ]
+      ifFalse: [|
+        _ := (0 greaterThan: n)
+          ifTrue:  [| _ := 0 minus: n. ]
+          ifFalse: [| _ := 0. ].
+      ].
+  ]
+}

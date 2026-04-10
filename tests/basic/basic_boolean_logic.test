@@ -1,0 +1,19 @@
+*** Complex boolean logic with and:/or:/not
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+  run [|
+    a := true.
+    b := false.
+    c := true.
+    r1 := a and: [| _ := b not. ].
+    _ := (r1 asString) print.
+    r2 := b or: [| _ := c. ].
+    _ := (r2 asString) print.
+    r3 := (a and: [| _ := c. ]) and: [| _ := b not. ].
+    _ := (r3 asString) print.
+  ]
+}

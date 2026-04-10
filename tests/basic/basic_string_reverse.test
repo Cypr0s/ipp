@@ -1,0 +1,23 @@
+*** Reverse a string by building it character by character
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+  run [|
+    s := 'hello'.
+    r := self reverse: s.
+    _ := r print.
+  ]
+
+  reverse: [ :s |
+    _ := self result: ''.
+    len := s length.
+    _ := len timesRepeat: [ :i |
+      ch := s startsWith: ((len minus: i) plus: 1) endsBefore: ((len minus: i) plus: 2).
+      _ := self result: ((self result) concatenateWith: ch).
+    ].
+    _ := self result.
+  ]
+}

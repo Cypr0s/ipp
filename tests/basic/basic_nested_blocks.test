@@ -1,0 +1,22 @@
+*** Nested block execution with shared scope
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+  run [|
+    x := 1.
+    outer := [|
+      y := x plus: 10.
+      inner := [|
+        z := y plus: 100.
+        _ := (z asString) print.
+      ].
+      _ := inner value.
+    ].
+    _ := outer value.
+    x := 5.
+    _ := outer value.
+  ]
+}

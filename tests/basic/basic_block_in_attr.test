@@ -1,0 +1,14 @@
+*** Store a block in an instance attribute and invoke it later
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+  run [|
+    multiplier := 3.
+    _ := self action: [ :x | _ := ((x multiplyBy: multiplier) asString) print. ].
+    _ := (self action) value: 7.
+    _ := (self action) value: 10.
+  ]
+}

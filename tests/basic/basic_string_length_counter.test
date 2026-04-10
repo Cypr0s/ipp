@@ -1,0 +1,14 @@
+*** Count words separated by space by counting non-space chars then spaces
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+  run [|
+    s := 'hello world'.
+    _ := ((s length) asString) print.
+    s2 := 'SOL26'.
+    _ := ((s2 length) asString) print.
+  ]
+}

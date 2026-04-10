@@ -1,0 +1,27 @@
+*** Compute 10th Fibonacci number iteratively
++++ BASIC
+!C! 0
+!I! 0
+>>> 3
+
+class Main : Object {
+  run [|
+    r := self fib: 10.
+    _ := (r asString) print.
+  ]
+
+  fib: [ :n |
+    _ := self prev: 0.
+    _ := self curr: 1.
+    result := (n equalTo: 0)
+      ifTrue:  [| _ := 0. ]
+      ifFalse: [|
+        _ := (n minus: 1) timesRepeat: [ :i |
+          tmp := self curr.
+          _ := self curr: ((self prev) plus: (self curr)).
+          _ := self prev: tmp.
+        ].
+        _ := self curr.
+      ].
+  ]
+}

@@ -1,0 +1,25 @@
+*** FizzBuzz from 1 to 15
++++ BASIC
+!C! 0
+!I! 0
+>>> 3
+
+class Main : Object {
+  run [|
+    _ := 15 timesRepeat: [ :i |
+      isMul3 := (i minus: ((i divBy: 3) multiplyBy: 3)) equalTo: 0.
+      isMul5 := (i minus: ((i divBy: 5) multiplyBy: 5)) equalTo: 0.
+      _ := (isMul3 and: [| _ := isMul5. ])
+        ifTrue:  [| _ := 'FizzBuzz' print. ]
+        ifFalse: [|
+          _ := isMul3
+            ifTrue:  [| _ := 'Fizz' print. ]
+            ifFalse: [|
+              _ := isMul5
+                ifTrue:  [| _ := 'Buzz' print. ]
+                ifFalse: [| _ := (i asString) print. ].
+            ].
+        ].
+    ].
+  ]
+}

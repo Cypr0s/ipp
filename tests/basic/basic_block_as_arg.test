@@ -1,0 +1,16 @@
+*** Pass a block as argument and execute it
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+  run [|
+    _ := self applyToFive: [ :x | _ := ((x multiplyBy: x) asString) print. ].
+    _ := self applyToFive: [ :x | _ := ((x plus: 10) asString) print. ].
+  ]
+
+  applyToFive: [ :blk |
+    _ := blk value: 5.
+  ]
+}

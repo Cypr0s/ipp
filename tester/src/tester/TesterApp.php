@@ -166,8 +166,10 @@ class TesterApp
         // get test cases
         $target_dir = $this->arguments->testsDir;
         $this->getTests($target_dir);
+
         // filter test_cases
         $filtered_tests = $this->filterTests();
+        // drun run only filter and exit
         if ($this->arguments->dryRun) {
             $report = new TestReport(
                 discoveredTestCases: $this->discovered_tests,
@@ -178,6 +180,7 @@ class TesterApp
             self::writeResult($report);
             return 0;
         }
+        // execute tests
         $this->executeTests($filtered_tests);
         // Example of how to write the final report:
         $report = new TestReport(
@@ -190,19 +193,25 @@ class TesterApp
         return 0;
     }
 
-
+    /**
+     * Checks directory and load each file, for recursive (-r) flag,
+     * call itself recursively
+     */
     public function getTests(string $target_dir): void
     {
+        // get files
         $dir = scandir($target_dir);
         if ($dir === false) {
             return;
         }
-        $this->logger->debug("SCANNING DIR: name:" .  $target_dir);
+
+        $this->logger->debug('SCANNING DIR: name:' .  $target_dir);
         foreach ($dir as $file) {
             if ($file === '.' || $file === '..') {
                 continue;
             }
 
+            // scan file
             $target_file = $target_dir . '/' . $file;
 
             if (is_file($target_file) && \str_ends_with($target_file, '.test')) {
@@ -218,11 +227,17 @@ class TesterApp
         }
     }
 
+    /**
+     *  Loads one testcase as object of TestCaseDefinition based on
+     *  the args in the input file
+     */
     private function loadTestCase(string $t_path, string $t_name): void
     {
+        $test_name = substr($t_name, 0, -5); // test name without .test
+
         $full_test_path = $t_path . '/' . $t_name;
         $fd = fopen($full_test_path, 'r');
-        $test_name = substr($t_name, 0, -5);
+
         if ($fd === false) {
             $message = 'Failed to open test file';
             $this->unexecuted_tests[$test_name] = new UnexecutedReason(
@@ -231,6 +246,7 @@ class TesterApp
             );
             return;
         }
+        // default values
         $full_test_path_without_extension = substr($full_test_path, 0, -5);
         $test_description = null;
         $test_category = null;
@@ -239,22 +255,27 @@ class TesterApp
         $test_exit_codes_interpreter = [];
         $test_type = null;
 
-        // loop through files
+        // loop through each line and handle each positional arg eg. +++ or !C!
         while (true) {
             $line = fgets($fd);
 
+            // eof
             if ($line === false) {
                 break;
             }
+
+            // empty line - end of metadata
             $line = trim($line);
             if ($line === '') {
                 break; // end of data
             }
 
-            // description
+            // handle each type of arg, check for redefinitions
             if (\str_starts_with($line, '***')) {
+                // description
                 if ($test_description !== null) {
                     $message = 'Multiple description lines';
+
                     $this->unexecuted_tests[$test_name] = new UnexecutedReason(
                         UnexecutedReasonCode::MALFORMED_TEST_CASE_FILE,
                         $message
@@ -267,6 +288,7 @@ class TesterApp
                 // category
                 if ($test_category !== null) {
                     $message = 'Multiple category lines';
+
                     $this->unexecuted_tests[$test_name] = new UnexecutedReason(
                         UnexecutedReasonCode::MALFORMED_TEST_CASE_FILE,
                         $message
@@ -279,6 +301,7 @@ class TesterApp
                 // points weight
                 if ($test_points !== null) {
                     $message = 'Multiple points lines';
+
                     $this->unexecuted_tests[$test_name] = new UnexecutedReason(
                         UnexecutedReasonCode::MALFORMED_TEST_CASE_FILE,
                         $message
@@ -286,10 +309,11 @@ class TesterApp
                     fclose($fd);
                     return;
                 }
-
+                // actually set the points
                 $points_str = trim(substr($line, 3));
                 if (!is_numeric($points_str)) {
                     $message = 'Points value is not an integer';
+
                     $this->unexecuted_tests[$test_name] = new UnexecutedReason(
                         UnexecutedReasonCode::MALFORMED_TEST_CASE_FILE,
                         $message
@@ -301,8 +325,10 @@ class TesterApp
             } elseif (\str_starts_with($line, '!C!')) {
                 // SOL2XML expected exit code not required, multiple may appear
                 $code_str = trim(substr($line, 3));
+
                 if (!is_numeric($code_str)) {
                     $message = 'Exit code value is not an integer';
+
                     $this->unexecuted_tests[$test_name] = new UnexecutedReason(
                         UnexecutedReasonCode::MALFORMED_TEST_CASE_FILE,
                         $message
@@ -310,12 +336,15 @@ class TesterApp
                     fclose($fd);
                     return;
                 }
+
                 $test_exit_codes_parser[] = (int) $code_str;
             } elseif (\str_starts_with($line, '!I!')) {
                 // SOL2XML expectet exit code not required, multiple may appear
                 $code_str = trim(substr($line, 3));
+
                 if (!is_numeric($code_str)) {
                     $message = 'Exit code value is not an integer';
+
                     $this->unexecuted_tests[$test_name] = new UnexecutedReason(
                         UnexecutedReasonCode::MALFORMED_TEST_CASE_FILE,
                         $message
@@ -326,6 +355,7 @@ class TesterApp
                 $test_exit_codes_interpreter[] = (int) $code_str;
             } else {
                 $message = 'Invalid arg';
+
                 $this->unexecuted_tests[$test_name] = new UnexecutedReason(
                     UnexecutedReasonCode::MALFORMED_TEST_CASE_FILE,
                     $message
@@ -335,7 +365,7 @@ class TesterApp
             }
         }
 
-        // get test type, check exit codes
+        // check whether there is an actual test code
         $first_program_line = fgets($fd);
         if ($first_program_line === false) {
             $message = 'No program code';
@@ -346,13 +376,17 @@ class TesterApp
             fclose($fd);
             return;
         }
+
+        // get test type(check exit codes and program code)
         $has_parser_codes = $test_exit_codes_parser !== [];
         $has_interpreter_codes = $test_exit_codes_interpreter !== [];
 
         // program is in XML
         if (str_starts_with(trim($first_program_line), '<?xml')) {
+            // parser codes with xml format == error
             if ($has_parser_codes) {
                 $message = 'Test interpreter XML code has parser exit codes';
+
                 $this->unexecuted_tests[$test_name] = new UnexecutedReason(
                     UnexecutedReasonCode::MALFORMED_TEST_CASE_FILE,
                     $message
@@ -360,8 +394,10 @@ class TesterApp
                 fclose($fd);
                 return;
             }
+            // missing interpreter codes
             if (!$has_interpreter_codes) {
                 $message = 'Test interpreter codes are missing but program is in XML';
+
                 $this->unexecuted_tests[$test_name] = new UnexecutedReason(
                     UnexecutedReasonCode::MALFORMED_TEST_CASE_FILE,
                     $message
@@ -369,12 +405,15 @@ class TesterApp
                 fclose($fd);
                 return;
             }
+            // otherwise its execute only
             $test_type = TestCaseType::EXECUTE_ONLY;
         } else {
             // program is in SOL26
             if ($has_parser_codes && $has_interpreter_codes) {
+                // nonzero code in parser codes - malformed combined test
                 if (!in_array(0, $test_exit_codes_parser, true)) {
                     $message = 'Code is supposed to be parsed and interptreted but 0 code for parser is missing';
+
                     $this->unexecuted_tests[$test_name] = new UnexecutedReason(
                         UnexecutedReasonCode::CANNOT_DETERMINE_TYPE,
                         $message
@@ -382,11 +421,14 @@ class TesterApp
                     fclose($fd);
                     return;
                 }
+
                 $test_type = TestCaseType::COMBINED;
             } elseif ($has_parser_codes) {
+                // parse only
                 $test_type = TestCaseType::PARSE_ONLY;
             } else {
-                $message = 'Test parser codes are missing but code is in SOL26';
+                //missing codes eg no codes at all or only interpreter codes
+                $message = 'Test parser or interpreter codes are missing but code is in SOL26';
                 $this->unexecuted_tests[$test_name] = new UnexecutedReason(
                     UnexecutedReasonCode::MALFORMED_TEST_CASE_FILE,
                     $message
@@ -396,7 +438,7 @@ class TesterApp
             }
         }
 
-        // check required 'args'
+        // check required args - category, points
         if ($test_category === null) {
             $message = 'Test category is missing';
             $this->unexecuted_tests[$test_name] = new UnexecutedReason(
@@ -406,6 +448,7 @@ class TesterApp
             fclose($fd);
             return;
         }
+
         if ($test_points === null) {
             $message = 'Test points value is missing';
             $this->unexecuted_tests[$test_name] = new UnexecutedReason(
@@ -416,7 +459,7 @@ class TesterApp
             return;
         }
 
-        // get oin file
+        // get in file
         $test_in_file_name = $full_test_path_without_extension . '.in';
         $test_in_file = file_exists($test_in_file_name) ? $test_in_file_name : null;
 
@@ -425,7 +468,7 @@ class TesterApp
         $test_out_file = file_exists($test_out_file_name) ? $test_out_file_name : null;
 
         // create new TestCaseDefinition with created parameters
-        $this->logger->debug("LOADING TEST: name:" .  $test_name);
+        $this->logger->debug('LOADING TEST: name:' .  $test_name);
         $this->discovered_tests[] = new TestCaseDefinition(
             name: $test_name,
             testSourcePath: $full_test_path,
@@ -441,7 +484,9 @@ class TesterApp
         fclose($fd);
     }
 
-    /** @return list<TestCaseDefinition> */
+    /** Filters tests based on loaded program CLI
+     *  @return list<TestCaseDefinition>
+     */
     private function filterTests(): array
     {
 
@@ -453,6 +498,8 @@ class TesterApp
         $include_categories = $this->arguments->includeCategory !== null ?
                                 $this->arguments->includeCategory : [];
         $filtered_tests = [];
+
+        // firstly only add included tests into filtered tests(no includes mean all are in filtered)
         if ($include !== [] || $include_tests !== [] || $include_categories !== []) {
             foreach ($this->discovered_tests as $test) {
                 if (
@@ -460,11 +507,13 @@ class TesterApp
                     in_array($test->category, $include, true) ||
                     in_array($test->name, $include_tests, true) ||
                     in_array($test->category, $include_categories, true)
-                ) { 
-                    $this->logger->debug("Filter: test included: name:" .  $test->name);
+                ) {
+                    $this->logger->debug('Filter: test included: name:' .  $test->name);
                     $filtered_tests[] = $test;
                 } else {
-                    $message = "Test file was not included";
+                    // not included
+                    $message = 'Test file was not included';
+
                     $this->unexecuted_tests[$test->name] = new UnexecutedReason(
                         UnexecutedReasonCode::FILTERED_OUT,
                         $message
@@ -482,7 +531,7 @@ class TesterApp
                             $this->arguments->excludeTest : [];
         $exclude_categories = $this->arguments->excludeCategory !== null ?
                                 $this->arguments->excludeCategory : [];
-
+        // now exclude from filtered_tests list
         if ($exclude !== [] || $exclude_tests !== [] || $exclude_categories !== []) {
             $exclude_filtered = [];
             foreach ($filtered_tests as $test) {
@@ -492,10 +541,11 @@ class TesterApp
                     !in_array($test->name, $exclude_tests, true) &&
                     !in_array($test->category, $exclude_categories, true)
                 ) {
-                    $this->logger->debug("Filter: test excluded: name:" .  $test->name);
+                    $this->logger->debug('Filter: test excluded: name:' .  $test->name);
                     $exclude_filtered[] = $test;
                 } else {
-                    $message = "Test file was excluded";
+                    $message = 'Test file was excluded';
+
                     $this->unexecuted_tests[$test->name] = new UnexecutedReason(
                         UnexecutedReasonCode::FILTERED_OUT,
                         $message
@@ -507,16 +557,20 @@ class TesterApp
         return $filtered_tests;
     }
 
-    /** @param list<TestCaseDefinition> $tests */
+    /** Execute each test in tests list
+     * @param list<TestCaseDefinition> $tests
+     * */
     public function executeTests(array $tests): void
     {
         $total_points = [];
         $passed_points = [];
         $test_results = [];
 
+        $temp_file = '/tester/tmp.out';
+
         foreach ($tests as $test) {
             // firstly try to create category
-            $this->logger->debug("Execute: name:" .  $test->name);
+            $this->logger->debug('Execute: name:' .  $test->name);
             if (!isset($total_points[$test->category])) {
                 $total_points[$test->category] = 0;
                 $passed_points[$test->category] = 0;
@@ -524,10 +578,10 @@ class TesterApp
             }
 
 
-            // create temp file
+            // load test case lines
             $lines = file($test->testSourcePath);
             if ($lines === false) {
-                $message = "Failed to open test file";
+                $message = 'Failed to open test file';
                 $this->unexecuted_tests[$test->name] = new UnexecutedReason(
                     UnexecutedReasonCode::CANNOT_EXECUTE,
                     $message
@@ -535,25 +589,28 @@ class TesterApp
                 continue;
             }
 
+            // skip header data
             $i = 0;
             while (trim($lines[$i]) !== '') {
                 $i++;
             }
 
+            // join into single string and put inside temp file
             $source_code = implode('', array_slice($lines, $i + 1));
-            $temp_file = "/tester/tmp.out";
             file_put_contents($temp_file, $source_code);
 
             $total_points[$test->category] += $test->points;
 
             // parsing only, create object of result
             if ($test->testType === TestCaseType::PARSE_ONLY) {
+                // run parser
                 $vals = $this->runParser($test, $temp_file);
                 if ($vals[0] === null) {
                     continue;
                 }
 
                 $test_result = TestResult::PASSED;
+
                 if (
                     $test->expectedParserExitCodes === null ||
                     !in_array($vals[0], $test->expectedParserExitCodes)
@@ -561,6 +618,12 @@ class TesterApp
                     $test_result = TestResult::UNEXPECTED_PARSER_EXIT_CODE;
                 }
 
+                // add points for passed test
+                if ($test_result === TestResult::PASSED) {
+                    $passed_points[$test->category] += $test->points;
+                }
+
+                // create result
                 $test_results[$test->category][$test->name] = new TestCaseReport(
                     result: $test_result,
                     parserExitCode: $vals[0],
@@ -571,30 +634,35 @@ class TesterApp
                     interpreterStderr: null,
                     diffOutput: null
                 );
-                if ($test_result === TestResult::PASSED) {
-                    $passed_points[$test->category] += $test->points;
-                }
             } elseif ($test->testType === TestCaseType::EXECUTE_ONLY) {
                 // interpreter execute
                 $interpreter_vals = $this->runInterpreter($test, $temp_file);
+                // interpreter run failure
                 if ($interpreter_vals[0] === null) {
                     continue;
                 }
 
-
                 $diff_vals = [TestResult::PASSED, null];
+
+                // check wheether interpret exit code is expected
                 if (
                     $test->expectedInterpreterExitCodes === null ||
                     !in_array($interpreter_vals[0], $test->expectedInterpreterExitCodes)
                 ) {
                     $diff_vals[0] = TestResult::UNEXPECTED_INTERPRETER_EXIT_CODE;
                 } elseif ($interpreter_vals[0] === 0 && $test->expectedStdoutFile !== null) {
+                    // compare out and interpreter stdout
                     $diff_vals = $this->runGnuDiff($test, $temp_file);
                     if ($diff_vals[0] === null) {
                         continue;
                     }
                 }
+                // add points if passed
+                if ($diff_vals[0] === TestResult::PASSED) {
+                    $passed_points[$test->category] += $test->points;
+                }
 
+                // create test result
                 $test_results[$test->category][$test->name] = new TestCaseReport(
                     result: $diff_vals[0],
                     parserExitCode: null,
@@ -605,16 +673,13 @@ class TesterApp
                     interpreterStderr: $interpreter_vals[2],
                     diffOutput: $diff_vals[1]
                 );
-
-                if ($diff_vals[0] === TestResult::PASSED) {
-                    $passed_points[$test->category] += $test->points;
-                }
             } else {
+                // combined test, run parser + interpreter + gnu diff
                 $parser_vals = $this->runParser($test, $temp_file);
                 if ($parser_vals[0] === null) {
                     continue;
                 }
-
+                // create exit with parser values
                 if ($parser_vals[0] !== 0) {
                     $test_result = TestResult::UNEXPECTED_PARSER_EXIT_CODE;
                     $test_results[$test->category][$test->name] = new TestCaseReport(
@@ -628,24 +693,34 @@ class TesterApp
                         diffOutput: null
                     );
                 } else {
+                    // run intepreter
                     $interpreter_vals = $this->runInterpreter($test, $temp_file);
                     if ($interpreter_vals[0] === null) {
                         continue;
                     }
 
                     $diff_vals = [TestResult::PASSED, null];
+
+                    // check if interpreter exit code is expected
                     if (
                         $test->expectedInterpreterExitCodes === null ||
                         !in_array($interpreter_vals[0], $test->expectedInterpreterExitCodes)
                     ) {
                         $diff_vals[0] = TestResult::UNEXPECTED_INTERPRETER_EXIT_CODE;
                     } elseif ($interpreter_vals[0] === 0 && $test->expectedStdoutFile !== null) {
+                        // compare out and interpreter stdout
                         $diff_vals = $this->runGnuDiff($test, $temp_file);
+
                         if ($diff_vals[0] === null) {
                             continue;
                         }
                     }
+                    // add points if passed
+                    if ($diff_vals[0] === TestResult::PASSED) {
+                        $passed_points[$test->category] += $test->points;
+                    }
 
+                    // create test result
                     $test_results[$test->category][$test->name] = new TestCaseReport(
                         result: $diff_vals[0],
                         parserExitCode: $parser_vals[0],
@@ -656,13 +731,10 @@ class TesterApp
                         interpreterStderr: $interpreter_vals[2],
                         diffOutput: $diff_vals[1]
                     );
-
-                    if ($diff_vals[0] === TestResult::PASSED) {
-                        $passed_points[$test->category] += $test->points;
-                    }
                 }
             }
         }
+        // map dicts into category report objects
         foreach ($total_points as $category => $points) {
             $this->executed_tests[$category] = new CategoryReport(
                 $points,
@@ -672,17 +744,22 @@ class TesterApp
         }
     }
 
-    /** @return array{int|null, string|null, string|null} */
+    /**
+     * Runs parser and catches its strdout, stderr, handles errors
+     * @return array{int|null, string|null, string|null}
+     */
     private function runParser(TestCaseDefinition $test, string $temp_file): array
     {
+        // run command
         $process = proc_open("python3 /tester/sol2xml/sol_to_xml.py", [
             0 => ['file', $temp_file, 'r'], // stdin
             1 => ['pipe', 'w'],  // stdout
             2 => ['pipe', 'w'],  // stderr
         ], $pipes);
 
+        // command err
         if ($process === false) {
-            $message = "Failure running parser";
+            $message = 'Failure running parser';
             $this->unexecuted_tests[$test->name] = new UnexecutedReason(
                 UnexecutedReasonCode::CANNOT_EXECUTE,
                 $message
@@ -690,14 +767,18 @@ class TesterApp
             return [null, null, null];
         }
 
+        // catch streams
         $stdout = stream_get_contents($pipes[1]);
         $stderr = stream_get_contents($pipes[2]);
 
+        //stdstream error
         if ($stdout === false || $stderr === false) {
             fclose($pipes[1]);
             fclose($pipes[2]);
             proc_close($process);
-            $message = "Failure running parser, missing stdout or stderr";
+
+            $message = 'Failure running parser, missing stdout or stderr';
+
             $this->unexecuted_tests[$test->name] = new UnexecutedReason(
                 UnexecutedReasonCode::CANNOT_EXECUTE,
                 $message
@@ -705,6 +786,7 @@ class TesterApp
             return [null, null, null];
         }
 
+        // cleanup and return
         fclose($pipes[1]);
         fclose($pipes[2]);
 
@@ -716,20 +798,40 @@ class TesterApp
         return [$exit_code, $stdout, $stderr];
     }
 
-    /** @return array{int|null, string|null, string|null} */
+    /** Runs interpreter and catches its strdout, stderr, handles errors
+     * @return array{int|null, string|null, string|null}
+     */
     private function runInterpreter(TestCaseDefinition $test, string $temp_file): array
     {
+        // run interpreter with optional input command
         $command = "python3 /int/src/solint.py -s $temp_file";
         if ($test->stdinFile !== null) {
             $command = $command . " -i $test->stdinFile";
         }
+
         $process = proc_open($command, [
             1 => ['pipe', 'w'],  // stdout
             2 => ['pipe', 'w'],  // stderr
         ], $pipes);
 
+        // command err
         if ($process === false) {
-            $message = "Failure running interpreter";
+            $message = 'Failure running interpreter';
+            $this->unexecuted_tests[$test->name] = new UnexecutedReason(
+                UnexecutedReasonCode::CANNOT_EXECUTE,
+                $message
+            );
+            return [null, null, null];
+        }
+        // catch streams
+        $stdout = stream_get_contents($pipes[1]);
+        $stderr = stream_get_contents($pipes[2]);
+
+        if ($stdout === false || $stderr === false) {
+            fclose($pipes[1]);
+            fclose($pipes[2]);
+            proc_close($process);
+            $message = 'Failure running interpreter, missing stdout or stderr';
             $this->unexecuted_tests[$test->name] = new UnexecutedReason(
                 UnexecutedReasonCode::CANNOT_EXECUTE,
                 $message
@@ -737,19 +839,7 @@ class TesterApp
             return [null, null, null];
         }
 
-        $stdout = stream_get_contents($pipes[1]);
-        $stderr = stream_get_contents($pipes[2]);
-        if ($stdout === false || $stderr === false) {
-            fclose($pipes[1]);
-            fclose($pipes[2]);
-            proc_close($process);
-            $message = "Failure running interpreter, missing stdout or stderr";
-            $this->unexecuted_tests[$test->name] = new UnexecutedReason(
-                UnexecutedReasonCode::CANNOT_EXECUTE,
-                $message
-            );
-            return [null, null, null];
-        }
+        // cleanup
 
         fclose($pipes[1]);
         fclose($pipes[2]);
@@ -763,21 +853,28 @@ class TesterApp
         return [$exit_code, $stdout, $stderr];
     }
 
-    /** @return array{TestResult|null, string|null} */
+    /** Compares the output of intepreter which is in temp_file with test .out file
+     * @return array{TestResult|null, string|null}
+     */
     private function runGnuDiff(TestCaseDefinition $test, string $temp_file): array
     {
         $diff_stdout = null;
 
         $diff_exit_code = 0;
+        // run diff
         $result = exec("diff $temp_file $test->expectedStdoutFile", $diff_stdout, $diff_exit_code);
+
+        // diff errors
         if ($result === false || $diff_exit_code === -1) {
-            $message = "Failure running gnu diff";
+            $message = 'Failure running gnu diff';
             $this->unexecuted_tests[$test->name] = new UnexecutedReason(
                 UnexecutedReasonCode::CANNOT_EXECUTE,
                 $message
             );
             return [null, null];
         }
+
+        // cleanup
         $diff_stdout = implode("\n", $diff_stdout);
 
 

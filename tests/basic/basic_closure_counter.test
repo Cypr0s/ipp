@@ -1,0 +1,16 @@
+*** Closure captures and mutates enclosing variable
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+  run [|
+    count := 0.
+    increment := [| count := count plus: 1. ].
+    _ := increment value.
+    _ := increment value.
+    _ := increment value.
+    _ := (count asString) print.
+  ]
+}

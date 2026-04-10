@@ -1,0 +1,22 @@
+*** Compute 2^10 iteratively
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+  run [|
+    r := self power: 2 exp: 10.
+    _ := (r asString) print.
+    r2 := self power: 3 exp: 4.
+    _ := (r2 asString) print.
+  ]
+
+  power:exp: [ :base :exp |
+    _ := self acc: 1.
+    _ := exp timesRepeat: [ :i |
+      _ := self acc: ((self acc) multiplyBy: base).
+    ].
+    _ := self acc.
+  ]
+}

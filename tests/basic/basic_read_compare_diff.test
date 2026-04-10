@@ -1,0 +1,13 @@
+*** Read two different strings, print false
++++ BASIC
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+  run [|
+    a := String read.
+    b := String read.
+    _ := ((a equalTo: b) asString) print.
+  ]
+}

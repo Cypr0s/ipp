@@ -1,0 +1,48 @@
+*** Polymorphic method dispatch
++++ BASIC
+!C! 0
+!I! 0
+>>> 3
+
+class Shape : Object {
+  area [|
+    _ := 0.
+  ]
+  describe [|
+    _ := 'area=' print.
+    _ := ((self area) asString) print.
+  ]
+}
+
+class Square : Shape {
+  side: [ :s |
+    _ := self s: s.
+    _ := self.
+  ]
+  area [|
+    _ := (self s) multiplyBy: (self s).
+  ]
+}
+
+class Rect : Shape {
+  setW:h: [ :w :h |
+    _ := self w: w.
+    _ := self h: h.
+    _ := self.
+  ]
+  area [|
+    _ := (self w) multiplyBy: (self h).
+  ]
+}
+
+class Main : Object {
+  run [|
+    sq := Square new.
+    _ := sq side: 4.
+    _ := sq describe.
+
+    r := Rect new.
+    _ := r setW: 3 h: 5.
+    _ := r describe.
+  ]
+}

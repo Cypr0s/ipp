@@ -1,0 +1,22 @@
+*** Find maximum of two numbers using ifTrue:ifFalse:
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+  run [|
+    a := 17.
+    b := 42.
+    m := self max: a with: b.
+    _ := (m asString) print.
+    m2 := self max: 99 with: 3.
+    _ := (m2 asString) print.
+  ]
+
+  max:with: [ :a :b |
+    result := (a greaterThan: b)
+      ifTrue:  [| _ := a. ]
+      ifFalse: [| _ := b. ].
+  ]
+}

@@ -1,0 +1,30 @@
+*** Use returned self to chain operations on result
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Acc : Object {
+  init: [ :v |
+    _ := self v: v.
+    _ := self.
+  ]
+  add: [ :n |
+    _ := self v: ((self v) plus: n).
+    _ := self.
+  ]
+  result [|
+    _ := self v.
+  ]
+}
+
+class Main : Object {
+  run [|
+    a := Acc new.
+    _ := a init: 0.
+    _ := a add: 5.
+    _ := a add: 10.
+    _ := a add: 27.
+    _ := ((a result) asString) print.
+  ]
+}

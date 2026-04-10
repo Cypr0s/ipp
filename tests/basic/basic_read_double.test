@@ -1,0 +1,14 @@
+*** Read a number from stdin and print its double
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+  run [|
+    s := String read.
+    n := s asInteger.
+    d := n plus: n.
+    _ := (d asString) print.
+  ]
+}

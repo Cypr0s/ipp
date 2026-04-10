@@ -1,0 +1,16 @@
+*** Build result string with timesRepeat: and concatenation
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+  run [|
+    _ := self result: ''.
+    _ := 4 timesRepeat: [ :i |
+      _ := self result: ((self result) concatenateWith: 'x').
+    ].
+    _ := (self result) print.
+    _ := (((self result) length) asString) print.
+  ]
+}

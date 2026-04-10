@@ -1,0 +1,22 @@
+*** Print a triangle of stars (rows 1 to 4)
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+  run [|
+    _ := 4 timesRepeat: [ :row |
+      _ := self line: row.
+    ].
+  ]
+
+  line: [ :n |
+    _ := self s: ''.
+    _ := n timesRepeat: [ :i |
+      _ := self s: ((self s) concatenateWith: '*').
+    ].
+    _ := (self s) print.
+    _ := '\n' print.
+  ]
+}

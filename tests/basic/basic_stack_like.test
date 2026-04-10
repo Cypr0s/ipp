@@ -1,0 +1,38 @@
+*** Simulate a two-slot stack using instance attributes
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Stack2 : Object {
+  init [|
+    _ := self top: nil.
+    _ := self second: nil.
+    _ := self size: 0.
+    _ := self.
+  ]
+  push: [ :val |
+    _ := self second: (self top).
+    _ := self top: val.
+    _ := self size: ((self size) plus: 1).
+    _ := self.
+  ]
+  pop [|
+    val := self top.
+    _ := self top: (self second).
+    _ := self second: nil.
+    _ := self size: ((self size) minus: 1).
+    _ := val.
+  ]
+}
+
+class Main : Object {
+  run [|
+    s := Stack2 new.
+    _ := s init.
+    _ := s push: 10.
+    _ := s push: 20.
+    _ := ((s pop) asString) print.
+    _ := ((s pop) asString) print.
+  ]
+}

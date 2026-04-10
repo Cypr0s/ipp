@@ -1,0 +1,28 @@
+*** Check if a string is a palindrome
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+  run [|
+    _ := ((self isPalindrome: 'racecar') asString) print.
+    _ := ((self isPalindrome: 'hello') asString) print.
+    _ := ((self isPalindrome: 'abba') asString) print.
+  ]
+
+  reverse: [ :s |
+    _ := self result: ''.
+    len := s length.
+    _ := len timesRepeat: [ :i |
+      ch := s startsWith: ((len minus: i) plus: 1) endsBefore: ((len minus: i) plus: 2).
+      _ := self result: ((self result) concatenateWith: ch).
+    ].
+    _ := self result.
+  ]
+
+  isPalindrome: [ :s |
+    r := self reverse: s.
+    _ := s equalTo: r.
+  ]
+}

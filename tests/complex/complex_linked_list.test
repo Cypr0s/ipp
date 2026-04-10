@@ -1,0 +1,58 @@
+*** Linked list: build, traverse, and sum recursively
++++ COMPLEX
+!C! 0
+!I! 0
+>>> 5
+
+class Node : Object {
+  initVal:next: [ :v :n |
+    _ := self val: v.
+    _ := self nxt: n.
+    _ := self.
+  ]
+}
+
+class LinkedList : Object {
+  build: [ :n |
+    _ := self head: nil.
+    _ := n timesRepeat: [ :i |
+      nd := Node new.
+      _ := nd initVal: (n minus: (i minus: 1)) next: (self head).
+      _ := self head: nd.
+    ].
+    _ := self.
+  ]
+
+  printAll [|
+    _ := self cur: (self head).
+    cond := [| _ := ((self cur) isNil) not. ].
+    body := [|
+      _ := (((self cur) val) asString) print.
+      _ := self cur: ((self cur) nxt).
+    ].
+    _ := cond whileTrue: body.
+  ]
+
+  sumAll [|
+    _ := self sumNode: (self head).
+  ]
+
+  sumNode: [ :node |
+    result := (node isNil)
+      ifTrue:  [| _ := 0. ]
+      ifFalse: [|
+        rest := self sumNode: (node nxt).
+        _ := (node val) plus: rest.
+      ].
+  ]
+}
+
+class Main : Object {
+  run [|
+    lst := LinkedList new.
+    _ := lst build: 5.
+    _ := lst printAll.
+    s := lst sumAll.
+    _ := (s asString) print.
+  ]
+}

@@ -1,0 +1,17 @@
+*** Distinguish identity and equality for plain objects and strings
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+  run [|
+    a := Object new.
+    b := Object new.
+    _ := ((a identicalTo: b) asString) print.
+    _ := ((a identicalTo: a) asString) print.
+    s1 := String from: 'hello'.
+    s2 := String from: 'hello'.
+    _ := ((s1 equalTo: s2) asString) print.
+  ]
+}

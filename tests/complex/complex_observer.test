@@ -1,0 +1,50 @@
+*** Observer pattern: event source notifies registered block-observers
++++ COMPLEX
+!C! 0
+!I! 0
+>>> 5
+
+class EventSource : Object {
+  init [|
+    _ := self obs1: nil.
+    _ := self obs2: nil.
+    _ := self obs3: nil.
+    _ := self count: 0.
+    _ := self.
+  ]
+
+  subscribe: [ :blk |
+    _ := ((self count) equalTo: 0)
+      ifTrue:  [| _ := self obs1: blk. ]
+      ifFalse: [|
+        _ := ((self count) equalTo: 1)
+          ifTrue:  [| _ := self obs2: blk. ]
+          ifFalse: [| _ := self obs3: blk. ].
+      ].
+    _ := self count: ((self count) plus: 1).
+  ]
+
+  fire: [ :val |
+    _ := ((self obs1) isNil) ifFalse: [| _ := (self obs1) value: val. ] ifTrue: [| _ := nil. ].
+    _ := ((self obs2) isNil) ifFalse: [| _ := (self obs2) value: val. ] ifTrue: [| _ := nil. ].
+    _ := ((self obs3) isNil) ifFalse: [| _ := (self obs3) value: val. ] ifTrue: [| _ := nil. ].
+  ]
+}
+
+class Main : Object {
+  run [|
+    src := EventSource new.
+    _ := src init.
+
+    prefix := 'got:'.
+    _ := src subscribe: [ :v |
+      _ := (prefix concatenateWith: (v asString)) print.
+    ].
+    _ := src subscribe: [ :v |
+      _ := ((v multiplyBy: 2) asString) print.
+    ].
+
+    _ := src fire: 10.
+    _ := src fire: 21.
+  ]
+}

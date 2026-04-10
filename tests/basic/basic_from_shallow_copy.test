@@ -1,0 +1,22 @@
+*** Object from: creates shallow copy with same attribute values
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Thing : Object {
+  setup [|
+    _ := self val: 10.
+    _ := self.
+  ]
+}
+
+class Main : Object {
+  run [|
+    t1 := Thing new.
+    _ := t1 setup.
+    t2 := Thing from: t1.
+    _ := ((t2 val) asString) print.
+    _ := ((t1 identicalTo: t2) asString) print.
+  ]
+}

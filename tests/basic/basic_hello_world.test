@@ -1,0 +1,11 @@
+*** Simple hello world program
++++ BASIC
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+  run [|
+    _ := 'Hello, World!' print.
+  ]
+}

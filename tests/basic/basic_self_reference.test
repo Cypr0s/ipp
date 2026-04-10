@@ -1,0 +1,22 @@
+*** self reference - method calls another method on self
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Calculator : Object {
+  double: [ :n |
+    _ := n plus: n.
+  ]
+  quadruple: [ :n |
+    _ := self double: (self double: n).
+  ]
+}
+
+class Main : Object {
+  run [|
+    c := Calculator new.
+    _ := ((c double: 5) asString) print.
+    _ := ((c quadruple: 3) asString) print.
+  ]
+}

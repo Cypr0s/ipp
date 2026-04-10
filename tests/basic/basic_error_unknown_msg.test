@@ -1,0 +1,12 @@
+*** Sending unknown message to object causes error 51
++++ BASIC
+!C! 0
+!I! 51
+>>> 1
+
+class Main : Object {
+  run [|
+    x := Object new.
+    _ := x nonExistentMethod.
+  ]
+}

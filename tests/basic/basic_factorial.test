@@ -1,0 +1,21 @@
+*** Compute factorial of 6 recursively
++++ BASIC
+!C! 0
+!I! 0
+>>> 3
+
+class Main : Object {
+  run [|
+    r := self factorial: 6.
+    _ := (r asString) print.
+  ]
+
+  factorial: [ :n |
+    result := (n equalTo: 0)
+      ifTrue:  [| _ := 1. ]
+      ifFalse: [|
+        prev := self factorial: (n minus: 1).
+        _ := n multiplyBy: prev.
+      ].
+  ]
+}

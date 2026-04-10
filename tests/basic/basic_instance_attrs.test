@@ -1,0 +1,22 @@
+*** Instance attributes set and get
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Point : Object {
+  initX:y: [ :px :py |
+    _ := self x: px.
+    _ := self y: py.
+    _ := self.
+  ]
+}
+
+class Main : Object {
+  run [|
+    p := Point new.
+    _ := p initX: 3 y: 4.
+    _ := ((p x) asString) print.
+    _ := ((p y) asString) print.
+  ]
+}

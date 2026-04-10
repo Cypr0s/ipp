@@ -1,0 +1,21 @@
+*** Find the minimum of three numbers
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+  run [|
+    _ := ((self min: 7 with: 3 and: 9) asString) print.
+    _ := ((self min: 10 with: 10 and: 5) asString) print.
+  ]
+
+  min:with:and: [ :a :b :c |
+    ab := (a greaterThan: b)
+      ifTrue:  [| _ := b. ]
+      ifFalse: [| _ := a. ].
+    result := (ab greaterThan: c)
+      ifTrue:  [| _ := c. ]
+      ifFalse: [| _ := ab. ].
+  ]
+}

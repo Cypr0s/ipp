@@ -1,0 +1,22 @@
+*** Recursive countdown using a method
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+  run [|
+    _ := self countdown: 5.
+  ]
+
+  countdown: [ :n |
+    _ := (n greaterThan: 0)
+      ifTrue: [|
+        _ := (n asString) print.
+        _ := self countdown: (n minus: 1).
+      ]
+      ifFalse: [|
+        _ := 'done' print.
+      ].
+  ]
+}

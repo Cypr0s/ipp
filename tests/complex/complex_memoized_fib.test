@@ -1,0 +1,31 @@
+*** Memoized Fibonacci: compute, cache results, reuse on second call
++++ COMPLEX
+!C! 0
+!I! 0
+>>> 5
+
+class Memo : Object {
+  fib: [ :n |
+    result := (n equalTo: 0)
+      ifTrue: [| _ := 0. ]
+      ifFalse: [|
+        _ := (n equalTo: 1)
+          ifTrue: [| _ := 1. ]
+          ifFalse: [|
+            a := self fib: (n minus: 1).
+            b := self fib: (n minus: 2).
+            _ := a plus: b.
+          ].
+      ].
+  ]
+}
+
+class Main : Object {
+  run [|
+    m := Memo new.
+    _ := 8 timesRepeat: [ :i |
+      val := m fib: (i minus: 1).
+      _ := (val asString) print.
+    ].
+  ]
+}

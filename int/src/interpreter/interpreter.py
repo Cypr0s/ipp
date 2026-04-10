@@ -460,8 +460,8 @@ class Interpreter:
 
         if not receiver.cls.is_subclass("Block"):
             # add self and super into scope
-            self.scope.set_variable("self", receiver)
-            self.scope.set_variable("super", receiver)
+            self.scope.set_parameter("self", receiver)
+            self.scope.set_parameter("super", receiver)
 
         # exec block
         logger.info(f"executing block, method:{method.selector} class_ctx:{class_ctx.get_name()}")
@@ -603,19 +603,6 @@ class Interpreter:
             error_code=ErrorCode.SEM_UNDEF,
             message=f"Calling undefined literal class `{literal.class_id}`",
         )
-
-"""
-This module contains definitions of builtin class methods and methods
-
-Author: Kristian Luptak <xluptak00@stud.fit.vut.cz>
-"""
-
-from interpreter.error_codes import ErrorCode
-from interpreter.exceptions import InterpreterError
-from interpreter.input_model import Block
-from interpreter.interpreter import Interpreter
-from interpreter.runtime_model import SolClass, SolMethod, SolObject
-
 
 class ObjectBuiltin:
     """
@@ -845,11 +832,9 @@ class IntegerBuiltin:
         """
         target: SolObject = args[0]
         receiver_intern_val: str | int | None = receiver.get_intern_value()
-        target_intern_val:  str | int | None = target.get_intern_value()
+        target_intern_val: str | int | None = target.get_intern_value()
 
-        if not isinstance(receiver_intern_val, int) or not isinstance(
-            target_intern_val, int
-        ):
+        if not isinstance(receiver_intern_val, int) or not isinstance(target_intern_val, int):
             raise InterpreterError(
                 error_code=ErrorCode.INT_INVALID_ARG,
                 message=f"`greaterThan: {target.get_cls().get_name()}`\
@@ -869,11 +854,9 @@ class IntegerBuiltin:
         """
         target: SolObject = args[0]
         receiver_intern_val: str | int | None = receiver.get_intern_value()
-        target_intern_val:  str | int | None = target.get_intern_value()
+        target_intern_val: str | int | None = target.get_intern_value()
 
-        if not isinstance(receiver_intern_val, int) or not isinstance(
-            target_intern_val, int
-        ):
+        if not isinstance(receiver_intern_val, int) or not isinstance(target_intern_val, int):
             raise InterpreterError(
                 error_code=ErrorCode.INT_INVALID_ARG,
                 message=f"`plus: {target.get_cls().get_name()}` is not class/subclass of Integer",
@@ -892,11 +875,9 @@ class IntegerBuiltin:
 
         target: SolObject = args[0]
         receiver_intern_val: str | int | None = receiver.get_intern_value()
-        target_intern_val:  str | int | None = target.get_intern_value()
+        target_intern_val: str | int | None = target.get_intern_value()
 
-        if not isinstance(receiver_intern_val, int) or not isinstance(
-            target_intern_val, int
-        ):
+        if not isinstance(receiver_intern_val, int) or not isinstance(target_intern_val, int):
             raise InterpreterError(
                 error_code=ErrorCode.INT_INVALID_ARG,
                 message=f"`minus: {target.get_cls().get_name()}` is not class/subclass of Integer",
@@ -914,11 +895,9 @@ class IntegerBuiltin:
         """
         target: SolObject = args[0]
         receiver_intern_val: str | int | None = receiver.get_intern_value()
-        target_intern_val:  str | int | None = target.get_intern_value()
+        target_intern_val: str | int | None = target.get_intern_value()
 
-        if not isinstance(receiver_intern_val, int) or not isinstance(
-            target_intern_val, int
-        ):
+        if not isinstance(receiver_intern_val, int) or not isinstance(target_intern_val, int):
             raise InterpreterError(
                 error_code=ErrorCode.INT_INVALID_ARG,
                 message=f"`multiplyBy: {target.get_cls().get_name()}`\
@@ -937,11 +916,9 @@ class IntegerBuiltin:
         """
         target: SolObject = args[0]
         receiver_intern_val: str | int | None = receiver.get_intern_value()
-        target_intern_val:  str | int | None = target.get_intern_value()
+        target_intern_val: str | int | None = target.get_intern_value()
 
-        if not isinstance(receiver_intern_val, int) or not isinstance(
-            target_intern_val, int
-        ):
+        if not isinstance(receiver_intern_val, int) or not isinstance(target_intern_val, int):
             raise InterpreterError(
                 error_code=ErrorCode.INT_INVALID_ARG,
                 message=f"`divBy: {target.get_cls().get_name()}` is not class/subclass of Integer",
@@ -1099,11 +1076,9 @@ class StringBuiltin:
         """
         target: SolObject = args[0]
         receiver_intern_val: str | int | None = receiver.get_intern_value()
-        target_intern_val:  str | int | None =target.get_intern_value()
+        target_intern_val: str | int | None = target.get_intern_value()
 
-        if not isinstance(target_intern_val, str) or not isinstance(
-            receiver_intern_val, str
-        ):
+        if not isinstance(target_intern_val, str) or not isinstance(receiver_intern_val, str):
             return interpreter.scope.get_object("nil")
 
         val: str = receiver_intern_val + target_intern_val
@@ -1122,26 +1097,25 @@ class StringBuiltin:
         starts_with: SolObject = args[0]
         ends_before: SolObject = args[1]
         starts_with_intern_val: str | int | None = starts_with.get_intern_value()
-        end_before_intern_val:  str | int | None = ends_before.get_intern_value()
+        ends_before_intern_val: str | int | None = ends_before.get_intern_value()
         receiver_intern_val: str | int | None = receiver.get_intern_value()
 
         if not isinstance(starts_with_intern_val, int) or not isinstance(
-            end_before_intern_val, int
+            ends_before_intern_val, int
         ):
             return interpreter.scope.get_object("nil")
 
-        if starts_with_intern_val <= 0 or end_before_intern_val <= 0:
+        if starts_with_intern_val <= 0 or ends_before_intern_val <= 0:
             return interpreter.scope.get_object("nil")
 
-        if end_before_intern_val - starts_with_intern_val <= 0:
+        if ends_before_intern_val - starts_with_intern_val <= 0:
             return SolObject(interpreter.classes["String"], "")
 
         if not isinstance(receiver_intern_val, str):
             return interpreter.scope.get_object("nil")
 
-        val: str = receiver_intern_val[
-            starts_with_intern_val - 1 : end_before_intern_val - 1
-        ]
+        end: int = min(ends_before_intern_val - 1, len(receiver_intern_val))
+        val: str = receiver_intern_val[starts_with_intern_val - 1 : end]
         return SolObject(interpreter.classes["String"], val)
 
     @staticmethod

@@ -1,0 +1,16 @@
+*** Read multiple lines and process each
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+  run [|
+    _ := self total: 0.
+    _ := 3 timesRepeat: [ :i |
+      n := (String read) asInteger.
+      _ := self total: ((self total) plus: n).
+    ].
+    _ := ((self total) asString) print.
+  ]
+}

@@ -5,7 +5,7 @@
 
 #------------------check--------------------
 
-FROM python:3.14-slim as check
+FROM python:3.14-slim AS check
 
 # install php 8.5
 RUN apt-get update && apt-get install -y lsb-release ca-certificates curl && \
@@ -31,8 +31,6 @@ ENTRYPOINT ["/bin/bash"]
 
 FROM python:3.14-slim AS runtime
 
-# copy SRC files
-COPY ./int/src/ /int/src/
 
 # copy interpreter requirements
 COPY ./int/pyproject.toml /tools/
@@ -40,6 +38,10 @@ COPY ./int/pyproject.toml /tools/
 # install dependencies
 RUN pip install --upgrade pip
 RUN pip install "/tools/[dev]"
+
+
+# copy SRC files
+COPY ./int/src/ /int/src/
 
 #run interpreter entry point
 ENTRYPOINT ["python3", "/int/src/solint.py" ]
@@ -59,15 +61,18 @@ RUN apt-get update && apt-get install -y lsb-release ca-certificates curl && \
     > /etc/apt/sources.list.d/php.sources && \
     apt-get update && apt-get install -y php8.5 php8.5-xml
 
-# move python pip dependencies
-COPY ./tester/sol2xml/requirements.txt /tools/
+
 
 #install python pip dependencies
 # needed for xml
-RUN apt-get update && apt-get install -y libxml2-dev libxslt1-dev gcc zlib1g-dev
+RUN apt-get install -y libxml2-dev libxslt1-dev gcc zlib1g-dev
+
+# move python pip dependencies
+COPY ./tester/sol2xml/requirements.txt /tools/
+
 # pip install
 RUN pip install --upgrade pip
-RUN pip install -r ./tools/requirements.txt 
+RUN pip install -r /tools/requirements.txt 
 
 # copy parser into image
 COPY ./tester/sol2xml/sol_to_xml.py /tester/sol2xml/

@@ -1,0 +1,36 @@
+*** Check if numbers are prime
++++ BASIC
+!C! 0
+!I! 0
+>>> 3
+
+class Main : Object {
+  run [|
+    _ := ((self isPrime: 2) asString) print.
+    _ := ((self isPrime: 7) asString) print.
+    _ := ((self isPrime: 9) asString) print.
+    _ := ((self isPrime: 13) asString) print.
+    _ := ((self isPrime: 1) asString) print.
+  ]
+
+  isPrime: [ :n |
+    result := (n greaterThan: 1)
+      ifTrue: [|
+        _ := self found: false.
+        _ := self i: 2.
+        cond := [|
+          tooLarge := (self i) multiplyBy: (self i).
+          _ := ((tooLarge greaterThan: n) or: [| _ := self found. ]) not.
+        ].
+        body := [|
+          rem := n minus: ((n divBy: (self i)) multiplyBy: (self i)).
+          isDiv := rem equalTo: 0.
+          _ := isDiv ifTrue: [| _ := self found: true. ] ifFalse: [| _ := nil. ].
+          _ := self i: ((self i) plus: 1).
+        ].
+        _ := cond whileTrue: body.
+        _ := (self found) not.
+      ]
+      ifFalse: [| _ := false. ].
+  ]
+}

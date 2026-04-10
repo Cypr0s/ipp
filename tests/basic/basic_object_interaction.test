@@ -1,0 +1,31 @@
+*** Two objects interact - one stores result from the other
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Adder : Object {
+  add:to: [ :a :b |
+    _ := a plus: b.
+  ]
+}
+
+class Logger : Object {
+  log: [ :val |
+    _ := self last: val.
+    _ := (val asString) print.
+  ]
+  lastValue [|
+    _ := self last.
+  ]
+}
+
+class Main : Object {
+  run [|
+    adder := Adder new.
+    logger := Logger new.
+    _ := logger log: (adder add: 10 to: 32).
+    _ := logger log: (adder add: 100 to: 23).
+    _ := ((logger lastValue) asString) print.
+  ]
+}

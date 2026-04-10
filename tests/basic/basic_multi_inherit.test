@@ -1,0 +1,34 @@
+*** Three-level inheritance chain
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class A : Object {
+  whoAmI [|
+    _ := 'A' print.
+  ]
+  shared [|
+    _ := 'from A' print.
+  ]
+}
+
+class B : A {
+  whoAmI [|
+    _ := 'B' print.
+  ]
+}
+
+class C : B {
+  whoAmI [|
+    _ := 'C' print.
+  ]
+}
+
+class Main : Object {
+  run [|
+    c := C new.
+    _ := c whoAmI.
+    _ := c shared.
+  ]
+}

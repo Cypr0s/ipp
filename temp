@@ -1,125 +1,23 @@
-<program language="SOL26" description="B dědí z A, redefinuje metodu m">
-  <class name="A" parent="Object">
-    <method selector="m:">
-      <block arity="1">
-        <parameter order="1" name="x"/>
-        <assign order="1">
-          <var name="_"/>
-          <expr>
-            <send selector="print">
-              <expr>
-                <var name="x"/>
-              </expr>
-            </send>
-          </expr>
-        </assign>
-      </block>
-    </method>
-    <method selector="r">
-      <block arity="0">
-        <assign order="1">
-          <var name="_"/>
-          <expr>
-            <send selector="print">
-              <expr>
-                <var name="self"/>
-              </expr>
-            </send>
-          </expr>
-        </assign>
-      </block>
-    </method>
-  </class>
-  <class name="B" parent="A">
-    <method selector="m:">
-      <block arity="1">
-        <parameter order="1" name="x"/>
-        <assign order="1">
-          <var name="_"/>
-          <expr>
-            <send selector="m:">
-              <expr>
-                <var name="super"/>
-              </expr>
-              <arg order="1">
-                <expr>
-                  <literal class="String" value="ahoj"/>
-                </expr>
-              </arg>
-            </send>
-          </expr>
-        </assign>
-        <assign order="2">
-          <var name="_"/>
-          <expr>
-            <send selector="print">
-              <expr>
-                <var name="x"/>
-              </expr>
-            </send>
-          </expr>
-        </assign>
-      </block>
-    </method>
-  </class>
-  <class name="C" parent="B">
-    <method selector="u">
-      <block arity="0">
-        <assign order="1">
-          <var name="_"/>
-          <expr>
-            <send selector="m:">
-              <expr>
-                <var name="self"/>
-              </expr>
-              <arg order="1">
-                <expr>
-                  <var name="super"/>
-                </expr>
-              </arg>
-            </send>
-          </expr>
-        </assign>
-      </block>
-    </method>
-    <method selector="print">
-      <block arity="0">
-        <assign order="1">
-          <var name="_"/>
-          <expr>
-            <send selector="print">
-              <expr>
-                <literal class="String" value="bar"/>
-              </expr>
-            </send>
-          </expr>
-        </assign>
-      </block>
-    </method>
-  </class>
+<program language="SOL26">
   <class name="Main" parent="Object">
     <method selector="run">
       <block arity="0">
         <assign order="1">
-          <var name="c"/>
+          <var name="s"/>
           <expr>
-            <send selector="new">
-              <expr>
-                <literal class="class" value="C"/>
-              </expr>
-            </send>
+            <literal class="String" value="hello"/>
           </expr>
         </assign>
         <assign order="2">
-          <var name="_"/>
+          <var name="r"/>
           <expr>
-            <send selector="m:">
+            <send selector="reverse:">
               <expr>
-                <var name="c"/>
+                <var name="self"/>
               </expr>
               <arg order="1">
                 <expr>
-                  <literal class="String" value="foo"/>
+                  <var name="s"/>
                 </expr>
               </arg>
             </send>
@@ -128,19 +26,150 @@
         <assign order="3">
           <var name="_"/>
           <expr>
-            <send selector="u">
+            <send selector="print">
               <expr>
-                <var name="c"/>
+                <var name="r"/>
               </expr>
+            </send>
+          </expr>
+        </assign>
+      </block>
+    </method>
+    <method selector="reverse:">
+      <block arity="1">
+        <parameter order="1" name="s"/>
+        <assign order="1">
+          <var name="_"/>
+          <expr>
+            <send selector="result:">
+              <expr>
+                <var name="self"/>
+              </expr>
+              <arg order="1">
+                <expr>
+                  <literal class="String" value=""/>
+                </expr>
+              </arg>
+            </send>
+          </expr>
+        </assign>
+        <assign order="2">
+          <var name="len"/>
+          <expr>
+            <send selector="length">
+              <expr>
+                <var name="s"/>
+              </expr>
+            </send>
+          </expr>
+        </assign>
+        <assign order="3">
+          <var name="_"/>
+          <expr>
+            <send selector="timesRepeat:">
+              <expr>
+                <var name="len"/>
+              </expr>
+              <arg order="1">
+                <expr>
+                  <block arity="1">
+                    <parameter order="1" name="i"/>
+                    <assign order="1">
+                      <var name="ch"/>
+                      <expr>
+                        <send selector="startsWith:endsBefore:">
+                          <expr>
+                            <var name="s"/>
+                          </expr>
+                          <arg order="1">
+                            <expr>
+                              <send selector="plus:">
+                                <expr>
+                                  <send selector="minus:">
+                                    <expr>
+                                      <var name="len"/>
+                                    </expr>
+                                    <arg order="1">
+                                      <expr>
+                                        <var name="i"/>
+                                      </expr>
+                                    </arg>
+                                  </send>
+                                </expr>
+                                <arg order="1">
+                                  <expr>
+                                    <literal class="Integer" value="1"/>
+                                  </expr>
+                                </arg>
+                              </send>
+                            </expr>
+                          </arg>
+                          <arg order="2">
+                            <expr>
+                              <send selector="plus:">
+                                <expr>
+                                  <send selector="minus:">
+                                    <expr>
+                                      <var name="len"/>
+                                    </expr>
+                                    <arg order="1">
+                                      <expr>
+                                        <var name="i"/>
+                                      </expr>
+                                    </arg>
+                                  </send>
+                                </expr>
+                                <arg order="1">
+                                  <expr>
+                                    <literal class="Integer" value="2"/>
+                                  </expr>
+                                </arg>
+                              </send>
+                            </expr>
+                          </arg>
+                        </send>
+                      </expr>
+                    </assign>
+                    <assign order="2">
+                      <var name="_"/>
+                      <expr>
+                        <send selector="result:">
+                          <expr>
+                            <var name="self"/>
+                          </expr>
+                          <arg order="1">
+                            <expr>
+                              <send selector="concatenateWith:">
+                                <expr>
+                                  <var name="ch"/>
+                                </expr>
+                                <arg order="1">
+                                  <expr>
+                                    <send selector="result">
+                                      <expr>
+                                        <var name="self"/>
+                                      </expr>
+                                    </send>
+                                  </expr>
+                                </arg>
+                              </send>
+                            </expr>
+                          </arg>
+                        </send>
+                      </expr>
+                    </assign>
+                  </block>
+                </expr>
+              </arg>
             </send>
           </expr>
         </assign>
         <assign order="4">
           <var name="_"/>
           <expr>
-            <send selector="r">
+            <send selector="result">
               <expr>
-                <var name="c"/>
+                <var name="self"/>
               </expr>
             </send>
           </expr>

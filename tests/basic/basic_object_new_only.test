@@ -1,0 +1,17 @@
+*** Class with no methods uses inherited Object methods
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Empty : Object {
+}
+
+class Main : Object {
+  run [|
+    e := Empty new.
+    _ := ((e isNil) asString) print.
+    _ := ((e isNumber) asString) print.
+    _ := ((e identicalTo: e) asString) print.
+  ]
+}

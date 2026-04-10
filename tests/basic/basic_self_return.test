@@ -1,0 +1,28 @@
+*** Methods return self to allow sequential configuration
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Builder : Object {
+  setA: [ :v |
+    _ := self a: v.
+    _ := self.
+  ]
+  setB: [ :v |
+    _ := self b: v.
+    _ := self.
+  ]
+  build [|
+    _ := (((self a) plus: (self b)) asString) print.
+  ]
+}
+
+class Main : Object {
+  run [|
+    bld := Builder new.
+    _ := bld setA: 10.
+    _ := bld setB: 32.
+    _ := bld build.
+  ]
+}

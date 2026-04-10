@@ -1,0 +1,28 @@
+*** User class redefines equalTo: to compare by attribute
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class NamedThing : Object {
+  name: [ :n |
+    _ := self nm: n.
+    _ := self.
+  ]
+  equalTo: [ :other |
+    _ := (self nm) equalTo: (other nm).
+  ]
+}
+
+class Main : Object {
+  run [|
+    a := NamedThing new.
+    _ := a name: 'alice'.
+    b := NamedThing new.
+    _ := b name: 'alice'.
+    c := NamedThing new.
+    _ := c name: 'bob'.
+    _ := ((a equalTo: b) asString) print.
+    _ := ((a equalTo: c) asString) print.
+  ]
+}

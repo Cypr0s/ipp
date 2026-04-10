@@ -1,0 +1,15 @@
+*** Sum integers from 1 to 100
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+  run [|
+    _ := self total: 0.
+    _ := 100 timesRepeat: [ :i |
+      _ := self total: ((self total) plus: i).
+    ].
+    _ := ((self total) asString) print.
+  ]
+}

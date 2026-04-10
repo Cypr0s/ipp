@@ -1,0 +1,28 @@
+*** Pass an object as argument to a method
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Box : Object {
+  value: [ :v |
+    _ := self val: v.
+    _ := self.
+  ]
+  value [|
+    _ := self val.
+  ]
+}
+
+class Main : Object {
+  run [|
+    b := Box new.
+    _ := b value: 99.
+    _ := self printBox: b.
+  ]
+
+  printBox: [ :box |
+    v := box value.
+    _ := (v asString) print.
+  ]
+}

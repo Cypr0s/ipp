@@ -1,0 +1,15 @@
+*** Build a string by repeated concatenation
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+  run [|
+    result := ''.
+    _ := 5 timesRepeat: [ :i |
+      result := result concatenateWith: (i asString).
+    ].
+    _ := result print.
+  ]
+}

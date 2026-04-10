@@ -1,0 +1,25 @@
+*** Compute GCD using Euclidean algorithm
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+  run [|
+    _ := ((self gcd: 48 with: 18) asString) print.
+    _ := ((self gcd: 100 with: 75) asString) print.
+  ]
+
+  gcd:with: [ :a :b |
+    _ := self x: a.
+    _ := self y: b.
+    cond := [| r := (self y) greaterThan: 0. ].
+    body := [|
+      tmp := self y.
+      _ := self y: ((self x) minus: (((self x) divBy: (self y)) multiplyBy: (self y))).
+      _ := self x: tmp.
+    ].
+    _ := cond whileTrue: body.
+    _ := self x.
+  ]
+}

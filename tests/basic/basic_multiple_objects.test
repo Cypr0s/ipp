@@ -1,0 +1,34 @@
+*** Create multiple independent objects with their own state
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Counter : Object {
+  init [|
+    _ := self count: 0.
+    _ := self.
+  ]
+  increment [|
+    _ := self count: ((self count) plus: 1).
+    _ := self.
+  ]
+  value [|
+    _ := self count.
+  ]
+}
+
+class Main : Object {
+  run [|
+    a := Counter new.
+    b := Counter new.
+    _ := a init.
+    _ := b init.
+    _ := a increment.
+    _ := a increment.
+    _ := a increment.
+    _ := b increment.
+    _ := ((a value) asString) print.
+    _ := ((b value) asString) print.
+  ]
+}

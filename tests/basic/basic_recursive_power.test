@@ -1,0 +1,21 @@
+*** Compute 2^n recursively
++++ BASIC
+!C! 0
+!I! 0
+>>> 3
+
+class Main : Object {
+  run [|
+    _ := ((self pow: 2 n: 8) asString) print.
+    _ := ((self pow: 2 n: 0) asString) print.
+    _ := ((self pow: 3 n: 3) asString) print.
+  ]
+
+  pow:n: [ :base :n |
+    result := (n equalTo: 0)
+      ifTrue:  [| _ := 1. ]
+      ifFalse: [|
+        _ := base multiplyBy: (self pow: base n: (n minus: 1)).
+      ].
+  ]
+}

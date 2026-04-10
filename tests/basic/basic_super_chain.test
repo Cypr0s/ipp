@@ -1,0 +1,30 @@
+*** Super call chains through three levels
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class A : Object {
+  greet [| _ := 'A' print. ]
+}
+
+class B : A {
+  greet [|
+    _ := super greet.
+    _ := 'B' print.
+  ]
+}
+
+class C : B {
+  greet [|
+    _ := super greet.
+    _ := 'C' print.
+  ]
+}
+
+class Main : Object {
+  run [|
+    c := C new.
+    _ := c greet.
+  ]
+}

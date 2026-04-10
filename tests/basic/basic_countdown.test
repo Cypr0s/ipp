@@ -1,0 +1,17 @@
+*** Print countdown from 5 to 1
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+  run [|
+    _ := self n: 5.
+    cond := [| r := (self n) greaterThan: 0. ].
+    body := [|
+      _ := ((self n) asString) print.
+      _ := self n: ((self n) minus: 1).
+    ].
+    _ := cond whileTrue: body.
+  ]
+}

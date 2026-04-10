@@ -1,0 +1,14 @@
+*** Read two numbers from stdin and print their sum
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+  run [|
+    a := (String read) asInteger.
+    b := (String read) asInteger.
+    s := a plus: b.
+    _ := (s asString) print.
+  ]
+}

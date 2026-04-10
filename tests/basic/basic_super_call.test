@@ -1,0 +1,25 @@
+*** super calls parent method from overriding method
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Base : Object {
+  greet [|
+    _ := 'Hello from Base' print.
+  ]
+}
+
+class Child : Base {
+  greet [|
+    _ := super greet.
+    _ := 'Hello from Child' print.
+  ]
+}
+
+class Main : Object {
+  run [|
+    c := Child new.
+    _ := c greet.
+  ]
+}

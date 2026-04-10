@@ -1,0 +1,22 @@
+*** Sum even numbers from 2 to 20 using whileTrue:
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+  run [|
+    _ := self i: 2.
+    _ := self total: 0.
+    cond := [|
+      over := (self i) greaterThan: 20.
+      _ := over not.
+    ].
+    body := [|
+      _ := self total: ((self total) plus: (self i)).
+      _ := self i: ((self i) plus: 2).
+    ].
+    _ := cond whileTrue: body.
+    _ := ((self total) asString) print.
+  ]
+}

@@ -1,0 +1,12 @@
+*** Read a line and echo it back
++++ BASIC
+!C! 0
+!I! 0
+>>> 1
+
+class Main : Object {
+  run [|
+    s := String read.
+    _ := s print.
+  ]
+}

@@ -1,0 +1,14 @@
+*** Read two strings, print whether they are equal
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+  run [|
+    a := String read.
+    b := String read.
+    r := a equalTo: b.
+    _ := (r asString) print.
+  ]
+}

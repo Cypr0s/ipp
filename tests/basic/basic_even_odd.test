@@ -1,0 +1,17 @@
+*** Print even or odd for numbers 1 to 6
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+  run [|
+    _ := 6 timesRepeat: [ :i |
+      isEven := (i minus: ((i divBy: 2) multiplyBy: 2)) equalTo: 0.
+      label := isEven
+        ifTrue:  [| _ := 'even'. ]
+        ifFalse: [| _ := 'odd'. ].
+      _ := label print.
+    ].
+  ]
+}

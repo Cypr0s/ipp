@@ -1,0 +1,22 @@
+*** Read n from stdin and print n!
++++ BASIC
+!C! 0
+!I! 0
+>>> 3
+
+class Main : Object {
+  run [|
+    n := (String read) asInteger.
+    r := self factorial: n.
+    _ := (r asString) print.
+  ]
+
+  factorial: [ :n |
+    result := (n equalTo: 0)
+      ifTrue:  [| _ := 1. ]
+      ifFalse: [|
+        prev := self factorial: (n minus: 1).
+        _ := n multiplyBy: prev.
+      ].
+  ]
+}

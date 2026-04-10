@@ -1,0 +1,20 @@
+*** Check for nil before using a value
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+  run [|
+    _ := self printOrNil: 42.
+    _ := self printOrNil: nil.
+    _ := self printOrNil: 'hello'.
+  ]
+
+  printOrNil: [ :val |
+    isNilVal := val isNil.
+    _ := isNilVal
+      ifTrue:  [| _ := 'nil value' print. ]
+      ifFalse: [| _ := (val asString) print. ].
+  ]
+}

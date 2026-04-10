@@ -1,0 +1,38 @@
+*** Process multiple input lines: length + palindrome check + total chars
++++ COMPLEX
+!C! 0
+!I! 0
+>>> 5
+
+class StringUtils : Object {
+  reverse: [ :s |
+    _ := self r: ''.
+    len := s length.
+    _ := len timesRepeat: [ :i |
+      ch := s startsWith: ((len minus: i) plus: 1) endsBefore: ((len minus: i) plus: 2).
+      _ := self r: (ch concatenateWith: (self r)).
+    ].
+    _ := self r.
+  ]
+
+  isPalindrome: [ :s |
+    rev := self reverse: s.
+    _ := s equalTo: rev.
+  ]
+}
+
+class Main : Object {
+  run [|
+    util := StringUtils new.
+    _ := self total: 0.
+    _ := 3 timesRepeat: [ :i |
+      line := String read.
+      len := line length.
+      _ := self total: ((self total) plus: len).
+      isPalin := util isPalindrome: line.
+      _ := (len asString) print.
+      _ := (isPalin asString) print.
+    ].
+    _ := ((self total) asString) print.
+  ]
+}

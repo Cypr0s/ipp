@@ -1,0 +1,19 @@
+*** Method returns a block (closure) that captures the argument
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Main : Object {
+  run [|
+    adder5  := self makeAdder: 5.
+    adder10 := self makeAdder: 10.
+    _ := ((adder5 value: 3) asString) print.
+    _ := ((adder10 value: 3) asString) print.
+    _ := ((adder5 value: 7) asString) print.
+  ]
+
+  makeAdder: [ :n |
+    _ := [ :x | _ := x plus: n. ].
+  ]
+}

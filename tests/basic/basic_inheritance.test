@@ -1,0 +1,30 @@
+*** Basic single inheritance - subclass overrides method
++++ BASIC
+!C! 0
+!I! 0
+>>> 2
+
+class Animal : Object {
+  speak [|
+    _ := 'some sound' print.
+  ]
+  name [|
+    _ := 'Animal' print.
+  ]
+}
+
+class Dog : Animal {
+  speak [|
+    _ := 'Woof!' print.
+  ]
+}
+
+class Main : Object {
+  run [|
+    a := Animal new.
+    d := Dog new.
+    _ := a speak.
+    _ := d speak.
+    _ := d name.
+  ]
+}
