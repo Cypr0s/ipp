@@ -4,3 +4,17 @@
 \contentsline {subsection}{\numberline {2.1}Sémantická analýza}{2}{subsection.2.1}%
 \contentsline {subsection}{\numberline {2.2}Príprava prostredia na Interpretáciu}{2}{subsection.2.2}%
 \contentsline {subsection}{\numberline {2.3}Vyhodnocovanie Programu}{2}{subsection.2.3}%
+\contentsline {section}{\numberline {3}UML diagram}{3}{section.3}%
+\contentsline {section}{\numberline {4}Dátove štruktúry a Triedy}{4}{section.4}%
+\contentsline {subsection}{\numberline {4.1}\textit {Dátová} Trieda Solclass}{4}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}\textit {Dátová} Trieda SolMethod}{4}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}\textit {Dátová} Trieda SolObject}{4}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Trieda Scope}{4}{subsection.4.4}%
+\contentsline {subsection}{\numberline {4.5}Vstavané Triedy}{4}{subsection.4.5}%
+\contentsline {section}{\numberline {5}Návrhové vzory OOP}{4}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Intepreter pattern}{4}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Singleton}{4}{subsection.5.2}%
+\contentsline {section}{\numberline {6}Problémy pri riešení projektu}{5}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Ako spracovávať blok}{5}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Vyhodnocovanie self a super}{5}{subsection.6.2}%
+\contentsline {section}{\numberline {7}Použitie AI nástrojov}{5}{section.7}%

@@ -336,8 +336,8 @@ class Interpreter:
         # class method
         if isinstance(receiver, SolClass):
             method = receiver.get_class_method(selector)
-
-            if not callable(method.function):
+            function: object = method.get_function()
+            if not callable(function):
                 raise InterpreterError(
                     error_code=ErrorCode.GENERAL_OTHER,
                     message="Builtin cls method function is not callable",
@@ -345,14 +345,14 @@ class Interpreter:
 
             self.check_arity(method, arg_count)
             logger.info(f"sending message:{receiver.get_name()} selector:{selector}")
-            ret_val: SolObject = method.function(self, receiver, arguments, class_ctx)
+            ret_val: SolObject = function(self, receiver, arguments, class_ctx)
             return ret_val
 
         # block invocation
         method = receiver.instance_method.get(selector)
         if method is not None:
             self.check_arity(method, arg_count)
-            return self.method_call(receiver, method, arguments, method.cls)
+            return self.method_call(receiver, method, arguments, method.get_cls())
 
         # handle default ref and self
         if send_type == "default_reference" or send_type == "self":
@@ -412,7 +412,7 @@ class Interpreter:
 
         self.check_arity(method, arg_count)
         logger.info(f"sending message:{receiver.get_cls().get_name()} selector:{selector}")
-        return self.method_call(receiver, method, arguments, method.cls)
+        return self.method_call(receiver, method, arguments, method.get_cls())
 
     def method_call(
         self,
@@ -430,13 +430,14 @@ class Interpreter:
         return_value: SolObject
 
         # builtin method
-        if method.is_builtin:
-            if not callable(method.function):
+        if method.get_is_builtin():
+            function: object = method.get_function()
+            if not callable(function):
                 raise InterpreterError(
                     error_code=ErrorCode.GENERAL_OTHER,
                     message="Builtin method function is not callable",
                 )
-            return_value = method.function(self, receiver, arguments, class_ctx)
+            return_value = function(self, receiver, arguments, class_ctx)
             return return_value
         new_scope: Scope
         # create scope
@@ -445,7 +446,8 @@ class Interpreter:
         else:
             new_scope = Scope(self.scope)
 
-        if not isinstance(method.function, Block):
+        block: Block = method.get_function()
+        if not isinstance(block, Block):
             raise InterpreterError(
                 error_code=ErrorCode.GENERAL_OTHER, message="Trying to execute non-block method"
             )
@@ -456,7 +458,7 @@ class Interpreter:
         # set parameters into scope
         arg_count: int = len(arguments)
         for i in range(arg_count):
-            self.scope.set_parameter(method.function.parameters[i].name, arguments[i])
+            self.scope.set_parameter(block.parameters[i].name, arguments[i])
 
         if not receiver.cls.is_subclass("Block"):
             # add self and super into scope
@@ -464,8 +466,8 @@ class Interpreter:
             self.scope.set_parameter("super", receiver)
 
         # exec block
-        logger.info(f"executing block, method:{method.selector} class_ctx:{class_ctx.get_name()}")
-        return_value = self.execute_block(method.function.assigns, class_ctx)
+        logger.info(f"executing block, method:{method.get_selector()} class_ctx:{class_ctx.get_name()}")
+        return_value = self.execute_block(method.get_function().assigns, class_ctx)
 
         self.scope = parent_scope
         return return_value

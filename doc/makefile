@@ -3,8 +3,8 @@ PROJ=dokumentace
 
 
 $(PROJ).pdf: $(PROJ).tex
-	pdflatex -interaction=nonstopmode $(PROJ).tex
-	pdflatex -interaction=nonstopmode $(PROJ).tex
+	pdflatex $(PROJ).tex
+	pdflatex $(PROJ).tex
 
 clean:
 	rm -f $(PROJ).aux $(PROJ).dvi $(PROJ).log $(PROJ).ps $(PROJ).out
