@@ -111,7 +111,21 @@
         Tento vzor umožňuje porovnávanie objektov pomocou \texttt{identical\_to}.
 
         \newpage
-    \section{Problémy pri riešení projektu}
+
+    \section{Rozšírenia Interpretera}
+        \subsection{Modifikátory prístupu}
+        Modifikátory prístupu by mohli byť implementované pridaním nového atribútu do triedy SolMethod, ktorý by určoval typ metódy(\texttt{public}, \texttt{private}, \texttt{protected}).
+        Pri zaslaní správy by sa kontrolovalo aký má metóda typ, v prípade, že je chránená tak by sa kontrolovalo či je príjemca self alebo super.
+        Pri sémantickej analýze by sa konrolovalo, že zdedená metóda nemôže byť menej prístupná ako metóda nadtriedy.
+
+        \subsection{Mechanizmus \texttt{DoesNotUnderstand}}
+        Najskôr by sa musela implementovať vstavaná trieda \texttt{Message}, ktorá dedí z \texttt{Object}. 
+        Trieda by obsahovala atribúty selektor(\texttt{String}) a argumenty(\texttt{list stringov alebo objektov}) a počet argumentov(\texttt{Integer}), ktoré by sa pridali do \texttt{SolObject}. 
+        Následne by sa implementovala vstavaná metóda \texttt{DoesNotUnderstand} v triede \texttt{ObjectBuiltin}, ktorá by vyvolala chybu 51.
+        Nakoniec by sa upravila metóda \texttt{send\_message} v Triede Interpreter, ktorá by pri nájdení chyby vytvorila Objekt typu (\texttt{Message}) so všetkými atribútmy chybovej správy a potom zaslala by správu \texttt{DoesNotUnderstand:} Objektu príjemcu s argumentom \texttt{Message} objektu.
+        Pri zaslaní správy \texttt{"DoesNotUnderstand:"} by sa zároveň kontrolovalo či sa znovu nezavolá \texttt{"DoesNotUnderstand:"} napríklad pomocnou vlajkou.
+    
+        \section{Problémy pri riešení projektu}
         \subsection{Ako spracovávať blok}
         Spracovanie objektu bolo zložité, prvý návrh implementácie bol správať sa ku nemu ako ku metóde ale to bol zlý nápad z dôvodu inštančných atribútov a definovania jeho prostredia.
         Nakoniec sa to vyriešilo tak, že \hyperref[solobject]{\textbf{SolObjekt}}u boli pridané atribúty, ktoré uchovávajú blokové prostredie a~uchovávajú \hyperref[solmethod]{\textbf{SolMethod}}, ktorá obsahuje samotnú definíciu bloku.

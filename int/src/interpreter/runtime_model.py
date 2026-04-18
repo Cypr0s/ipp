@@ -167,19 +167,19 @@ class SolMethod:
         self.is_builtin: bool = is_builtin
         self.function: object = func
         self.arity: int = arity
-    
+
     def get_cls(self) -> SolClass:
         """
         Encapsulation method for getting class of method
         """
         return self.cls
-    
+
     def get_is_builtin(self) -> bool:
         """
         Encapsulation method for getting bool that method is builtin
         """
         return self.is_builtin
-    
+
     def get_function(self) -> object:
         """
         Encapsulation method for getting the builtin function / block of method

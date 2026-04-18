@@ -1,2 +1,3 @@
 #!/bin/bash
-php /src/tester/vendor/bin/phpstan "$@"
+ln -sfn /tools/vendor /src/tester/vendor
+php /tools/vendor/bin/phpstan "$@"

@@ -446,7 +446,7 @@ class Interpreter:
         else:
             new_scope = Scope(self.scope)
 
-        block: Block = method.get_function()
+        block: object = method.get_function()
         if not isinstance(block, Block):
             raise InterpreterError(
                 error_code=ErrorCode.GENERAL_OTHER, message="Trying to execute non-block method"
@@ -466,8 +466,10 @@ class Interpreter:
             self.scope.set_parameter("super", receiver)
 
         # exec block
-        logger.info(f"executing block, method:{method.get_selector()} class_ctx:{class_ctx.get_name()}")
-        return_value = self.execute_block(method.get_function().assigns, class_ctx)
+        logger.info(
+            f"executing block, method:{method.get_selector()} class_ctx:{class_ctx.get_name()}"
+        )
+        return_value = self.execute_block(block.assigns, class_ctx)
 
         self.scope = parent_scope
         return return_value
@@ -606,6 +608,7 @@ class Interpreter:
             message=f"Calling undefined literal class `{literal.class_id}`",
         )
 
+
 class ObjectBuiltin:
     """
     Class that represents builtin methods of Object class
@@ -619,11 +622,11 @@ class ObjectBuiltin:
         """
         Builtin Object new: creates new obect of class receiver with default internal values
         """
-        if receiver.name == "Integer":
-            return SolObject(interpreter.classes["Integer"], 0)
+        if receiver.is_subclass("Integer"):
+            return SolObject(receiver, 0)
 
-        if receiver.name == "String":
-            return SolObject(interpreter.classes["String"], "")
+        if receiver.is_subclass("String"):
+            return SolObject(receiver, "")
 
         if receiver.name == "Nil":
             return interpreter.scope.get_object("nil")

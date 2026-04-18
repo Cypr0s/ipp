@@ -1,2 +1,2 @@
 #!/bin/bash
-php /src/tester/vendor/bin/phpcs "$@"
+php /tools/vendor/bin/phpcs "$@"

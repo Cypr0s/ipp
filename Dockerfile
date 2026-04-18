@@ -7,6 +7,9 @@
 
 FROM python:3.14-slim AS check
 
+# composer requiremnt
+RUN apt-get update && apt-get install -y git zip unzip
+
 # install php 8.5
 RUN apt-get update && apt-get install -y lsb-release ca-certificates curl && \
     curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb && \
@@ -19,10 +22,19 @@ RUN apt-get update && apt-get install -y lsb-release ca-certificates curl && \
 COPY ./int/pyproject.toml /tools/
 COPY ./int/requirements-dev.txt /tools/
 
+
 # install python dev dependencies
 RUN pip install --upgrade pip
 RUN pip install "/tools/[dev]"
 RUN pip install -r /tools/requirements-dev.txt
+
+
+# install php dev dependencies
+COPY ./tester/composer.json /tools/
+COPY ./tester/composer.lock /tools/
+COPY ./tester/composer.phar /tools/
+
+RUN cd /tools && php /tools/composer.phar install
 
 # commands are run `from` bash
 ENTRYPOINT ["/bin/bash"]
@@ -50,9 +62,6 @@ ENTRYPOINT ["python3", "/int/src/solint.py" ]
 
 FROM runtime AS test
 
-#composer requiremnt
-RUN apt-get update && apt-get install -y git zip unzip
-
 # install php 8.5
 RUN apt-get update && apt-get install -y lsb-release ca-certificates curl && \
     curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb && \
@@ -78,9 +87,14 @@ RUN pip install -r /tools/requirements.txt
 COPY ./tester/sol2xml/sol_to_xml.py /tester/sol2xml/
 COPY ./tester/sol2xml/parser_output_schema.xsd /tester/sol2xml/
 
+# composer req
+RUN apt-get update && apt-get install -y git zip unzip
+
 # copy tester files into image
 COPY ./tester/src /tester/src/
 COPY ./tester/composer.json /tester/
-COPY ./tester/vendor /tester/vendor/
+COPY ./tester/composer.lock /tester/
+COPY ./tester/composer.phar /tester/
+RUN cd /tester && php /tester/composer.phar install
 
 ENTRYPOINT [ "php", "/tester/src/tester.php" ]
