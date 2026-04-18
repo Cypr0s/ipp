@@ -16,4 +16,4 @@ vendor/
 composer.phar
 doc/
 .json
-.sh
+is_archive_ok.sh
